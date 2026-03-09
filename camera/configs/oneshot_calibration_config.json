@@ -1,0 +1,32 @@
+{
+  "cameras": [
+    {
+      "camera_id": "camera_1",
+      "camera_name": "Left Camera",
+      "camera_model": "fisheye",
+      "input_path": "/home/hillbot/Downloads/obs_data/session_20260112_191915/1944301031B5872D00_CAM_B",
+      "enabled": true
+    },
+    {
+      "camera_id": "camera_2",
+      "camera_name": "Right Camera",
+      "camera_model": "fisheye",
+      "input_path": "/home/hillbot/Downloads/obs_data/session_20260112_191915/1944301031B5872D00_CAM_C",
+      "enabled": true
+    }
+  ],
+  "calibration_settings": {
+    "use_all_frames": true,
+    "num_frames": 10,
+    "skip_visualization": false,
+    "min_observations": 3,
+    "min_corners_per_board": 9
+  },
+  "extrinsic_calibration": {
+    "enabled": true,
+    "reference_camera": "camera_2",
+    "target_camera": [
+      "camera_1"
+    ]
+  }
+}

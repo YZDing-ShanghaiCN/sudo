@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<robot name="milk_bag">
+  <link name="base_link">
+    <contact>
+      <friction_anchor/>
+      <lateral_friction value="0.1"/>
+      <rolling_friction value="0.0"/>
+      <contact_cfm value="0.0"/>
+      <contact_erp value="1.0"/>
+    </contact>
+<inertial>
+  <origin xyz="0.00547452 0.03036740 0.09910574" ryp="0 0 0"/>
+  <mass value="1.04935290"/>
+  <inertia ixx="0.04114399" ixy="0.00002233" ixz="0.00002397" iyy="0.03046680" iyz="0.00064486" izz="0.06780650"/>
+</inertial>
+    <visual><origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes/visual/object.ply" scale="1 1 1"/>
+      </geometry>
+      <material name="foam">
+        <color rgba="1.  0.93333333  0.54901961 1"/>
+      </material>
+    </visual>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    	 	<mesh filename="meshes/convex/object.ply" scale="1 1 1"/>
+      </geometry>
+    </collision>
+  </link>
+</robot>

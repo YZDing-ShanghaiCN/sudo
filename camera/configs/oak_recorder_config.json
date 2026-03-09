@@ -1,0 +1,25 @@
+{
+    "general": {
+        "fps": 10,
+        "recording_size": [960, 600],
+        "sync_tolerance_ms": 1,
+        "timeout_s": 100.0,
+        "log_level": "info",
+        "manual_exposure_time_us": 10000,
+        "manual_sensitivity": 120,
+        "manual_white_balance": 4000
+    },
+    "devices": [
+    {
+        "device_alias": "test good",
+        "device_id": "1944301031B5872D00",
+        "camera_sockets": {
+            "CAM_A": "dai.CameraBoardSocket.CAM_C"
+        },
+        "is_enable": true,
+        "is_master": true
+    }
+
+    ]
+}
+

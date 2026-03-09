@@ -1,0 +1,220 @@
+<?xml version='1.0' encoding='ASCII'?>
+<robot name="hillbot_left-link_arm">
+  <link name="left-link_arm_1">
+    <inertial>
+      <origin xyz="-0.006159 8.9872e-06 0.034906" rpy="0.0 -0.0 0.0"/>
+      <mass value="0.62221"/>
+      <inertia ixx="0.0011121" ixy="7.2469e-08" ixz="0.00029532" iyy="0.0014513" iyz="2.1321e-07" izz="0.0013836"/>
+    </inertial>
+    <visual>      <material name="plastic_black">
+        <color rgba="0.6  0.15 0.15 1"/>
+      </material>
+      <geometry>
+        <mesh filename="meshes/lowpoly/left-link_arm_1.ply"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="meshes/lowpoly/left-link_arm_1.ply"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="left-link_arm_base">
+    <inertial>
+      <origin xyz="-2.177e-05 -3.226e-06 0.021818" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.6029"/>
+      <inertia ixx="0.0015278" ixy="-1.5672e-07" ixz="-1.8033e-06" iyy="0.0015302" iyz="-2.7424e-07" izz="0.00164"/>
+    </inertial>
+    <visual>      <material name="plastic_black">
+        <color rgba="0.6  0.15 0.15 1"/>
+      </material>
+      <geometry>
+        <mesh filename="meshes/lowpoly/left-link_arm_base.ply"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="meshes/lowpoly/left-link_arm_base.ply"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="left-link_arm_2">
+    <inertial>
+      <origin xyz="-1.0077e-05 0.057266 -0.040519" rpy="0.0 -0.0 0.0"/>
+      <mass value="3.335"/>
+      <inertia ixx="0.0050711" ixy="-2.7631e-06" ixz="1.0382e-07" iyy="0.0032897" iyz="0.0001035" izz="0.0052288"/>
+    </inertial>
+    <visual>      <material name="plastic_black">
+        <color rgba="0.6  0.15 0.15 1"/>
+      </material>
+      <geometry>
+        <mesh filename="meshes/lowpoly/left-link_arm_2.ply"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="meshes/lowpoly/left-link_arm_2.ply"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="left-link_arm_3">
+    <inertial>
+      <origin xyz="-0.031101 1.4455e-07 0.0806" rpy="0.0 -0.0 0.0"/>
+      <mass value="0.8901"/>
+      <inertia ixx="0.0031463" ixy="-5.5317e-09" ixz="0.00081849" iyy="0.0033105" iyz="-1.5446e-08" izz="0.0010721"/>
+    </inertial>
+    <visual>      <material name="plastic_black">
+        <color rgba="0.6  0.15 0.15 1"/>
+      </material>
+      <geometry>
+        <mesh filename="meshes/lowpoly/left-link_arm_3.ply"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="meshes/lowpoly/left-link_arm_3.ply"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="left-link_arm_4">
+    <inertial>
+      <origin xyz="-3.2344e-05 0.027786 -0.032327" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.9108"/>
+      <inertia ixx="0.002356" ixy="-1.3929e-06" ixz="-2.4343e-06" iyy="0.0016002" iyz="2.6552e-05" izz="0.0022494"/>
+    </inertial>
+    <visual>      <material name="plastic_black">
+        <color rgba="0.6  0.15 0.15 1"/>
+      </material>
+      <geometry>
+        <mesh filename="meshes/lowpoly/left-link_arm_4.ply"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="meshes/lowpoly/left-link_arm_4.ply"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="left-link_arm_5">
+    <inertial>
+      <origin xyz="0.0055557 -7.6462e-07 0.058391" rpy="0.0 -0.0 0.0"/>
+      <mass value="0.38604"/>
+      <inertia ixx="0.00047968" ixy="2.974e-08" ixz="0.00010993" iyy="0.00066901" iyz="-3.7792e-08" izz="0.00051992"/>
+    </inertial>
+    <visual>      <material name="plastic_black">
+        <color rgba="0.6  0.15 0.15 1"/>
+      </material>
+      <geometry>
+        <mesh filename="meshes/lowpoly/left-link_arm_5.ply"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="meshes/lowpoly/left-link_arm_5.ply"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="left-link_arm_6">
+    <inertial>
+      <origin xyz="0.0036019 0.027995 -0.039393" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0489"/>
+      <inertia ixx="0.00090582" ixy="-2.8023e-05" ixz="2.6101e-06" iyy="0.0007786" iyz="2.7804e-05" izz="0.00090569"/>
+    </inertial>
+    <visual>      <material name="plastic_black">
+        <color rgba="0.6  0.15 0.15 1"/>
+      </material>
+      <geometry>
+        <mesh filename="meshes/lowpoly/left-link_arm_6.ply"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="meshes/lowpoly/left-link_arm_6.ply"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="left-link_arm_7">
+    <inertial>
+      <origin xyz="3.7857e-06 0.035894 -0.048679" rpy="0.0 -0.0 0.0"/>
+      <mass value="0.31289"/>
+      <inertia ixx="0.0004681" ixy="-7.8174e-09" ixz="-1.1472e-09" iyy="0.00044068" iyz="7.7636e-05" izz="0.00027572"/>
+    </inertial>
+    <visual>      <material name="plastic_black">
+        <color rgba="0.6  0.15 0.15 1"/>
+      </material>
+      <geometry>
+        <mesh filename="meshes/lowpoly/left-link_arm_7.ply"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="meshes/lowpoly/left-link_arm_7.ply"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+    </collision>
+  </link>
+  <joint name="left-joint_arm_1" type="revolute">
+    <parent link="left-link_arm_base"/>
+    <child link="left-link_arm_1"/>
+    <origin xyz="0.0 0.0 0.048" rpy="0.0 -0.0 0.0"/>
+    <axis xyz="0.0 0.0 1.0"/>
+    <limit effort="100.0" velocity="1.0" lower="-3.141" upper="3.141"/>
+  </joint>
+  <joint name="left-joint_arm_2" type="revolute">
+    <parent link="left-link_arm_1"/>
+    <child link="left-link_arm_2"/>
+    <origin xyz="-0.046 0.0 0.077001" rpy="1.5708 -0.0 -1.5708"/>
+    <axis xyz="0.0 0.0 1.0"/>
+    <limit effort="100.0" velocity="1.0" lower="-1.92" upper="1.536"/>
+  </joint>
+  <joint name="left-joint_arm_3" type="revolute">
+    <parent link="left-link_arm_2"/>
+    <child link="left-link_arm_3"/>
+    <origin xyz="0.0 0.164 -0.046" rpy="-3.059706653589793 1.5707926535897934 -1.4888926535897933"/>
+    <axis xyz="0.0 0.0 1.0"/>
+    <limit effort="100.0" velocity="1.0" lower="-3.141" upper="3.141"/>
+  </joint>
+  <joint name="left-joint_arm_4" type="revolute">
+    <parent link="left-link_arm_3"/>
+    <child link="left-link_arm_4"/>
+    <origin xyz="-0.038497 0.0 0.165" rpy="1.5708 -0.0 -1.5708"/>
+    <axis xyz="0.0 0.0 1.0"/>
+    <limit effort="100.0" velocity="1.0" lower="-2.618" upper="2.339"/>
+  </joint>
+  <joint name="left-joint_arm_5" type="revolute">
+    <parent link="left-link_arm_4"/>
+    <child link="left-link_arm_5"/>
+    <origin xyz="0.0 0.133 -0.0385" rpy="1.5707926535897934 1.5707926535897934 3.141592653589793"/>
+    <axis xyz="0.0 0.0 1.0"/>
+    <limit effort="100.0" velocity="1.0" lower="-3.141" upper="3.141"/>
+  </joint>
+  <joint name="left-joint_arm_6" type="revolute">
+    <parent link="left-link_arm_5"/>
+    <child link="left-link_arm_6"/>
+    <origin xyz="-0.043005 0.0 0.107" rpy="1.5708 -0.0 -1.5708"/>
+    <axis xyz="0.0 0.0 1.0"/>
+    <limit effort="100.0" velocity="1.0" lower="-1.518" upper="1.518"/>
+  </joint>
+  <joint name="left-joint_arm_7" type="revolute">
+    <parent link="left-link_arm_6"/>
+    <child link="left-link_arm_7"/>
+    <origin xyz="0.043002 0.056 -0.043002" rpy="1.5707926535897934 1.5707926535897934 1.5707926535897934"/>
+    <axis xyz="0.0 0.0 -1.0"/>
+    <limit effort="100.0" velocity="1.0" lower="-1.466" upper="1.466"/>
+  </joint>
+</robot>
