@@ -201,11 +201,11 @@ class FoundationPose:
     self.ob_mask = ob_mask
 
     poses = self.generate_random_pose_hypo(K=K, rgb=rgb, depth=depth, mask=ob_mask, scene_pts=None)
-    poses = poses.data.cpu().numpy()
+    # Ensure poses are a torch tensor on CUDA (handles np arrays / other types)
+    poses = torch.as_tensor(poses, device='cuda', dtype=torch.float)
     logging.info(f'poses:{poses.shape}')
     center = self.guess_translation(depth=depth, mask=ob_mask, K=K)
 
-    poses = torch.as_tensor(poses, device='cuda', dtype=torch.float)
     poses[:,:3,3] = torch.as_tensor(center.reshape(1,3), device='cuda')
 
     add_errs = self.compute_add_err_to_gt_pose(poses)

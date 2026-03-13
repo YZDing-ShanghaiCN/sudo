@@ -61,6 +61,8 @@ if __name__=='__main__':
         o3d.io.write_point_cloud(f'{debug_dir}/scene_complete.ply', pcd)
     else:
       pose = est.track_one(rgb=color, depth=depth, K=reader.K, iteration=args.track_refine_iter)
+      if (i == 1):
+        print(f"K:\n{reader.K}")
 
     os.makedirs(f'{debug_dir}/ob_in_cam', exist_ok=True)
     np.savetxt(f'{debug_dir}/ob_in_cam/{reader.id_strs[i]}.txt', pose.reshape(4,4))
