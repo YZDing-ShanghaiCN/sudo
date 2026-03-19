@@ -15,7 +15,7 @@ from core.foundation_stereo import FoundationStereo
 from ultralytics import YOLO
 from segment_anything import sam_model_registry, SamPredictor
 
-yolo_model = YOLO("~/Desktop/checkpoints/yolo/yolov8m.pt")
+yolo_model = YOLO("../checkpoints/yolo/yolov8m.pt")
 # yolo_model.to("cuda")
 yolo_model.to("cpu")
 
@@ -67,8 +67,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--left_file', default=f'{code_dir}/../assets/left.png', type=str)
     parser.add_argument('--right_file', default=f'{code_dir}/../assets/right.png', type=str)
-    parser.add_argument('--intrinsic_file', default=f'{code_dir}/../assets/K.txt', type=str, help='camera intrinsic matrix and baseline file')
-    parser.add_argument('--ckpt_dir', default=f'{code_dir}/../pretrained_models/23-51-11/model_best_bp2.pth', type=str, help='pretrained model path')
     parser.add_argument('--out_dir', default=f'{code_dir}/../output/', type=str, help='the directory to save results')
     parser.add_argument('--scale', default=1, type=float, help='downsize the image by scale, must be <=1')
     parser.add_argument('--hiera', default=0, type=int, help='hierarchical inference (only needed for high-resolution images (>1K))')
@@ -86,8 +84,10 @@ if __name__ == "__main__":
     torch.autograd.set_grad_enabled(False)
     os.makedirs(args.out_dir, exist_ok=True)
 
-    ckpt_dir = args.ckpt_dir
-    cfg = OmegaConf.load(f'{os.path.dirname(args.ckpt_dir)}/cfg.yaml')
+    ckpt_dir = "../checkpoints/foundationstereo/23-51-11"
+    intrinsic_file = "./assets/K.txt"
+
+    cfg = OmegaConf.load(ckpt_dir + "/cfg.yaml")
     if 'vit_size' not in cfg:
         cfg['vit_size'] = 'vitl'
     for k in args.__dict__:
@@ -95,7 +95,7 @@ if __name__ == "__main__":
     args = OmegaConf.create(cfg)
 
     model = FoundationStereo(args)
-    ckpt = torch.load(args.ckpt_dir, weights_only=False)
+    ckpt = torch.load(ckpt_dir + "/model_best_bp2.pth", weights_only=False)
     model.load_state_dict(ckpt['model'])
     model.cuda()
     model.eval()
@@ -128,14 +128,14 @@ if __name__ == "__main__":
     disp = padder.unpad(disp.float())
     disp = disp.data.cpu().numpy().reshape(H, W)
 
-    with open(args.intrinsic_file, 'r') as f:
+    with open(intrinsic_file, 'r') as f:
         lines = f.readlines()
         K = np.array(list(map(float, lines[0].split()))).reshape(3,3).astype(np.float32)
         baseline = float(lines[1])
     K[:2] *= scale
 
     # sam = sam_model_registry["vit_h"](checkpoint="sam_vit_h_4b8939.pth")
-    sam = sam_model_registry["vit_b"](checkpoint="~/Desktop/checkpoint/sam/sam_vit_b_01ec64.pth")
+    sam = sam_model_registry["vit_b"](checkpoint="../checkpoints/sam/sam_vit_b_01ec64.pth")
     sam.cuda()
     predictor = SamPredictor(sam)
     predictor.set_image(img0)
@@ -172,4 +172,4 @@ if __name__ == "__main__":
     np.save("../FoundationPose/pre_result/rgb.npy", img0)
     print("[INFO] saved depth, masks, bboxes, intrinsics, and rgb to ../FoundationPose/pre_result/ for pose estimation downstream")
     print(img0.shape, depth.shape, K.shape, bboxes.shape, np.array(mask_list).shape)
-    # cv2.imwrite(f"{args.out_dir}/depth.png", vis_disparity(depth, args.z_far))
+    cv2.imwrite(f"{args.out_dir}/depth.png", vis_disparity(depth, args.z_far))
