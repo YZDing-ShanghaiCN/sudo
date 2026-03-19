@@ -15,7 +15,7 @@ from core.foundation_stereo import FoundationStereo
 from ultralytics import YOLO
 from segment_anything import sam_model_registry, SamPredictor
 
-yolo_model = YOLO("~/Desktop/checkpoint/yolo/yolov8m.pt")
+yolo_model = YOLO("~/Desktop/checkpoints/yolo/yolov8m.pt")
 # yolo_model.to("cuda")
 yolo_model.to("cpu")
 
