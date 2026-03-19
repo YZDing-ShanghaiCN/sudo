@@ -1,12 +1,3 @@
-# Copyright (c) 2023, NVIDIA CORPORATION.  All rights reserved.
-#
-# NVIDIA CORPORATION and its licensors retain all intellectual property
-# and proprietary rights in and to this software, related documentation
-# and any modifications thereto.  Any use, reproduction, disclosure or
-# distribution of this software and related documentation without an express
-# license agreement from NVIDIA CORPORATION is strictly prohibited.
-
-
 from estimater import *
 from datareader import *
 import argparse
@@ -53,14 +44,14 @@ if __name__=='__main__':
       mask = reader.get_mask(0).astype(bool)
       pose = est.register(K=reader.K, rgb=color, depth=depth_fake, ob_mask=mask, iteration=args.est_refine_iter)
 
-    #   if debug>=3:
-    #     m = mesh.copy()
-    #     m.apply_transform(pose)
-    #     m.export(f'{debug_dir}/model_tf.obj')
-    #     xyz_map = depth2xyzmap(depth, reader.K)
-    #     valid = depth>=0.001
-    #     pcd = toOpen3dCloud(xyz_map[valid], color[valid])
-    #     o3d.io.write_point_cloud(f'{debug_dir}/scene_complete.ply', pcd)
+      if debug>=3:
+        m = mesh.copy()
+        m.apply_transform(pose)
+        m.export(f'{debug_dir}/model_tf.obj')
+        xyz_map = depth2xyzmap(depth, reader.K)
+        valid = depth>=0.001
+        pcd = toOpen3dCloud(xyz_map[valid], color[valid])
+        o3d.io.write_point_cloud(f'{debug_dir}/scene_complete.ply', pcd)
     else:
       pose = est.track_one(rgb=color, depth=depth_fake, K=reader.K, iteration=args.track_refine_iter)
       if (i == 1):

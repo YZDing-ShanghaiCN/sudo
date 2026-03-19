@@ -1,0 +1,2 @@
+conda activate foundationpose
+python test_demo.py

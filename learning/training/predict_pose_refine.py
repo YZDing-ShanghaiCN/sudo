@@ -97,9 +97,11 @@ class PoseRefinePredictor:
     self.run_name = "2023-10-28-18-33-37"
     model_name = 'model_best.pth'
     code_dir = os.path.dirname(os.path.realpath(__file__))
-    ckpt_dir = f'{code_dir}/../../weights/{self.run_name}/{model_name}'
-
-    self.cfg = OmegaConf.load(f'{code_dir}/../../weights/{self.run_name}/config.yml')
+    # ckpt_dir = f'{code_dir}/../../weights/{self.run_name}/{model_name}'
+    # self.cfg = OmegaConf.load(f'{code_dir}/../../weights/{self.run_name}/config.yml')
+    weights_dir = '/home/user/Desktop/checkpoints/foundationpose'
+    ckpt_dir = f'{weights_dir}/{self.run_name}/{model_name}'
+    self.cfg = OmegaConf.load(f'{weights_dir}/{self.run_name}/config.yml')
 
     self.cfg['ckpt_dir'] = ckpt_dir
     self.cfg['enable_amp'] = True
