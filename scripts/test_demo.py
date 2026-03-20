@@ -15,6 +15,34 @@ from core.foundation_stereo import FoundationStereo
 from ultralytics import YOLO
 from segment_anything import sam_model_registry, SamPredictor
 
+def decode_disparity(encoded_disp):
+    # 将 BGR 转换为 float
+    b = encoded_disp[:, :, 0].astype(np.float32)
+    g = encoded_disp[:, :, 1].astype(np.float32)
+    r = encoded_disp[:, :, 2].astype(np.float32)
+    
+    decoded = r * 65536 + g * 256 + b
+    decoded /= 256.0
+    return decoded
+
+def compute_disp_similarity(disp1, disp2):
+    if disp1.shape != disp2.shape:
+        raise ValueError("Disparity images must have the same shape")
+    
+    disp1 = disp1.astype(np.float32)
+    disp2 = disp2.astype(np.float32)
+    
+    mse = np.mean((disp1 - disp2) ** 2)
+    mae = np.mean(np.abs(disp1 - disp2))
+    max_val = max(np.max(disp1), np.max(disp2))
+    
+    if mse == 0:
+        psnr = float('inf')
+    else:
+        psnr = 20 * np.log10(max_val / np.sqrt(mse))
+    
+    return mse, mae, psnr
+
 yolo_model = YOLO("../checkpoints/yolo/yolov8m.pt")
 # yolo_model.to("cuda")
 yolo_model.to("cpu")
@@ -29,7 +57,7 @@ def get_bboxes(img):
     boxes = results.boxes.xyxy.cpu().numpy()
     scores = results.boxes.conf.cpu().numpy()
 
-    keep = scores > 0.9
+    keep = scores > 0.8
     return boxes[keep]
 
 def generate_3d_point_cloud(img_bgr, depth, K, z_far, mask=None):
@@ -71,7 +99,7 @@ if __name__ == "__main__":
     parser.add_argument('--scale', default=1, type=float, help='downsize the image by scale, must be <=1')
     parser.add_argument('--hiera', default=0, type=int, help='hierarchical inference (only needed for high-resolution images (>1K))')
     parser.add_argument('--z_far', default=10, type=float, help='max depth to clip in point cloud')
-    parser.add_argument('--valid_iters', type=int, default=512, help='number of flow-field updates during forward pass')
+    parser.add_argument('--valid_iters', type=int, default=256, help='number of flow-field updates during forward pass')
     parser.add_argument('--get_pc', type=int, default=1, help='save point cloud output')
     parser.add_argument('--remove_invisible', default=1, type=int, help='remove non-overlapping observations between left and right images from point cloud, so the remaining points are more reliable')
     parser.add_argument('--denoise_cloud', type=int, default=1, help='whether to denoise the point cloud')
@@ -127,6 +155,25 @@ if __name__ == "__main__":
             disp = model.forward(img0_t, img1_t, iters=args.valid_iters, test_mode=True)
     disp = padder.unpad(disp.float())
     disp = disp.data.cpu().numpy().reshape(H, W)
+
+    if True:
+        disp_path = "./assets/testdata/disparity.png"
+        disp_data = cv2.imread(disp_path, cv2.IMREAD_UNCHANGED)
+        disp_data = decode_disparity(disp_data)
+        disp_data = cv2.resize(disp_data, fx=scale, fy=scale, dsize=None)
+        print(disp.shape, disp_data.shape)
+        print("GT max:", disp_data.max(), "GT min:", disp_data.min())
+        print("GT dtype:", disp_data.dtype)
+        # 同时显示两张图像
+        disp_vis = vis_disparity(disp, args.z_far)
+        disp_data_vis = vis_disparity(disp_data, args.z_far)
+        mse, mae, psnr = compute_disp_similarity(disp, disp_data)
+        print(f"Disparity Similarity - MSE: {mse:.4f}, MAE: {mae:.4f}, PSNR: {psnr:.2f} dB")
+
+        combined_vis = np.hstack((disp_vis, disp_data_vis))
+        cv2.imshow("Predicted Disparity (Left) vs Ground Truth Disparity (Right)", combined_vis)
+        cv2.waitKey(0)
+        sys.exit(0)
 
     with open(intrinsic_file, 'r') as f:
         lines = f.readlines()
