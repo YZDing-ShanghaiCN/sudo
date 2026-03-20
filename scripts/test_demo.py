@@ -29,7 +29,7 @@ def get_bboxes(img):
     boxes = results.boxes.xyxy.cpu().numpy()
     scores = results.boxes.conf.cpu().numpy()
 
-    keep = scores > 0.1
+    keep = scores > 0.9
     return boxes[keep]
 
 def generate_3d_point_cloud(img_bgr, depth, K, z_far, mask=None):
@@ -71,7 +71,7 @@ if __name__ == "__main__":
     parser.add_argument('--scale', default=1, type=float, help='downsize the image by scale, must be <=1')
     parser.add_argument('--hiera', default=0, type=int, help='hierarchical inference (only needed for high-resolution images (>1K))')
     parser.add_argument('--z_far', default=10, type=float, help='max depth to clip in point cloud')
-    parser.add_argument('--valid_iters', type=int, default=32, help='number of flow-field updates during forward pass')
+    parser.add_argument('--valid_iters', type=int, default=512, help='number of flow-field updates during forward pass')
     parser.add_argument('--get_pc', type=int, default=1, help='save point cloud output')
     parser.add_argument('--remove_invisible', default=1, type=int, help='remove non-overlapping observations between left and right images from point cloud, so the remaining points are more reliable')
     parser.add_argument('--denoise_cloud', type=int, default=1, help='whether to denoise the point cloud')
