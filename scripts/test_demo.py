@@ -35,7 +35,7 @@ def compute_disp_similarity(disp1, disp2):
     mse = np.mean((disp1 - disp2) ** 2)
     mae = np.mean(np.abs(disp1 - disp2))
     max_val = max(np.max(disp1), np.max(disp2))
-    
+
     if mse == 0:
         psnr = float('inf')
     else:
@@ -173,7 +173,6 @@ if __name__ == "__main__":
         combined_vis = np.hstack((disp_vis, disp_data_vis))
         cv2.imshow("Predicted Disparity (Left) vs Ground Truth Disparity (Right)", combined_vis)
         cv2.waitKey(0)
-        sys.exit(0)
 
     with open(intrinsic_file, 'r') as f:
         lines = f.readlines()
@@ -190,9 +189,33 @@ if __name__ == "__main__":
     img_bgr = cv2.cvtColor(img0, cv2.COLOR_RGB2BGR)
     mask_list = []
 
+    def vis_depth(depth, z_far=10.0):
+        """
+        将深度图转换为伪彩色图
+        z_far: 可视化的最大深度（米），超过这个值的会被截断
+        """
+        depth_copy = np.clip(depth, 0, z_far)
+        depth_norm = depth_copy / z_far
+        depth_vis = (depth_norm * 255).astype(np.uint8)
+        color_depth = cv2.applyColorMap(depth_vis, cv2.COLORMAP_JET)
+        color_depth[depth == 0] = 0
+        return color_depth
+
     valid = disp > 1e-6
     depth = np.zeros_like(disp)
     depth[valid] = K[0,0] * baseline / disp[valid]
+
+    depth_GT = np.zeros_like(disp_data)
+    depth_GT[valid] = K[0,0] * baseline / disp_data[valid]
+
+    vis_pred = vis_depth(depth, args.z_far)
+    vis_gt = vis_depth(depth_GT, args.z_far)
+    combined_depth = np.hstack((vis_pred, vis_gt))
+    cv2.putText(combined_depth, "PRED Depth", (20, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+    cv2.putText(combined_depth, "GT Depth", (vis_pred.shape[1] + 20, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+    cv2.imshow("Depth Comparison (Left: Pred | Right: GT)", combined_depth)
+    cv2.waitKey(0)
+    sys.exit(0)
 
     for i, bbox in enumerate(bboxes):
         x1, y1, x2, y2 = map(int, bbox)

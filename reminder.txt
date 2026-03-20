@@ -2,7 +2,7 @@
 conda activate foundation_stereo
 python scripts/test_demo.py --left_file ./assets/left.png --right_file ./assets/right.png --out_dir ./output/
 
-python scripts/test_demo.py --left_file ./assets/testdata/left.jpg --right_file ./assets/testdata/right.jpg --out_dir ./output/
+python scripts/test_demo.py --left_file ./assets/testdata/left.jpg --right_file ./assets/testdata/right.jpg --out_dir ./output/ --scale 0.75
 
 #1 setting proxy before running scripts
 export all_proxy=socks5://127.0.0.1:7897
