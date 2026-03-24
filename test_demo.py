@@ -68,7 +68,9 @@ def main():
             print(f"\nMesh reconstructed successfully! Offset from camera: {center}\n")
 
         else:
-            mesh = trimesh.load("./pre_result/mesh.obj", process=True)
+            # mesh文件是ply格式
+            mesh_path = "./pre_result/crate/crate_0_visual.ply"
+            mesh = trimesh.load(mesh_path, process=True)
 
         # 加载 foundationpose 模型
         est = FoundationPose(
