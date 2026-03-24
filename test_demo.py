@@ -40,7 +40,7 @@ def main():
     glctx = dr.RasterizeCudaContext()
     n = bboxes.shape[0]
     
-    for i in range(n):
+    for i in range(n-1, n):
         ob_mask = ob_masks[i]
         bbox = bboxes[i]
         vis = rgb.copy()
@@ -86,7 +86,7 @@ def main():
         print("\nFoundationPose initialized successfully!\n")
 
         # pose estimation
-        pose = est.register(K=K_orig, rgb=vis, depth=depth, ob_mask=ob_mask, iteration=5)
+        pose = est.register(K=K_orig, rgb=vis, depth=depth, ob_mask=ob_mask, iteration=1)
         print(f"\nPose estimation completed! Estimated pose:\n{pose}\n")
 
         bbox_3d = np.array([mesh.vertices.min(axis=0), mesh.vertices.max(axis=0)])

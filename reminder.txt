@@ -1,2 +1,2 @@
 conda activate foundationpose
-python test_demo.py
+python test_demo.py --mesh 1
