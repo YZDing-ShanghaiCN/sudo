@@ -39,7 +39,7 @@ def main():
     refiner = PoseRefinePredictor()
     glctx = dr.RasterizeCudaContext()
     n = bboxes.shape[0]
-    
+
     for i in range(n-1, n):
         ob_mask = ob_masks[i]
         bbox = bboxes[i]
@@ -69,8 +69,11 @@ def main():
 
         else:
             # mesh文件是ply格式
-            mesh_path = "./pre_result/crate/crate_0_visual.ply"
+            mesh_path = "./pre_result/crate/crate_1_visual.ply"
             mesh = trimesh.load(mesh_path, process=True)
+            mesh.update_faces(mesh.nondegenerate_faces())
+            mesh.update_faces(mesh.unique_faces())
+            mesh.merge_vertices()
 
         # 加载 foundationpose 模型
         est = FoundationPose(
@@ -86,12 +89,50 @@ def main():
         print("\nFoundationPose initialized successfully!\n")
 
         # pose estimation
-        pose = est.register(K=K_orig, rgb=vis, depth=depth, ob_mask=ob_mask, iteration=1)
+        pose = est.register(K=K_orig, rgb=vis, depth=depth*3, ob_mask=ob_mask, iteration=5)
         print(f"\nPose estimation completed! Estimated pose:\n{pose}\n")
 
         bbox_3d = np.array([mesh.vertices.min(axis=0), mesh.vertices.max(axis=0)])
+
+        def draw_box(img, corners_2d):
+            edges = [
+                (0,1),(1,2),(2,3),(3,0),  # bottom
+                (4,5),(5,6),(6,7),(7,4),  # top
+                (0,4),(1,5),(2,6),(3,7)   # vertical
+            ]
+
+            for i,j in edges:
+                p1 = tuple(corners_2d[i].astype(int))
+                p2 = tuple(corners_2d[j].astype(int))
+                cv2.line(img, p1, p2, (0,255,0), 2)
+
+            return img
+        
+        def get_3d_box_corners(bbox):
+            min_pt, max_pt = bbox
+            x0, y0, z0 = min_pt
+            x1, y1, z1 = max_pt
+
+            corners = np.array([
+                [x0, y0, z0],
+                [x1, y0, z0],
+                [x1, y1, z0],
+                [x0, y1, z0],
+                [x0, y0, z1],
+                [x1, y0, z1],
+                [x1, y1, z1],
+                [x0, y1, z1],
+            ])
+            return corners
+
         vis = draw_posed_3d_box(K_orig, img=vis, ob_in_cam=pose, bbox=bbox_3d)
         vis = draw_xyz_axis(vis, ob_in_cam=pose, scale=0.1, K=K_orig, thickness=3, transparency=0, is_input_rgb=True)
+
+        # corners = get_3d_box_corners(bbox_3d)
+        # corners_cam = (pose[:3,:3] @ corners.T + pose[:3,3:4]).T
+        # proj = (K_orig @ corners_cam.T).T
+        # proj = proj[:, :2] / proj[:, 2:3]
+        # vis = draw_box(vis, proj) 
 
         cv2.imshow('Estimated Pose', vis[...,::-1])
         cv2.imwrite(os.path.join(save_dir, f"result_{i:02d}.png"), vis)
