@@ -16,6 +16,37 @@ import torchvision.transforms as T
 from estimater import FoundationPose, ScorePredictor, PoseRefinePredictor
 import nvdiffrast.torch as dr
 
+def draw_box(img, corners_2d):
+            edges = [
+                (0,1),(1,2),(2,3),(3,0),  # bottom
+                (4,5),(5,6),(6,7),(7,4),  # top
+                (0,4),(1,5),(2,6),(3,7)   # vertical
+            ]
+
+            for i,j in edges:
+                p1 = tuple(corners_2d[i].astype(int))
+                p2 = tuple(corners_2d[j].astype(int))
+                cv2.line(img, p1, p2, (0,255,0), 2)
+
+            return img
+        
+def get_3d_box_corners(bbox):
+    min_pt, max_pt = bbox
+    x0, y0, z0 = min_pt
+    x1, y1, z1 = max_pt
+
+    corners = np.array([
+        [x0, y0, z0],
+        [x1, y0, z0],
+        [x1, y1, z0],
+        [x0, y1, z0],
+        [x0, y0, z1],
+        [x1, y0, z1],
+        [x1, y1, z1],
+        [x0, y1, z1],
+    ])
+    return corners
+
 def main():
     parser = argparse.ArgumentParser(description="input directory name")
     parser.add_argument("--mesh", type=int, required=True, help="0 for none mesh, 1 for mesh")
@@ -75,28 +106,20 @@ def main():
             mesh.update_faces(mesh.unique_faces())
             mesh.merge_vertices()
 
-            mask_valid = (ob_mask > 0) & (depth > 1e-6)
-            depth_obj = depth[mask_valid]
-
-            print("min:", depth_obj.min())
-            print("max:", depth_obj.max())
-            print("mean:", depth_obj.mean())
-            print("median:", np.median(depth_obj))
-            print("std:", depth_obj.std())
-
-            sys.exit(0)
-
-            # ## 显示点云 从depth和mask生成
-            # pcd = o3d.geometry.PointCloud()
-            # xyz_map = depth2xyzmap(depth, K_orig)
-            # valid = (depth > 0.001) & ob_mask
-            # pcd.points = o3d.utility.Vector3dVector(xyz_map[valid])
-            # pcd.colors = o3d.utility.Vector3dVector(rgb[valid] / 255.0)
-            # o3d.visualization.draw_geometries([pcd], window_name="Input Point Cloud", width=800, height=600)
-            # # 估计点云的尺寸
-            # bbox_3d = np.array([mesh.vertices.min(axis=0), mesh.vertices.max(axis=0)])
-            # print(f"\nMesh loaded successfully! Estimated object size: {bbox_3d[1] - bbox_3d[0]}\n")
-            # sys.exit(0)
+        bbox_3d = np.array([mesh.vertices.min(axis=0), mesh.vertices.max(axis=0)])
+        # 显示bbox3d
+        corners_3d = get_3d_box_corners(bbox_3d)
+        print(f"\n3D bounding box corners:\n{corners_3d}\n")
+        test_pose = np.eye(4)
+        test_pose[2, 3] = 1.0  # 把物体放在相机正前方 1 米处
+        corners_cam = (test_pose[:3, :3] @ corners_3d.T + test_pose[:3, 3:4]).T
+        proj = (K_orig @ corners_cam.T).T
+        proj = proj[:, :2] / proj[:, 2:3]
+        vis = draw_box(vis, proj)
+        cv2.imshow('3D Bounding Box', vis[...,::-1])
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+        sys.exit(0)
 
         # 加载 foundationpose 模型
         depth = depth * 2.5
@@ -115,42 +138,8 @@ def main():
         # pose estimation
         pose = est.register(K=K_orig, rgb=vis, depth=depth, ob_mask=ob_mask, iteration=5)
         print(f"\nPose estimation completed! Estimated pose:\n{pose}\n")
-
-        bbox_3d = np.array([mesh.vertices.min(axis=0), mesh.vertices.max(axis=0)])
-
-        def draw_box(img, corners_2d):
-            edges = [
-                (0,1),(1,2),(2,3),(3,0),  # bottom
-                (4,5),(5,6),(6,7),(7,4),  # top
-                (0,4),(1,5),(2,6),(3,7)   # vertical
-            ]
-
-            for i,j in edges:
-                p1 = tuple(corners_2d[i].astype(int))
-                p2 = tuple(corners_2d[j].astype(int))
-                cv2.line(img, p1, p2, (0,255,0), 2)
-
-            return img
-        
-        def get_3d_box_corners(bbox):
-            min_pt, max_pt = bbox
-            x0, y0, z0 = min_pt
-            x1, y1, z1 = max_pt
-
-            corners = np.array([
-                [x0, y0, z0],
-                [x1, y0, z0],
-                [x1, y1, z0],
-                [x0, y1, z0],
-                [x0, y0, z1],
-                [x1, y0, z1],
-                [x1, y1, z1],
-                [x0, y1, z1],
-            ])
-            return corners
-
-        # vis = draw_posed_3d_box(K_orig, img=vis, ob_in_cam=pose, bbox=bbox_3d)
         vis = draw_xyz_axis(vis, ob_in_cam=pose, scale=0.1, K=K_orig, thickness=3, transparency=0, is_input_rgb=True)
+        # vis = draw_posed_3d_box(K_orig, img=vis, ob_in_cam=pose, bbox=bbox_3d)
 
         corners = get_3d_box_corners(bbox_3d)
         corners_cam = (pose[:3,:3] @ corners.T + pose[:3,3:4]).T
