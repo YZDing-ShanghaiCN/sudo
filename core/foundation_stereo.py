@@ -28,16 +28,34 @@ from core.utils.utils import InputPadder
 import time,huggingface_hub
 
 
-try:
-    autocast = torch.cuda.amp.autocast
-except:
-    class autocast:
-        def __init__(self, enabled):
-            pass
-        def __enter__(self):
-            pass
-        def __exit__(self, *args):
-            pass
+# try:
+#     autocast = torch.cuda.amp.autocast
+# except:
+#     class autocast:
+#         def __init__(self, enabled):
+#             pass
+#         def __enter__(self):
+#             pass
+#         def __exit__(self, *args):
+#             pass
+
+if hasattr(torch, 'amp') and hasattr(torch.amp, 'autocast'):
+    # 新版 PyTorch (2.x+) 推荐方式
+    from torch.amp import autocast
+else:
+    try:
+        # 旧版 PyTorch 兼容方式
+        from torch.cuda.amp import autocast as legacy_autocast
+        # 包装一层，让它支持 ('cuda', enabled=...) 的写法
+        class autocast(legacy_autocast):
+            def __init__(self, device_type, enabled=True, **kwargs):
+                super().__init__(enabled=enabled)
+    except:
+        # 兜底：如果都不支持，则定义一个空的上下文管理器
+        class autocast:
+            def __init__(self, device_type, enabled=True, **kwargs): pass
+            def __enter__(self): pass
+            def __exit__(self, *args): pass
 
 
 def normalize_image(img):
@@ -188,7 +206,7 @@ class FoundationStereo(nn.Module, huggingface_hub.PyTorchModelHubMixin):
 
     def upsample_disp(self, disp, mask_feat_4, stem_2x):
 
-        with autocast(enabled=self.args.mixed_precision):
+        with autocast('cuda', enabled=self.args.mixed_precision):
             xspx = self.spx_2_gru(mask_feat_4, stem_2x)   # 1/2 resolution
             spx_pred = self.spx_gru(xspx)
             spx_pred = F.softmax(spx_pred, 1)
@@ -203,7 +221,7 @@ class FoundationStereo(nn.Module, huggingface_hub.PyTorchModelHubMixin):
         low_memory = low_memory or (self.args.get('low_memory', False))
         image1 = normalize_image(image1)
         image2 = normalize_image(image2)
-        with autocast(enabled=self.args.mixed_precision):
+        with autocast('cuda', enabled=self.args.mixed_precision):
             out, vit_feat = self.feature(torch.cat([image1, image2], dim=0))
             vit_feat = vit_feat[:B]
             features_left = [o[:B] for o in out]
@@ -242,7 +260,7 @@ class FoundationStereo(nn.Module, huggingface_hub.PyTorchModelHubMixin):
         for itr in range(iters):
             disp = disp.detach()
             geo_feat = geo_fn(disp, coords, low_memory=low_memory)
-            with autocast(enabled=self.args.mixed_precision):
+            with autocast('cuda', enabled=self.args.mixed_precision):
               net_list, mask_feat_4, delta_disp = self.update_block(net_list, inp_list, geo_feat, disp, att)
 
             disp = disp + delta_disp.float()

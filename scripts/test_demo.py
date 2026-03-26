@@ -14,38 +14,49 @@ from Utils import set_logging_format, set_seed, vis_disparity, depth2xyzmap, toO
 from core.foundation_stereo import FoundationStereo
 from ultralytics import YOLO
 from segment_anything import sam_model_registry, SamPredictor
-
-def decode_disparity(encoded_disp):
-    # 将 BGR 转换为 float
-    b = encoded_disp[:, :, 0].astype(np.float32)
-    g = encoded_disp[:, :, 1].astype(np.float32)
-    r = encoded_disp[:, :, 2].astype(np.float32)
-    
-    decoded = r * 65536 + g * 256 + b
-    decoded /= 256.0
-    return decoded
-
-def compute_disp_similarity(disp1, disp2):
-    if disp1.shape != disp2.shape:
-        raise ValueError("Disparity images must have the same shape")
-    
-    disp1 = disp1.astype(np.float32)
-    disp2 = disp2.astype(np.float32)
-    
-    mse = np.mean((disp1 - disp2) ** 2)
-    mae = np.mean(np.abs(disp1 - disp2))
-    max_val = max(np.max(disp1), np.max(disp2))
-
-    if mse == 0:
-        psnr = float('inf')
-    else:
-        psnr = 20 * np.log10(max_val / np.sqrt(mse))
-    
-    return mse, mae, psnr
+import json
+from typing import Tuple, Union, Optional
 
 yolo_model = YOLO("../checkpoints/yolo/yolov8m.pt")
 # yolo_model.to("cuda")
 yolo_model.to("cpu")
+
+def rectify_stereo_images(
+    img_left: Union[str, np.ndarray], 
+    img_right: Union[str, np.ndarray],
+    K1: np.ndarray, D1: Optional[np.ndarray], 
+    K2: np.ndarray, D2: Optional[np.ndarray],
+    R: np.ndarray, T: np.ndarray
+    ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """
+    Rectify stereo images given their intrinsics and extrinsics.
+
+    """
+    if isinstance(img_left, str):
+        img_left_arr = cv2.imread(img_left)
+    else:
+        img_left_arr = img_left
+    if isinstance(img_right, str):
+        img_right_arr = cv2.imread(img_right)
+    else:
+        img_right_arr = img_right
+    height, width = img_left_arr.shape[:2]
+
+    # --- Stereo rectification ---
+    R1, R2, P1, P2, Q, roi1, roi2 = cv2.stereoRectify(
+        K1, D1, K2, D2,
+        (width, height), R, T,
+        flags=cv2.CALIB_ZERO_DISPARITY,
+        alpha=1
+    )
+
+    map1x, map1y = cv2.initUndistortRectifyMap(K1, D1, R1, P1, (width, height), cv2.CV_32FC1)
+    map2x, map2y = cv2.initUndistortRectifyMap(K2, D2, R2, P2, (width, height), cv2.CV_32FC1)
+
+    rect_left  = cv2.remap(img_left_arr,  map1x, map1y, cv2.INTER_LINEAR)
+    rect_right = cv2.remap(img_right_arr, map2x, map2y, cv2.INTER_LINEAR)
+
+    return rect_left, rect_right, R1, R2, P1, P2
 
 def get_bboxes(img):
     img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -57,7 +68,7 @@ def get_bboxes(img):
     boxes = results.boxes.xyxy.cpu().numpy()
     scores = results.boxes.conf.cpu().numpy()
 
-    keep = scores > 0.8
+    keep = scores > 0.7
     return boxes[keep]
 
 def generate_3d_point_cloud(img_bgr, depth, K, z_far, mask=None):
@@ -99,7 +110,7 @@ if __name__ == "__main__":
     parser.add_argument('--scale', default=1, type=float, help='downsize the image by scale, must be <=1')
     parser.add_argument('--hiera', default=0, type=int, help='hierarchical inference (only needed for high-resolution images (>1K))')
     parser.add_argument('--z_far', default=10, type=float, help='max depth to clip in point cloud')
-    parser.add_argument('--valid_iters', type=int, default=256, help='number of flow-field updates during forward pass')
+    parser.add_argument('--valid_iters', type=int, default=32, help='number of flow-field updates during forward pass')
     parser.add_argument('--get_pc', type=int, default=1, help='save point cloud output')
     parser.add_argument('--remove_invisible', default=1, type=int, help='remove non-overlapping observations between left and right images from point cloud, so the remaining points are more reliable')
     parser.add_argument('--denoise_cloud', type=int, default=1, help='whether to denoise the point cloud')
@@ -114,6 +125,11 @@ if __name__ == "__main__":
 
     ckpt_dir = "../checkpoints/foundationstereo/23-51-11"
     intrinsic_file = "./assets/K.txt"
+    # intrinsic_file = "./assets/260320190818/chest_left_camera/calib.json"
+    # intrinsic_file_right = "./assets/260320190818/chest_right_camera/calib.json"
+
+    # extrinsic_file_left = "./assets/260320191220/chest_left_camera/cam_extrinsics_01.json"
+    # extrinsic_file_right = "./assets/260320191220/chest_right_camera/cam_extrinsics_01.json"
 
     cfg = OmegaConf.load(ckpt_dir + "/cfg.yaml")
     if 'vit_size' not in cfg:
@@ -135,6 +151,51 @@ if __name__ == "__main__":
     img1 = cv2.resize(img1, fx=scale, fy=scale, dsize=None)
     H, W = img0.shape[:2]
 
+    # with open(intrinsic_file, 'r') as f:
+    #     calib = json.load(f)
+    #     K = np.array(calib['K']).reshape(3,3).astype(np.float32)
+    # K[:2] *= scale
+
+    # with open(intrinsic_file_right, 'r') as f:
+    #     calib = json.load(f)
+    #     K_right = np.array(calib['K']).reshape(3,3).astype(np.float32)
+    # K_right[:2] *= scale
+
+    # with open(extrinsic_file_left, 'r') as f:
+    #     extrinsics_left = json.load(f)
+    #     left_matrix = np.array(extrinsics_left['T_c2w']).reshape(4, 4).astype(np.float32)   
+    #     left_rotation = left_matrix[:3, :3]
+    #     left_translation = left_matrix[:3, 3]
+
+    # with open(extrinsic_file_right, 'r') as f:
+    #     extrinsics_right = json.load(f)
+    #     right_matrix = np.array(extrinsics_right['T_c2w']).reshape(4,4).astype(np.float32)
+    #     right_rotation = right_matrix[:3, :3]
+    #     right_translation = right_matrix[:3, 3]
+
+    with open(intrinsic_file, 'r') as f:
+        lines = f.readlines()
+        K = np.array(list(map(float, lines[0].split()))).reshape(3,3).astype(np.float32)
+        baseline = float(lines[1])
+    K[:2] *= scale
+
+    # matrix = np.linalg.inv(right_matrix) @ left_matrix
+    # img0, img1, R1, R2, P1, P2 = rectify_stereo_images(
+    #     img0, img1,
+    #     K, None,
+    #     K_right, None,
+    #     R=matrix[:3, :3],
+    #     T=matrix[:3, 3]
+    # )
+
+    # # show connected pictures after rectification
+    # img_concat = np.concatenate((img0, img1), axis=1)
+    # cv2.imshow("Rectified Stereo Pair", img_concat)
+    # cv2.imwrite(f"{args.out_dir}/rectified_pair.png", img_concat)
+    # cv2.imwrite(f"{args.out_dir}/rectified_left.png", img0)
+    # cv2.imwrite(f"{args.out_dir}/rectified_right.png", img1)
+    # cv2.waitKey(0)
+
     bboxes = get_bboxes(img0)
     print(f"[INFO] detected {len(bboxes)} objects")
     img0_vis = img0.copy()
@@ -151,34 +212,13 @@ if __name__ == "__main__":
     img0_t, img1_t = padder.pad(img0_t, img1_t)
 
     with torch.no_grad():
-        with torch.cuda.amp.autocast(True):
+        with torch.amp.autocast('cuda', enabled=True):
             disp = model.forward(img0_t, img1_t, iters=args.valid_iters, test_mode=True)
     disp = padder.unpad(disp.float())
     disp = disp.data.cpu().numpy().reshape(H, W)
 
-    if True:
-        disp_path = "./assets/testdata/disparity.png"
-        disp_data = cv2.imread(disp_path, cv2.IMREAD_UNCHANGED)
-        disp_data = decode_disparity(disp_data)
-        disp_data = cv2.resize(disp_data, fx=scale, fy=scale, dsize=None)
-        print(disp.shape, disp_data.shape)
-        print("GT max:", disp_data.max(), "GT min:", disp_data.min())
-        print("GT dtype:", disp_data.dtype)
-        # 同时显示两张图像
-        disp_vis = vis_disparity(disp, args.z_far)
-        disp_data_vis = vis_disparity(disp_data, args.z_far)
-        mse, mae, psnr = compute_disp_similarity(disp, disp_data)
-        print(f"Disparity Similarity - MSE: {mse:.4f}, MAE: {mae:.4f}, PSNR: {psnr:.2f} dB")
-
-        combined_vis = np.hstack((disp_vis, disp_data_vis))
-        cv2.imshow("Predicted Disparity (Left) vs Ground Truth Disparity (Right)", combined_vis)
-        cv2.waitKey(0)
-
-    with open(intrinsic_file, 'r') as f:
-        lines = f.readlines()
-        K = np.array(list(map(float, lines[0].split()))).reshape(3,3).astype(np.float32)
-        baseline = float(lines[1])
-    K[:2] *= scale
+    # baseline = abs(P2[0, 3] / P2[0, 0]) 
+    # K = P1[:3, :3]
 
     # sam = sam_model_registry["vit_h"](checkpoint="sam_vit_h_4b8939.pth")
     sam = sam_model_registry["vit_b"](checkpoint="../checkpoints/sam/sam_vit_b_01ec64.pth")
@@ -189,34 +229,13 @@ if __name__ == "__main__":
     img_bgr = cv2.cvtColor(img0, cv2.COLOR_RGB2BGR)
     mask_list = []
 
-    def vis_depth(depth, z_far=10.0):
-        """
-        将深度图转换为伪彩色图
-        z_far: 可视化的最大深度（米），超过这个值的会被截断
-        """
-        depth_copy = np.clip(depth, 0, z_far)
-        depth_norm = depth_copy / z_far
-        depth_vis = (depth_norm * 255).astype(np.uint8)
-        color_depth = cv2.applyColorMap(depth_vis, cv2.COLORMAP_JET)
-        color_depth[depth == 0] = 0
-        return color_depth
-
     valid = disp > 1e-6
     depth = np.zeros_like(disp)
     depth[valid] = K[0,0] * baseline / disp[valid]
 
-    depth_GT = np.zeros_like(disp_data)
-    depth_GT[valid] = K[0,0] * baseline / disp_data[valid]
-
-    vis_pred = vis_depth(depth, args.z_far)
-    vis_gt = vis_depth(depth_GT, args.z_far)
-    combined_depth = np.hstack((vis_pred, vis_gt))
-    cv2.putText(combined_depth, "PRED Depth", (20, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-    cv2.putText(combined_depth, "GT Depth", (vis_pred.shape[1] + 20, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-    cv2.imshow("Depth Comparison (Left: Pred | Right: GT)", combined_depth)
-    cv2.waitKey(0)
-    sys.exit(0)
-
+    # save depth and disparity in emtire image
+    cv2.imwrite(f"{args.out_dir}/disparity0.png", vis_disparity(disp, args.z_far))
+    cv2.imwrite(f"{args.out_dir}/depth0.png", vis_disparity(depth, args.z_far))
     for i, bbox in enumerate(bboxes):
         x1, y1, x2, y2 = map(int, bbox)
         x1, y1 = max(0, x1), max(0, y1)
@@ -228,10 +247,16 @@ if __name__ == "__main__":
             multimask_output=False
         )
         mask = masks[0]
+        cv2.imwrite(f"{args.out_dir}/mask_{i}.png", mask.astype(np.uint8)*255)
 
         # pcd_res = generate_3d_point_cloud(img_bgr, disp, K, baseline, args.z_far, mask)
         pcd_res = generate_3d_point_cloud(img0, depth, K, args.z_far, mask)
         mask_list.append(mask.astype(np.uint8))
+
+        ## save mask information in png
+        cv2.imwrite(f"{args.out_dir}/mask_{i}.png", mask.astype(np.uint8)*255)
+        cv2.imshow(f"Mask {i}", mask.astype(np.uint8)*255)
+        cv2.waitKey(0)
 
     cv2.destroyAllWindows()
 
@@ -242,4 +267,3 @@ if __name__ == "__main__":
     np.save("../FoundationPose/pre_result/rgb.npy", img0)
     print("[INFO] saved depth, masks, bboxes, intrinsics, and rgb to ../FoundationPose/pre_result/ for pose estimation downstream")
     print(img0.shape, depth.shape, K.shape, bboxes.shape, np.array(mask_list).shape)
-    cv2.imwrite(f"{args.out_dir}/depth.png", vis_disparity(depth, args.z_far))
