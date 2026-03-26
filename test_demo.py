@@ -40,7 +40,7 @@ def main():
     glctx = dr.RasterizeCudaContext()
     n = bboxes.shape[0]
 
-    for i in range(1):
+    for i in range(n):
         ob_mask = ob_masks[i]
         bbox = bboxes[i]
         vis = rgb.copy()
