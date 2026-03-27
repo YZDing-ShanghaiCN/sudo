@@ -17,9 +17,8 @@ from segment_anything import sam_model_registry, SamPredictor
 import json
 from typing import Tuple, Union, Optional
 
-yolo_model = YOLO("../checkpoints/yolo/yolov8m.pt")
-# yolo_model.to("cuda")
-yolo_model.to("cpu")
+yolo_model = YOLO("../checkpoints/yolo/yolov8l.pt")
+yolo_model.to("cpu")  # yolo_model.to("cuda")
 
 def rectify_stereo_images(
     img_left: Union[str, np.ndarray], 
@@ -29,7 +28,7 @@ def rectify_stereo_images(
     R: np.ndarray, T: np.ndarray
     ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     """
-    Rectify stereo images given their intrinsics and extrinsics.
+        Rectify stereo images given their intrinsics and extrinsics.
 
     """
     if isinstance(img_left, str):
@@ -42,7 +41,6 @@ def rectify_stereo_images(
         img_right_arr = img_right
     height, width = img_left_arr.shape[:2]
 
-    # --- Stereo rectification ---
     R1, R2, P1, P2, Q, roi1, roi2 = cv2.stereoRectify(
         K1, D1, K2, D2,
         (width, height), R, T,
@@ -72,10 +70,9 @@ def get_bboxes(img):
     return boxes[keep]
 
 def generate_3d_point_cloud(img_bgr, depth, K, z_far, mask=None):
-    # disp = disp.copy()
-    # disp[disp < 1e-6] = np.inf
-    # depth = K[0,0] * baseline / disp
-
+    '''
+        Generate a 3D point cloud from a depth map and corresponding RGB image, optionally applying a mask to filter points.
+    '''
     xyz_map = depth2xyzmap(depth, K)
     points = xyz_map.reshape(-1, 3)
     img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
@@ -102,11 +99,8 @@ def generate_3d_point_cloud(img_bgr, depth, K, z_far, mask=None):
     return pcd
 
 if __name__ == "__main__":
-    code_dir = os.path.dirname(os.path.realpath(__file__))
+    code_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
     parser = argparse.ArgumentParser()
-    parser.add_argument('--left_file', default=f'{code_dir}/../assets/left.png', type=str)
-    parser.add_argument('--right_file', default=f'{code_dir}/../assets/right.png', type=str)
-    parser.add_argument('--out_dir', default=f'{code_dir}/../output/', type=str, help='the directory to save results')
     parser.add_argument('--scale', default=1, type=float, help='downsize the image by scale, must be <=1')
     parser.add_argument('--hiera', default=0, type=int, help='hierarchical inference (only needed for high-resolution images (>1K))')
     parser.add_argument('--z_far', default=10, type=float, help='max depth to clip in point cloud')
@@ -121,91 +115,91 @@ if __name__ == "__main__":
     set_logging_format()
     set_seed(0)
     torch.autograd.set_grad_enabled(False)
-    os.makedirs(args.out_dir, exist_ok=True)
+
+    #################################################
+    #         0. edit input and output path         #
+    #################################################
+    in_dir = f"{code_dir}/assets/hand_camera_2"
+    json_file = f"{in_dir}/hand_camera_data.json"
+    left_file = f"{in_dir}/left_hand_left_camera.png"
+    right_file = f"{in_dir}/left_hand_right_camera.png"
+
+    out_dir = f"{code_dir}/test_outputs/test2"
+    os.makedirs(out_dir, exist_ok=True)
 
     ckpt_dir = "../checkpoints/foundationstereo/23-51-11"
-    intrinsic_file = "./assets/K.txt"
-    # intrinsic_file = "./assets/260320190818/chest_left_camera/calib.json"
-    # intrinsic_file_right = "./assets/260320190818/chest_right_camera/calib.json"
-
-    # extrinsic_file_left = "./assets/260320191220/chest_left_camera/cam_extrinsics_01.json"
-    # extrinsic_file_right = "./assets/260320191220/chest_right_camera/cam_extrinsics_01.json"
-
     cfg = OmegaConf.load(ckpt_dir + "/cfg.yaml")
     if 'vit_size' not in cfg:
         cfg['vit_size'] = 'vitl'
     for k in args.__dict__:
         cfg[k] = args.__dict__[k]
     args = OmegaConf.create(cfg)
-
     model = FoundationStereo(args)
     ckpt = torch.load(ckpt_dir + "/model_best_bp2.pth", weights_only=False)
     model.load_state_dict(ckpt['model'])
     model.cuda()
     model.eval()
 
-    img0 = cv2.imread(args.left_file)
-    img1 = cv2.imread(args.right_file)
+    #################################################
+    #      1. load images and camera parameters     #
+    #################################################
+    img0 = cv2.imread(left_file)
+    img1 = cv2.imread(right_file)
     scale = args.scale
     img0 = cv2.resize(img0, fx=scale, fy=scale, dsize=None)
     img1 = cv2.resize(img1, fx=scale, fy=scale, dsize=None)
     H, W = img0.shape[:2]
 
-    # with open(intrinsic_file, 'r') as f:
-    #     calib = json.load(f)
-    #     K = np.array(calib['K']).reshape(3,3).astype(np.float32)
-    # K[:2] *= scale
-
-    # with open(intrinsic_file_right, 'r') as f:
-    #     calib = json.load(f)
-    #     K_right = np.array(calib['K']).reshape(3,3).astype(np.float32)
-    # K_right[:2] *= scale
-
-    # with open(extrinsic_file_left, 'r') as f:
-    #     extrinsics_left = json.load(f)
-    #     left_matrix = np.array(extrinsics_left['T_c2w']).reshape(4, 4).astype(np.float32)   
-    #     left_rotation = left_matrix[:3, :3]
-    #     left_translation = left_matrix[:3, 3]
-
-    # with open(extrinsic_file_right, 'r') as f:
-    #     extrinsics_right = json.load(f)
-    #     right_matrix = np.array(extrinsics_right['T_c2w']).reshape(4,4).astype(np.float32)
-    #     right_rotation = right_matrix[:3, :3]
-    #     right_translation = right_matrix[:3, 3]
-
-    with open(intrinsic_file, 'r') as f:
-        lines = f.readlines()
-        K = np.array(list(map(float, lines[0].split()))).reshape(3,3).astype(np.float32)
-        baseline = float(lines[1])
+    with open(json_file, 'r') as f:
+        json_data = json.load(f)
+    K = np.array(json_data['camera_data']['left_hand_left_camera']['intrinsics'])
+    K_right = np.array(json_data['camera_data']['left_hand_right_camera']['intrinsics'])    
+    Tc2w_left = np.array(json_data['camera_data']['left_hand_left_camera']['extrinsics'])
+    Tc2w_right = np.array(json_data['camera_data']['left_hand_right_camera']['extrinsics'])
+    arm_pose = np.array(json_data['arm_pose'])
     K[:2] *= scale
+    K_right[:2] *= scale
+    matrix = np.linalg.inv(Tc2w_right) @ Tc2w_left
 
-    # matrix = np.linalg.inv(right_matrix) @ left_matrix
-    # img0, img1, R1, R2, P1, P2 = rectify_stereo_images(
-    #     img0, img1,
-    #     K, None,
-    #     K_right, None,
-    #     R=matrix[:3, :3],
-    #     T=matrix[:3, 3]
-    # )
+    #################################################
+    #           2. rectify stereo images            #
+    #################################################
+    img0, img1, R1, R2, P1, P2 = rectify_stereo_images(
+        img0, img1,
+        K, None,
+        K_right, None,
+        R=matrix[:3, :3],
+        T=matrix[:3, 3]
+    )
 
-    # # show connected pictures after rectification
-    # img_concat = np.concatenate((img0, img1), axis=1)
-    # cv2.imshow("Rectified Stereo Pair", img_concat)
-    # cv2.imwrite(f"{args.out_dir}/rectified_pair.png", img_concat)
-    # cv2.imwrite(f"{args.out_dir}/rectified_left.png", img0)
-    # cv2.imwrite(f"{args.out_dir}/rectified_right.png", img1)
-    # cv2.waitKey(0)
+    img_concat = np.concatenate((img0, img1), axis=1)
+    cv2.imshow("Rectified Stereo Pair", img_concat)
+    cv2.imwrite(f"{out_dir}/rectified_pair.png", img_concat)
+    cv2.imwrite(f"{out_dir}/rectified_left.png", img0)
+    cv2.imwrite(f"{out_dir}/rectified_right.png", img1)
+    cv2.waitKey(0)
 
+    #################################################
+    # 3. detect objects and generate masks with SAM #
+    #################################################
     bboxes = get_bboxes(img0)
     print(f"[INFO] detected {len(bboxes)} objects")
     img0_vis = img0.copy()
     for bbox in bboxes:
         x1, y1, x2, y2 = map(int, bbox)
         cv2.rectangle(img0_vis, (x1, y1), (x2, y2), (0, 255, 0), 2)
-    cv2.imwrite(f"{args.out_dir}/detected_bboxes.png", img0_vis)
+    cv2.imwrite(f"{out_dir}/detected_bboxes.png", img0_vis)
     cv2.imshow("Detected Bounding Boxes", img0_vis)
     cv2.waitKey(0)
 
+    sam = sam_model_registry["vit_b"](checkpoint="../checkpoints/sam/sam_vit_b_01ec64.pth")
+    sam.cuda()
+    predictor = SamPredictor(sam)
+    predictor.set_image(img0)
+
+    ################################################
+    #           4. run foundation stereo           #
+    ################################################
     img0_t = torch.as_tensor(img0).cuda().float()[None].permute(0,3,1,2)
     img1_t = torch.as_tensor(img1).cuda().float()[None].permute(0,3,1,2)
     padder = InputPadder(img0_t.shape, divis_by=32)
@@ -217,25 +211,20 @@ if __name__ == "__main__":
     disp = padder.unpad(disp.float())
     disp = disp.data.cpu().numpy().reshape(H, W)
 
-    # baseline = abs(P2[0, 3] / P2[0, 0]) 
-    # K = P1[:3, :3]
-
-    # sam = sam_model_registry["vit_h"](checkpoint="sam_vit_h_4b8939.pth")
-    sam = sam_model_registry["vit_b"](checkpoint="../checkpoints/sam/sam_vit_b_01ec64.pth")
-    sam.cuda()
-    predictor = SamPredictor(sam)
-    predictor.set_image(img0)
-
+    baseline = abs(P2[0, 3] / P2[0, 0]) 
+    K = P1[:3, :3]
     img_bgr = cv2.cvtColor(img0, cv2.COLOR_RGB2BGR)
     mask_list = []
-
     valid = disp > 1e-6
     depth = np.zeros_like(disp)
     depth[valid] = K[0,0] * baseline / disp[valid]
 
-    # save depth and disparity in emtire image
-    cv2.imwrite(f"{args.out_dir}/disparity0.png", vis_disparity(disp, args.z_far))
-    cv2.imwrite(f"{args.out_dir}/depth0.png", vis_disparity(depth, args.z_far))
+    cv2.imwrite(f"{out_dir}/disparity0.png", vis_disparity(disp, args.z_far))
+    cv2.imwrite(f"{out_dir}/depth0.png", vis_disparity(depth, args.z_far))
+
+    #################################################
+    #    5. generate point cloud for each object    #
+    #################################################
     for i, bbox in enumerate(bboxes):
         x1, y1, x2, y2 = map(int, bbox)
         x1, y1 = max(0, x1), max(0, y1)
@@ -247,19 +236,16 @@ if __name__ == "__main__":
             multimask_output=False
         )
         mask = masks[0]
-        cv2.imwrite(f"{args.out_dir}/mask_{i}.png", mask.astype(np.uint8)*255)
+        cv2.imwrite(f"{out_dir}/mask_{i}.png", mask.astype(np.uint8)*255)
 
-        # pcd_res = generate_3d_point_cloud(img_bgr, disp, K, baseline, args.z_far, mask)
         pcd_res = generate_3d_point_cloud(img0, depth, K, args.z_far, mask)
         mask_list.append(mask.astype(np.uint8))
 
-        ## save mask information in png
-        cv2.imwrite(f"{args.out_dir}/mask_{i}.png", mask.astype(np.uint8)*255)
+        cv2.imwrite(f"{out_dir}/mask_{i}.png", mask.astype(np.uint8)*255)
         cv2.imshow(f"Mask {i}", mask.astype(np.uint8)*255)
         cv2.waitKey(0)
 
     cv2.destroyAllWindows()
-
     np.save("../FoundationPose/pre_result/depth.npy", depth)
     np.save("../FoundationPose/pre_result/masks.npy", np.array(mask_list))
     np.save("../FoundationPose/pre_result/bboxes.npy", bboxes)
