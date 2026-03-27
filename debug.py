@@ -59,6 +59,8 @@ def main():
 
     K_orig = np.load("./pre_result/intrinsics.npy").astype(np.float32)
     rgb = np.load("./pre_result/rgb.npy").astype(np.uint8)
+    # RGB数据格式转换：从BGR转换到RGB
+    rgb = cv2.cvtColor(rgb, cv2.COLOR_BGR2RGB)
     depth = np.load("./pre_result/depth.npy").astype(np.float32)
     ob_masks = np.load("./pre_result/masks.npy").astype(bool)
     bboxes = np.load("./pre_result/bboxes.npy").astype(np.float32)
@@ -138,7 +140,7 @@ def main():
         # pose estimation
         pose = est.register(K=K_orig, rgb=vis, depth=depth, ob_mask=ob_mask, iteration=5)
         print(f"\nPose estimation completed! Estimated pose:\n{pose}\n")
-        vis = draw_xyz_axis(vis, ob_in_cam=pose, scale=0.1, K=K_orig, thickness=3, transparency=0, is_input_rgb=True)
+        vis = draw_xyz_axis(vis, ob_in_cam=pose, scale=0.25, K=K_orig, thickness=6, transparency=0, is_input_rgb=True)
         # vis = draw_posed_3d_box(K_orig, img=vis, ob_in_cam=pose, bbox=bbox_3d)
 
         corners = get_3d_box_corners(bbox_3d)

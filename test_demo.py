@@ -28,6 +28,8 @@ def main():
 
     K_orig = np.load("./pre_result/intrinsics.npy").astype(np.float32)
     rgb = np.load("./pre_result/rgb.npy").astype(np.uint8)
+    # RGB数据格式转换：从BGR转换到RGB
+    rgb = cv2.cvtColor(rgb, cv2.COLOR_BGR2RGB)
     depth = np.load("./pre_result/depth.npy").astype(np.float32)
     ob_masks = np.load("./pre_result/masks.npy").astype(bool)
     bboxes = np.load("./pre_result/bboxes.npy").astype(np.float32)
@@ -107,8 +109,9 @@ def main():
         print(f"\nPose estimation completed! Estimated pose:\n{pose}\n")
         bbox_3d = np.array([mesh.vertices.min(axis=0), mesh.vertices.max(axis=0)])
         vis = draw_posed_3d_box(K_orig, img=vis, ob_in_cam=pose, bbox=bbox_3d)
-        vis = draw_xyz_axis(vis, ob_in_cam=pose, scale=0.1, K=K_orig, thickness=3, transparency=0, is_input_rgb=True)
+        vis = draw_xyz_axis(vis, ob_in_cam=pose, scale=0.25, K=K_orig, thickness=6, transparency=0, is_input_rgb=True)
 
+        vis = cv2.cvtColor(vis, cv2.COLOR_RGB2BGR)
         cv2.imshow('Estimated Pose', vis[...,::-1])
         cv2.imwrite(os.path.join(save_dir, f"result_{i:02d}.png"), vis)
         cv2.waitKey(0)
@@ -124,7 +127,7 @@ def main():
         pcd.estimate_normals(search_param=o3d.geometry.KDTreeSearchParamKNN(knn=50))
         pcd.orient_normals_towards_camera_location(camera_location=np.array([0., 0., 0.]))
         ob_in_cam = pose
-        axis_length = 0.1
+        axis_length = 0.25
         axis_points = np.array([[0, 0, 0], [axis_length, 0, 0], [0, axis_length, 0], [0, 0, axis_length]])
         
         # 将坐标轴原点设置为点云的中心，并应用pose的旋转
