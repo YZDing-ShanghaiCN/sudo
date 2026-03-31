@@ -152,11 +152,11 @@ if __name__ == "__main__":
 
     with open(json_file, 'r') as f:
         json_data = json.load(f)
-    K = np.array(json_data['camera_data']['left_hand_left_camera']['intrinsics'])
-    K_right = np.array(json_data['camera_data']['left_hand_right_camera']['intrinsics'])    
-    Tc2w_left = np.array(json_data['camera_data']['left_hand_left_camera']['extrinsics'])
-    Tc2w_right = np.array(json_data['camera_data']['left_hand_right_camera']['extrinsics'])
-    arm_pose = np.array(json_data['arm_pose'])
+    K = np.array(json_data['camera_data']['left_hand_left_camera']['intrinsics'], dtype=np.float64)
+    K_right = np.array(json_data['camera_data']['left_hand_right_camera']['intrinsics'], dtype=np.float64)    
+    Tc2w_left = np.array(json_data['camera_data']['left_hand_left_camera']['extrinsics'], dtype=np.float64)
+    Tc2w_right = np.array(json_data['camera_data']['left_hand_right_camera']['extrinsics'], dtype=np.float64)
+    arm_pose = np.array(json_data['arm_pose'], dtype=np.float64)
     K[:2] *= scale
     K_right[:2] *= scale
     matrix = np.linalg.inv(Tc2w_right) @ Tc2w_left
@@ -212,6 +212,7 @@ if __name__ == "__main__":
     disp = disp.data.cpu().numpy().reshape(H, W)
 
     baseline = abs(P2[0, 3] / P2[0, 0]) 
+    print(f"[DEBUG] Computed baseline: {baseline:.4f} (If this is > 1.0, your json extrinsics are likely in millimeters, not meters!)")
     K = P1[:3, :3]
     img_bgr = cv2.cvtColor(img0, cv2.COLOR_RGB2BGR)
     mask_list = []
@@ -220,8 +221,119 @@ if __name__ == "__main__":
     depth[valid] = K[0,0] * baseline / disp[valid]
 
     cv2.imwrite(f"{out_dir}/disparity0.png", vis_disparity(disp, args.z_far))
-    # cv2.imwrite(f"{out_dir}/depth0.png", vis_disparity(depth, args.z_far))
     cv2.imwrite(f"{out_dir}/depth0.png", vis_disparity(depth, max_val=args.z_far))
+
+    #################################################
+    #  4.5 new update: calculate distance in depth  #
+    #################################################
+    '''
+        function:
+            - show depth image window
+            - use mouse to click 2 point in the depth image
+            - calculate 3D distance in real world by coordinates transformation
+            - shou calculated distance in the window image
+            - right click to eliminate the last clicked point
+            - press q to quit
+    '''
+    
+
+    save_index = 0
+    last_canvas = {"img": None}
+
+    depth_vis = vis_disparity(depth, max_val=args.z_far)
+    if depth_vis.ndim == 2:
+        depth_vis = cv2.cvtColor(depth_vis, cv2.COLOR_GRAY2BGR)
+    depth_vis_base = depth_vis.copy()
+    depth_window_name = "Depth Distance Measurement"
+    clicked_points = []
+
+    def pixel_to_camera_point(u, v):
+        z = depth[v, u]
+        if z <= 0 or not np.isfinite(z):
+            return None
+        fx, fy = K[0, 0], K[1, 1]
+        cx, cy = K[0, 2], K[1, 2]
+        x = (u - cx) * z / fx
+        y = (v - cy) * z / fy
+        return np.array([x, y, z], dtype=np.float64)
+
+    def redraw_depth_window():
+        canvas = depth_vis_base.copy()
+
+        for pt in clicked_points:
+            cv2.circle(canvas, pt, 4, (0, 255, 0), -1)
+
+        if len(clicked_points) >= 2:
+            p1 = clicked_points[-2]
+            p2 = clicked_points[-1]
+            p1_3d = pixel_to_camera_point(*p1)
+            p2_3d = pixel_to_camera_point(*p2)
+
+            if p1_3d is not None and p2_3d is not None:
+                dist = np.linalg.norm(p1_3d - p2_3d)
+                cv2.line(canvas, p1, p2, (0, 255, 255), 2)
+                text_pos = ((p1[0] + p2[0]) // 2, (p1[1] + p2[1]) // 2)
+                cv2.putText(
+                    canvas,
+                    f"{dist:.4f} m",
+                    text_pos,
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    0.7,
+                    (0, 255, 255),
+                    2,
+                    cv2.LINE_AA,
+                )
+            else:
+                cv2.putText(
+                    canvas,
+                    "Invalid depth for selected point",
+                    (20, 30),
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    0.7,
+                    (0, 0, 255),
+                    2,
+                    cv2.LINE_AA,
+                )
+
+        # cv2.putText(
+        #     canvas,
+        #     "Left click: select point | Right click: undo | s: save | q: quit",
+        #     (20, H - 20),
+        #     cv2.FONT_HERSHEY_SIMPLEX,
+        #     0.6,
+        #     (255, 255, 255),
+        #     2,
+        #     cv2.LINE_AA,
+        # )
+        last_canvas["img"] = canvas
+        cv2.imshow(depth_window_name, canvas)
+
+    def on_mouse(event, x, y, flags, param):
+        if event == cv2.EVENT_LBUTTONDOWN:
+            if 0 <= x < W and 0 <= y < H:
+                clicked_points.append((x, y))
+                redraw_depth_window()
+        elif event == cv2.EVENT_RBUTTONDOWN:
+            if len(clicked_points) > 0:
+                clicked_points.pop()
+                redraw_depth_window()
+
+    cv2.namedWindow(depth_window_name, cv2.WINDOW_NORMAL)
+    cv2.setMouseCallback(depth_window_name, on_mouse)
+    redraw_depth_window()
+
+    while True:
+        key = cv2.waitKey(20) & 0xFF
+        if key == ord('q'):
+            break
+        if key == ord('s'):
+            if last_canvas["img"] is not None:
+                save_path = f"{out_dir}/distance/detectsave{save_index}.png"
+                cv2.imwrite(save_path, last_canvas["img"])
+                print(f"[INFO] saved {save_path}")
+                save_index += 1
+
+    cv2.destroyWindow(depth_window_name)
     sys.exit(0)
 
     #################################################
