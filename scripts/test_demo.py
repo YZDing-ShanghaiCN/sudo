@@ -174,9 +174,9 @@ if __name__ == "__main__":
 
     img_concat = np.concatenate((img0, img1), axis=1)
     cv2.imshow("Rectified Stereo Pair", img_concat)
-    cv2.imwrite(f"{out_dir}/rectified_pair.png", img_concat)
-    cv2.imwrite(f"{out_dir}/rectified_left.png", img0)
-    cv2.imwrite(f"{out_dir}/rectified_right.png", img1)
+    # cv2.imwrite(f"{out_dir}/rectified_pair.png", img_concat)
+    # cv2.imwrite(f"{out_dir}/rectified_left.png", img0)
+    # cv2.imwrite(f"{out_dir}/rectified_right.png", img1)
     cv2.waitKey(0)
 
     #################################################
@@ -188,7 +188,7 @@ if __name__ == "__main__":
     for bbox in bboxes:
         x1, y1, x2, y2 = map(int, bbox)
         cv2.rectangle(img0_vis, (x1, y1), (x2, y2), (0, 255, 0), 2)
-    cv2.imwrite(f"{out_dir}/detected_bboxes.png", img0_vis)
+    # cv2.imwrite(f"{out_dir}/detected_bboxes.png", img0_vis)
     cv2.imshow("Detected Bounding Boxes", img0_vis)
     cv2.waitKey(0)
 
@@ -220,7 +220,9 @@ if __name__ == "__main__":
     depth[valid] = K[0,0] * baseline / disp[valid]
 
     cv2.imwrite(f"{out_dir}/disparity0.png", vis_disparity(disp, args.z_far))
-    cv2.imwrite(f"{out_dir}/depth0.png", vis_disparity(depth, args.z_far))
+    # cv2.imwrite(f"{out_dir}/depth0.png", vis_disparity(depth, args.z_far))
+    cv2.imwrite(f"{out_dir}/depth0.png", vis_disparity(depth, max_val=args.z_far))
+    sys.exit(0)
 
     #################################################
     #    5. generate point cloud for each object    #
@@ -236,20 +238,20 @@ if __name__ == "__main__":
             multimask_output=False
         )
         mask = masks[0]
-        cv2.imwrite(f"{out_dir}/mask_{i}.png", mask.astype(np.uint8)*255)
+        # cv2.imwrite(f"{out_dir}/mask_{i}.png", mask.astype(np.uint8)*255)
 
         pcd_res = generate_3d_point_cloud(img0, depth, K, args.z_far, mask)
         mask_list.append(mask.astype(np.uint8))
 
-        cv2.imwrite(f"{out_dir}/mask_{i}.png", mask.astype(np.uint8)*255)
+        # cv2.imwrite(f"{out_dir}/mask_{i}.png", mask.astype(np.uint8)*255)
         cv2.imshow(f"Mask {i}", mask.astype(np.uint8)*255)
         cv2.waitKey(0)
 
     cv2.destroyAllWindows()
-    np.save("../FoundationPose/pre_result/depth.npy", depth)
-    np.save("../FoundationPose/pre_result/masks.npy", np.array(mask_list))
-    np.save("../FoundationPose/pre_result/bboxes.npy", bboxes)
-    np.save("../FoundationPose/pre_result/intrinsics.npy", K)
-    np.save("../FoundationPose/pre_result/rgb.npy", img0)
+    # np.save("../FoundationPose/pre_result/depth.npy", depth)
+    # np.save("../FoundationPose/pre_result/masks.npy", np.array(mask_list))
+    # np.save("../FoundationPose/pre_result/bboxes.npy", bboxes)
+    # np.save("../FoundationPose/pre_result/intrinsics.npy", K)
+    # np.save("../FoundationPose/pre_result/rgb.npy", img0)
     print("[INFO] saved depth, masks, bboxes, intrinsics, and rgb to ../FoundationPose/pre_result/ for pose estimation downstream")
     print(img0.shape, depth.shape, K.shape, bboxes.shape, np.array(mask_list).shape)
