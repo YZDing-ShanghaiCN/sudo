@@ -212,7 +212,7 @@ if __name__ == "__main__":
     disp = disp.data.cpu().numpy().reshape(H, W)
 
     baseline = abs(P2[0, 3] / P2[0, 0]) 
-    print(f"[DEBUG] Computed baseline: {baseline:.4f} (If this is > 1.0, your json extrinsics are likely in millimeters, not meters!)")
+    print(f"[DEBUG] Computed baseline: {baseline:.4f}")
     K = P1[:3, :3]
     img_bgr = cv2.cvtColor(img0, cv2.COLOR_RGB2BGR)
     mask_list = []
