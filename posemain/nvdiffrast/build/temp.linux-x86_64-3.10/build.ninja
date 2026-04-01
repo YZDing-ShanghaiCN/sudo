@@ -1,0 +1,46 @@
+ninja_required_version = 1.3
+cxx = c++
+nvcc = /usr/local/cuda/bin/nvcc
+
+cflags = -pthread -B /home/user/anaconda3/envs/foundationpose/compiler_compat -Wno-unused-result -Wsign-compare -DNDEBUG -fwrapv -O2 -Wall -fPIC -O2 -isystem /home/user/anaconda3/envs/foundationpose/include -fPIC -O2 -isystem /home/user/anaconda3/envs/foundationpose/include -fPIC -I/home/user/anaconda3/envs/foundationpose/lib/python3.10/site-packages/torch/include -I/home/user/anaconda3/envs/foundationpose/lib/python3.10/site-packages/torch/include/torch/csrc/api/include -I/home/user/anaconda3/envs/foundationpose/lib/python3.10/site-packages/torch/include/TH -I/home/user/anaconda3/envs/foundationpose/lib/python3.10/site-packages/torch/include/THC -I/usr/local/cuda/include -I/home/user/anaconda3/envs/foundationpose/include/python3.10 -c
+post_cflags = -DNVDR_TORCH -DTORCH_API_INCLUDE_EXTENSION_H '-DPYBIND11_COMPILER_TYPE="_gcc"' '-DPYBIND11_STDLIB="_libstdcpp"' '-DPYBIND11_BUILD_ABI="_cxxabi1011"' -DTORCH_EXTENSION_NAME=_nvdiffrast_c -D_GLIBCXX_USE_CXX11_ABI=0 -std=c++17
+cuda_cflags = -I/home/user/anaconda3/envs/foundationpose/lib/python3.10/site-packages/torch/include -I/home/user/anaconda3/envs/foundationpose/lib/python3.10/site-packages/torch/include/torch/csrc/api/include -I/home/user/anaconda3/envs/foundationpose/lib/python3.10/site-packages/torch/include/TH -I/home/user/anaconda3/envs/foundationpose/lib/python3.10/site-packages/torch/include/THC -I/usr/local/cuda/include -I/home/user/anaconda3/envs/foundationpose/include/python3.10 -c
+cuda_post_cflags = -D__CUDA_NO_HALF_OPERATORS__ -D__CUDA_NO_HALF_CONVERSIONS__ -D__CUDA_NO_BFLOAT16_CONVERSIONS__ -D__CUDA_NO_HALF2_OPERATORS__ --expt-relaxed-constexpr --compiler-options ''"'"'-fPIC'"'"'' -DNVDR_TORCH -lineinfo -DTORCH_API_INCLUDE_EXTENSION_H '-DPYBIND11_COMPILER_TYPE="_gcc"' '-DPYBIND11_STDLIB="_libstdcpp"' '-DPYBIND11_BUILD_ABI="_cxxabi1011"' -DTORCH_EXTENSION_NAME=_nvdiffrast_c -D_GLIBCXX_USE_CXX11_ABI=0 -gencode=arch=compute_90,code=compute_90 -gencode=arch=compute_90,code=sm_90 -std=c++17
+cuda_dlink_post_cflags = 
+ldflags = 
+
+rule compile
+  command = $cxx -MMD -MF $out.d $cflags -c $in -o $out $post_cflags
+  depfile = $out.d
+  deps = gcc
+
+rule cuda_compile
+  depfile = $out.d
+  deps = gcc
+  command = $nvcc --generate-dependencies-with-compile --dependency-output $out.d $cuda_cflags -c $in -o $out $cuda_post_cflags
+
+
+
+
+
+build /home/user/Desktop/FoundationPose-main/nvdiffrast/build/temp.linux-x86_64-3.10/csrc/common/antialias.o: cuda_compile /home/user/Desktop/FoundationPose-main/nvdiffrast/csrc/common/antialias.cu
+build /home/user/Desktop/FoundationPose-main/nvdiffrast/build/temp.linux-x86_64-3.10/csrc/common/common.o: compile /home/user/Desktop/FoundationPose-main/nvdiffrast/csrc/common/common.cpp
+build /home/user/Desktop/FoundationPose-main/nvdiffrast/build/temp.linux-x86_64-3.10/csrc/common/cudaraster/impl/Buffer.o: compile /home/user/Desktop/FoundationPose-main/nvdiffrast/csrc/common/cudaraster/impl/Buffer.cpp
+build /home/user/Desktop/FoundationPose-main/nvdiffrast/build/temp.linux-x86_64-3.10/csrc/common/cudaraster/impl/CudaRaster.o: compile /home/user/Desktop/FoundationPose-main/nvdiffrast/csrc/common/cudaraster/impl/CudaRaster.cpp
+build /home/user/Desktop/FoundationPose-main/nvdiffrast/build/temp.linux-x86_64-3.10/csrc/common/cudaraster/impl/RasterImpl.o: compile /home/user/Desktop/FoundationPose-main/nvdiffrast/csrc/common/cudaraster/impl/RasterImpl.cpp
+build /home/user/Desktop/FoundationPose-main/nvdiffrast/build/temp.linux-x86_64-3.10/csrc/common/cudaraster/impl/RasterImpl_kernel.o: cuda_compile /home/user/Desktop/FoundationPose-main/nvdiffrast/csrc/common/cudaraster/impl/RasterImpl_kernel.cu
+build /home/user/Desktop/FoundationPose-main/nvdiffrast/build/temp.linux-x86_64-3.10/csrc/common/interpolate.o: cuda_compile /home/user/Desktop/FoundationPose-main/nvdiffrast/csrc/common/interpolate.cu
+build /home/user/Desktop/FoundationPose-main/nvdiffrast/build/temp.linux-x86_64-3.10/csrc/common/rasterize.o: cuda_compile /home/user/Desktop/FoundationPose-main/nvdiffrast/csrc/common/rasterize.cu
+build /home/user/Desktop/FoundationPose-main/nvdiffrast/build/temp.linux-x86_64-3.10/csrc/common/texture.o: compile /home/user/Desktop/FoundationPose-main/nvdiffrast/csrc/common/texture.cpp
+build /home/user/Desktop/FoundationPose-main/nvdiffrast/build/temp.linux-x86_64-3.10/csrc/common/texture_kernel.o: cuda_compile /home/user/Desktop/FoundationPose-main/nvdiffrast/csrc/common/texture_kernel.cu
+build /home/user/Desktop/FoundationPose-main/nvdiffrast/build/temp.linux-x86_64-3.10/csrc/torch/torch_antialias.o: compile /home/user/Desktop/FoundationPose-main/nvdiffrast/csrc/torch/torch_antialias.cpp
+build /home/user/Desktop/FoundationPose-main/nvdiffrast/build/temp.linux-x86_64-3.10/csrc/torch/torch_bindings.o: compile /home/user/Desktop/FoundationPose-main/nvdiffrast/csrc/torch/torch_bindings.cpp
+build /home/user/Desktop/FoundationPose-main/nvdiffrast/build/temp.linux-x86_64-3.10/csrc/torch/torch_interpolate.o: compile /home/user/Desktop/FoundationPose-main/nvdiffrast/csrc/torch/torch_interpolate.cpp
+build /home/user/Desktop/FoundationPose-main/nvdiffrast/build/temp.linux-x86_64-3.10/csrc/torch/torch_rasterize.o: compile /home/user/Desktop/FoundationPose-main/nvdiffrast/csrc/torch/torch_rasterize.cpp
+build /home/user/Desktop/FoundationPose-main/nvdiffrast/build/temp.linux-x86_64-3.10/csrc/torch/torch_texture.o: compile /home/user/Desktop/FoundationPose-main/nvdiffrast/csrc/torch/torch_texture.cpp
+
+
+
+
+
+

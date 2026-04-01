@@ -1,0 +1,16 @@
+# ninja log v5
+1	78	1772770369665211128	/home/user/Desktop/FoundationPose-main/nvdiffrast/build/temp.linux-x86_64-3.10/csrc/common/cudaraster/impl/CudaRaster.o	6e1d7ce80b23ef12
+1	94	1772770369682211539	/home/user/Desktop/FoundationPose-main/nvdiffrast/build/temp.linux-x86_64-3.10/csrc/common/common.o	c06e4facf550fd3d
+2	1203	1772770370788238318	/home/user/Desktop/FoundationPose-main/nvdiffrast/build/temp.linux-x86_64-3.10/csrc/common/rasterize.o	7a093ef4e0cb2975
+0	1288	1772770370873240376	/home/user/Desktop/FoundationPose-main/nvdiffrast/build/temp.linux-x86_64-3.10/csrc/common/antialias.o	7c154346ba5ede48
+2	2097	1772770371671259692	/home/user/Desktop/FoundationPose-main/nvdiffrast/build/temp.linux-x86_64-3.10/csrc/common/interpolate.o	35e50af0019129cb
+2	3481	1772770373064293404	/home/user/Desktop/FoundationPose-main/nvdiffrast/build/temp.linux-x86_64-3.10/csrc/common/cudaraster/impl/RasterImpl_kernel.o	d1977cdb571b8ac8
+3	9400	1772770378981436490	/home/user/Desktop/FoundationPose-main/nvdiffrast/build/temp.linux-x86_64-3.10/csrc/common/texture_kernel.o	da760dbf7577374c
+3	20591	1772770390164706439	/home/user/Desktop/FoundationPose-main/nvdiffrast/build/temp.linux-x86_64-3.10/csrc/common/texture.o	c3fd874f6e89b508
+1	20602	1772770390173706656	/home/user/Desktop/FoundationPose-main/nvdiffrast/build/temp.linux-x86_64-3.10/csrc/common/cudaraster/impl/Buffer.o	1a45d5c94424aae3
+3	20806	1772770390386711791	/home/user/Desktop/FoundationPose-main/nvdiffrast/build/temp.linux-x86_64-3.10/csrc/torch/torch_antialias.o	8d290c0ec89b036a
+4	21090	1772770390671718662	/home/user/Desktop/FoundationPose-main/nvdiffrast/build/temp.linux-x86_64-3.10/csrc/torch/torch_rasterize.o	3d09aaf7068dfe1e
+4	21270	1772770390850722978	/home/user/Desktop/FoundationPose-main/nvdiffrast/build/temp.linux-x86_64-3.10/csrc/torch/torch_interpolate.o	7617e066ed33c725
+5	21580	1772770391161730476	/home/user/Desktop/FoundationPose-main/nvdiffrast/build/temp.linux-x86_64-3.10/csrc/torch/torch_texture.o	8d849fc09ed18ca5
+2	21594	1772770391175730814	/home/user/Desktop/FoundationPose-main/nvdiffrast/build/temp.linux-x86_64-3.10/csrc/common/cudaraster/impl/RasterImpl.o	bcdd7aba26a77638
+4	22288	1772770391869747542	/home/user/Desktop/FoundationPose-main/nvdiffrast/build/temp.linux-x86_64-3.10/csrc/torch/torch_bindings.o	1f27dbc9ef9ada83

@@ -1,0 +1,32 @@
+#0 running command
+conda activate foundation_stereo
+python scripts/test_demo.py --left_file ./assets/left.png --right_file ./assets/right.png --out_dir ./output/
+
+python scripts/test_demo.py --left_file ./assets/testdata/left.jpg --right_file ./assets/testdata/right.jpg --out_dir ./output/ --scale 0.75
+
+#1 setting proxy before running scripts
+export all_proxy=socks5://127.0.0.1:7897
+export ALL_PROXY=socks5://127.0.0.1:7897
+
+#2 installing correct version of flash-attn for RTX5060
+export TORCH_CUDA_ARCH_LIST="12.0"
+pip install git+https://github.com/Dao-AILab/flash-attention.git --no-build-isolation
+
+#3 examine if success
+python - <<'PY'
+import torch
+from flash_attn import flash_attn_func
+
+q=torch.randn(1,128,8,64,device="cuda",dtype=torch.float16)
+k=torch.randn(1,128,8,64,device="cuda",dtype=torch.float16)
+v=torch.randn(1,128,8,64,device="cuda",dtype=torch.float16)
+
+o=flash_attn_func(q,k,v)
+print("output device:",o.device)
+print("dtype:",o.dtype)
+PY
+
+#4 line 62 code need to be modified
+ckpt = torch.load(ckpt_dir, weights_only=False)
+
+#5 open3d 
