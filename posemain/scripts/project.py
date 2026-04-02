@@ -398,12 +398,9 @@ def main():
     depth = np.zeros_like(disp)
     depth[valid] = K_rect[0, 0] * baseline / disp[valid]
 
-    cv2.imwrite(f"{args.out_dir}/disparity0.png", U.vis_disparity(disp, args.z_far))
-    cv2.imwrite(f"{args.out_dir}/depth0.png", U.vis_disparity(depth, max_val=args.z_far))
-
     if args.show_distance:
         run_depth_distance_window(depth, K_rect, args.z_far, args.out_dir)
-
+    
     if args.stereo_device == 'cuda':
         model.to('cpu')
     gc.collect()
@@ -480,7 +477,7 @@ def main():
         vis = draw_xyz_axis_pose(vis, ob_in_cam=pose, scale=0.25, K=K_rect, thickness=6, transparency=0, is_input_rgb=True)
 
         vis_bgr = cv2.cvtColor(vis, cv2.COLOR_RGB2BGR)
-        cv2.imwrite(os.path.join(args.save_dir, f'result_{i:02d}.png'), vis_bgr)
+        # cv2.imwrite(os.path.join(args.save_dir, f'result_{i:02d}.png'), vis_bgr)
 
         if args.show_pose:
             cv2.imshow('Estimated Pose', vis_bgr[..., ::-1])
