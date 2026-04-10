@@ -1,0 +1,48 @@
+scene:
+  name: "HB11 Workspace Check"
+
+robot:
+  type: "t2da2"
+  urdf_visual: "../hbmp/assets/hb11/urdf_c.urdf"
+  urdf_collision: "../hbmp/assets/hb11/urdf_c.urdf"
+  position: [0.0, 0.0, 0.0]
+  wxyz: [1.0, 0.0, 0.0, 0.0]
+  scale: 0.25
+  initial_q: [0.15, 0.3, 0.8, 0.64, 1.5, -1.65, -0.8, -0.8, 0.6,
+              0.8, 0.64, 1.5, -1.65, -0.8, -0.8, 0.6]
+  end_effectors:
+    - name: "left_tool0"
+      frame: "FRAME_TACTILE_L"
+      mesh_path: "../hbmp/assets/gripper/meshes/visual/gripper.glb"
+      position: [0.707, 0.370, 0.921]
+      wxyz: [0.372, 0.573, 0.512, 0.520]
+      scale: 0.15
+    - name: "right_tool0"
+      frame: "FRAME_TACTILE_R"
+      mesh_path: "../hbmp/assets/gripper/meshes/visual/gripper.glb"
+      position: [0.702, -0.358, 0.941]
+      wxyz: [0.395, 0.620, 0.542, 0.408]
+      scale: 0.15
+  params:
+    wbc_config: "../hbmp/wbc_config_hb.yaml"
+    ndof: 16
+
+cameras:
+  config_path: "../configs/camera_config.json"
+  show_frustums: true
+  frustum_scale: 0.1
+
+objects:
+  - name: "shelf"
+    # mesh_path: "../objects/shelf_25_100_45_tote_vertical.stl"
+    # mesh_path: "../objects/2590.stl"
+    # mesh_path: "../objects/35_100_15.stl"
+    # mesh_path: "../objects/35(30)_100(15).stl" 
+    mesh_path: "../objects/25(30)_90(15).stl"
+    position: [0.8, 0.0, 0.0]
+    wxyz: [1.0, 0.0, 0.0, 0.0]
+    scale: 1.0
+
+workspace:
+  bounds: [0.0, 1.25, -1.0, 1.0, 0.6, 1.8]
+  show_bounds: true

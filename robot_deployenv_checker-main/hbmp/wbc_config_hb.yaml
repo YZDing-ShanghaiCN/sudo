@@ -1,0 +1,47 @@
+tasks:
+  - name: "dq_damp"
+    type: "damping"
+    dim: 9
+    weight: [50, 1, 0.01,0.01,0.0007,0.0007,0.0007,0.0007,0.0007]
+    dt: 0.1
+    
+  - name: "gravity_bias"
+    type: "gravity"
+    weight: 0.001
+  
+  - name: "ddq_damp"
+    type: "smoothness"
+    weight: 0.01
+ 
+  - name: "dddq_damp"
+    type: "jerk"
+    weight: 0.1
+    dt: 0.1
+  
+  - name: "l_vel"
+    type: "linear_velocity"
+    weight: 1.0
+  
+  - name: "a_vel"
+    type: "angular_velocity"
+    weight: 0.5
+    dim: 9
+
+constraints:
+  - name: "safety"
+    type: "joint_position_speed_limits"    
+    q_min: [0.15, 0.3, -3.14, 0.4, -3.14, -2.59, -3.14, -1.51, -1.51]
+    q_max: [0.15, 0.3,  1.00, 1.91, 3.14, 0.00, 3.14, 1.51, 1.51]    
+    v_limit: [0.05,0.05,0.3,0.3,0.3,0.3,0.3,0.3,0.3]
+    dt: 0.1
+    dim: 9
+
+  - name: "l_vel_goal"
+    type: "linear_velocity_exact"    
+    dim: 3
+
+
+  - name: "self_collision"
+    type: "collision_barrier"    
+    dim: 8
+    weight: 0.006

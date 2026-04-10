@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "deployenv-checker"
+version = "0.1.0"
+requires-python = ">=3.10,<3.11"
+dependencies = [
+    "viser",
+    "yourdfpy",
+    "trimesh",
+    "numpy",
+    "pyyaml",
+    "dacite",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
