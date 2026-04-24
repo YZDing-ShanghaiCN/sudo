@@ -1,0 +1,21 @@
+{
+  "board_type": "chessboard",
+  "squares_cols": 9,
+  "squares_rows": 6,
+  "inner_corners_cols": 8,
+  "inner_corners_rows": 5,
+  "square_size_mm": 30.0,
+  "dpi": 300,
+  "paper_width_mm": 297.0,
+  "paper_height_mm": 210.0,
+  "margin_mm": 8.0,
+  "image_size_px": [
+    3508,
+    2480
+  ],
+  "pixel_values": [
+    0,
+    255
+  ],
+  "print_hint": "Print at 100% actual size; disable fit-to-page and image smoothing."
+}

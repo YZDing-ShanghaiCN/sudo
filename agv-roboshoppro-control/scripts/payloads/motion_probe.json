@@ -1,0 +1,8 @@
+{
+  "api_type": "YOUR_MOTION_API_TYPE",
+  "data": {
+    "vx": 0.05,
+    "vy": 0.0,
+    "w": 0.0
+  }
+}

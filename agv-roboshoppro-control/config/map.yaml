@@ -1,0 +1,6 @@
+map_file_path: C:\Users\yvzer\AppData\Local\RoboshopPro\appInfo\robots\All\598ca31aab632f92\maps\20260421142749362.smap
+navigation_parameters:
+  max_speed: 1.0
+  turning_radius: 0.5
+  obstacle_detection_range: 0.3
+  path_following_tolerance: 0.1

@@ -1,0 +1,15 @@
+{
+  "camera_index": 1,
+  "board_rows": 4,
+  "board_cols": 6,
+  "marker_size_mm": 30.0,
+  "marker_gap_mm": 5.0,
+  "dictionary": "DICT_4X4_50",
+  "first_marker_id": 1,
+  "min_markers": 8,
+  "min_samples": 8,
+  "requested_size": [
+    1280,
+    720
+  ]
+}

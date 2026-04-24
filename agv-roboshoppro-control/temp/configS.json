@@ -1,0 +1,17 @@
+{
+  "cameras": [
+    {
+      "cam_id": "TestIR",
+      "device": "/dev/video0",
+      "width": 1600,
+      "height": 1200,
+      "fps": 5,
+      "is_auto_exposure": false,
+      "manual_exposure_value": 200,
+      "backlight_compensation": 0,
+      "enable": true
+    }
+  ],
+  "sync_threshold_ms": 200.0,
+  "display_height": 800
+}

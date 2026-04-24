@@ -1,0 +1,40 @@
+{
+  "camera_index": 1,
+  "image_size": [
+    1280,
+    720
+  ],
+  "pattern_inner_cols": 8,
+  "pattern_inner_rows": 5,
+  "square_size_mm": 30.0,
+  "image_count": 13,
+  "rms": 1.060496803807001,
+  "mean_reprojection_error": 0.16272762228279075,
+  "camera_matrix": [
+    [
+      784.284192062349,
+      0.0,
+      671.5552014007872
+    ],
+    [
+      0.0,
+      786.6385085438463,
+      336.5829085801203
+    ],
+    [
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "dist_coeffs": [
+    [
+      0.2471293965365161,
+      -0.4485199888408875,
+      -0.0014318729904769683,
+      -0.0005155680865730924,
+      0.3888748273184194
+    ]
+  ],
+  "board_meta_path": "C:\\main\\agv-roboshoppro-control\\calibrate\\chessboard_meta.json"
+}

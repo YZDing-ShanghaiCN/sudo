@@ -1,0 +1,210 @@
+{
+  "ok": true,
+  "run_dir": "C:\\main\\agv-roboshoppro-control\\main\\result\\20260417_191932",
+  "camera_index": 1,
+  "camera_stream": {
+    "backend": "DSHOW",
+    "requested": {
+      "width": 1920,
+      "height": 1680,
+      "fps": 30,
+      "fourcc": "MJPG"
+    },
+    "selected_request": {
+      "width": 1920,
+      "height": 1680,
+      "fps": 30,
+      "fourcc": "MJPG"
+    },
+    "actual": {
+      "width": 1600,
+      "height": 1300,
+      "fps": 30.0,
+      "fourcc": "0xE436EB7D",
+      "fourcc_raw": "0xE436EB7D"
+    },
+    "negotiation": [
+      {
+        "request": {
+          "width": 1920,
+          "height": 1680,
+          "fps": 30,
+          "fourcc": "MJPG"
+        },
+        "actual": {
+          "width": 1600,
+          "height": 1300,
+          "fps": 30.0,
+          "fourcc": "0xE436EB7D",
+          "fourcc_raw": "0xE436EB7D"
+        }
+      },
+      {
+        "request": {
+          "width": 3840,
+          "height": 2160,
+          "fps": 30,
+          "fourcc": "MJPG"
+        },
+        "actual": {
+          "width": 1600,
+          "height": 1300,
+          "fps": 30.0,
+          "fourcc": "0xE436EB7D",
+          "fourcc_raw": "0xE436EB7D"
+        }
+      },
+      {
+        "request": {
+          "width": 2560,
+          "height": 1440,
+          "fps": 30,
+          "fourcc": "MJPG"
+        },
+        "actual": {
+          "width": 1600,
+          "height": 1300,
+          "fps": 30.0,
+          "fourcc": "0xE436EB7D",
+          "fourcc_raw": "0xE436EB7D"
+        }
+      },
+      {
+        "request": {
+          "width": 2048,
+          "height": 1536,
+          "fps": 30,
+          "fourcc": "MJPG"
+        },
+        "actual": {
+          "width": 1600,
+          "height": 1300,
+          "fps": 30.0,
+          "fourcc": "0xE436EB7D",
+          "fourcc_raw": "0xE436EB7D"
+        }
+      },
+      {
+        "request": {
+          "width": 1920,
+          "height": 1200,
+          "fps": 30,
+          "fourcc": "MJPG"
+        },
+        "actual": {
+          "width": 1600,
+          "height": 1200,
+          "fps": 30.0,
+          "fourcc": "0xE436EB7D",
+          "fourcc_raw": "0xE436EB7D"
+        }
+      },
+      {
+        "request": {
+          "width": 1920,
+          "height": 1080,
+          "fps": 30,
+          "fourcc": "MJPG"
+        },
+        "actual": {
+          "width": 1600,
+          "height": 1200,
+          "fps": 30.0,
+          "fourcc": "0xE436EB7D",
+          "fourcc_raw": "0xE436EB7D"
+        }
+      },
+      {
+        "request": {
+          "width": 1600,
+          "height": 1300,
+          "fps": 30,
+          "fourcc": "MJPG"
+        },
+        "actual": {
+          "width": 1600,
+          "height": 1300,
+          "fps": 30.0,
+          "fourcc": "YUY2",
+          "fourcc_raw": "0x32595559"
+        }
+      },
+      {
+        "request": {
+          "width": 1600,
+          "height": 1200,
+          "fps": 30,
+          "fourcc": "MJPG"
+        },
+        "actual": {
+          "width": 1600,
+          "height": 1200,
+          "fps": 30.0,
+          "fourcc": "YUY2",
+          "fourcc_raw": "0x32595559"
+        }
+      },
+      {
+        "request": {
+          "width": 1440,
+          "height": 1080,
+          "fps": 30,
+          "fourcc": "MJPG"
+        },
+        "actual": {
+          "width": 1280,
+          "height": 1024,
+          "fps": 30.0,
+          "fourcc": "0xE436EB7D",
+          "fourcc_raw": "0xE436EB7D"
+        }
+      },
+      {
+        "request": {
+          "width": 1280,
+          "height": 1024,
+          "fps": 30,
+          "fourcc": "MJPG"
+        },
+        "actual": {
+          "width": 1280,
+          "height": 1024,
+          "fps": 30.0,
+          "fourcc": "MJPG",
+          "fourcc_raw": "0x47504A4D"
+        }
+      },
+      {
+        "request": {
+          "width": 1280,
+          "height": 960,
+          "fps": 30,
+          "fourcc": "MJPG"
+        },
+        "actual": {
+          "width": 1280,
+          "height": 1024,
+          "fps": 30.0,
+          "fourcc": "0xE436EB7D",
+          "fourcc_raw": "0xE436EB7D"
+        }
+      },
+      {
+        "request": {
+          "width": 1280,
+          "height": 720,
+          "fps": 30,
+          "fourcc": "MJPG"
+        },
+        "actual": {
+          "width": 1280,
+          "height": 720,
+          "fps": 30.0,
+          "fourcc": "YUY2",
+          "fourcc_raw": "0x32595559"
+        }
+      }
+    ]
+  },
+  "raw_image": "C:\\main\\agv-roboshoppro-control\\main\\result\\20260417_191932\\capture_raw.png"
+}

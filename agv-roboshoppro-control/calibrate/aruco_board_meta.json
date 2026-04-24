@@ -1,0 +1,19 @@
+{
+  "rows": 6,
+  "cols": 4,
+  "marker_size_mm": 30.0,
+  "gap_mm": 5.0,
+  "paper_width_mm": 210.0,
+  "paper_height_mm": 297.0,
+  "dpi": 300,
+  "dictionary": "DICT_4X4_50",
+  "image_size_px": [
+    2480,
+    3508
+  ],
+  "pixel_values": [
+    0,
+    255
+  ],
+  "print_hint": "Print at 100% actual size, disable fit-to-page/smart scaling."
+}

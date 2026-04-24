@@ -1,0 +1,90 @@
+# AGV control API profiles
+# Keep protocol differences here so test scripts can switch behavior safely.
+
+network:
+  robot_ip: 172.16.52.85
+  local_ip: 172.16.52.47
+  timeout_sec: 3.0
+
+protocol:
+  # Control port validated by live test for motion commands.
+  control_port: 19205
+  frame: msgtype_16b
+  frame_pack_format: "!BBHLH6s"
+  frame_magic: [90, 1]   # 0x5A, 0x01
+
+response_rules:
+  ok_ret_code: 0
+  common_errors:
+    60000: error api type
+    60001: unknown api type
+
+profiles:
+  open_loop_forward_stream:
+    description: Keep robot moving by refreshing velocity command.
+    request_msg_type: 2010
+    stop_msg_type: 2000
+    payload_template:
+      vx: 0.10
+      vy: 0.00
+      w: 0.00
+    stream:
+      enabled: true
+      interval_sec: 0.10
+      duration_sec: 5.0
+    send_stop_after_duration: true
+
+  open_loop_turn_stream:
+    description: In-place turn test using open-loop velocity (same API, non-zero w).
+    request_msg_type: 2010
+    stop_msg_type: 2000
+    payload_template:
+      vx: 0.00
+      vy: 0.00
+      w: 0.25
+    stream:
+      enabled: true
+      interval_sec: 0.10
+      duration_sec: 3.0
+    send_stop_after_duration: true
+
+  nav_translate_task:
+    description: Navigation API fixed-distance translation task.
+    request_msg_type: 3055
+    payload_template:
+      dist: 1.0
+      vx: 0.2
+      vy: 0.0
+      mode: 0
+    stream:
+      enabled: false
+    send_stop_after_duration: false
+
+  nav_turn_task:
+    description: Navigation API fixed-angle turn task.
+    request_msg_type: 3056
+    payload_template:
+      angle: 1.57
+      vw: 0.5
+      mode: 0
+    stream:
+      enabled: false
+    send_stop_after_duration: false
+
+  nav_circular_task:
+    description: Navigation API circular motion task.
+    request_msg_type: 3058
+    payload_template:
+      rot_radius: 1.0
+      rot_degree: 180
+      rot_speed: 0.5
+      mode: 0
+    stream:
+      enabled: false
+    send_stop_after_duration: false
+
+preflight_checklist:
+  - Robot remote control is enabled.
+  - Robot is not in e-stop/protective stop state.
+  - Same subnet route between local_ip and robot_ip.
+  - Correct profile selected for current firmware.

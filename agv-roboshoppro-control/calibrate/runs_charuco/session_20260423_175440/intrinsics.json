@@ -1,0 +1,72 @@
+{
+  "camera_index": 1,
+  "image_size": [
+    1280,
+    720
+  ],
+  "target_count": 20,
+  "captured_count": 20,
+  "dictionary": "DICT_5X5_100",
+  "squares_x": 9,
+  "squares_y": 14,
+  "square_size_mm": 20.0,
+  "marker_size_mm": 15.0,
+  "best_candidate": "sx14_sy9_legacy0",
+  "used_images": 20,
+  "rms": 0.1637889765200985,
+  "mean_reprojection_error": 0.017066026271092792,
+  "camera_matrix": [
+    [
+      773.0699127206366,
+      0.0,
+      672.6803015793511
+    ],
+    [
+      0.0,
+      772.9626000833541,
+      338.0180223220602
+    ],
+    [
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "dist_coeffs": [
+    [
+      0.17873715338335636,
+      -0.2650524744512863,
+      0.0007929188046033465,
+      0.0003944046191242767,
+      0.138604591744264
+    ]
+  ],
+  "candidate_summary": [
+    {
+      "candidate": "sx9_sy14_legacy0",
+      "used_images": 0,
+      "ok": false,
+      "reason": "used_images 0 < min_samples 10"
+    },
+    {
+      "candidate": "sx9_sy14_legacy1",
+      "used_images": 0,
+      "ok": false,
+      "reason": "used_images 0 < min_samples 10"
+    },
+    {
+      "candidate": "sx14_sy9_legacy0",
+      "used_images": 20,
+      "ok": true,
+      "rms": 0.1637889765200985,
+      "mean_reprojection_error": 0.017066026271092792
+    },
+    {
+      "candidate": "sx14_sy9_legacy1",
+      "used_images": 20,
+      "ok": true,
+      "rms": 0.1637889765200985,
+      "mean_reprojection_error": 0.017066026271092792
+    }
+  ]
+}

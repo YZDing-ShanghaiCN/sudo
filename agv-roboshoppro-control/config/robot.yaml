@@ -1,0 +1,7 @@
+speed: 1.0
+turning_radius: 0.5
+max_speed: 2.0
+min_speed: 0.1
+acceleration: 0.5
+deceleration: 0.5
+stop_distance: 0.2
