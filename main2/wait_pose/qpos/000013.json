@@ -1,0 +1,58 @@
+{
+    "left_arm": {
+        "position": [
+            -0.15724821868687117,
+            1.6605750204443002,
+            0.9667714574086472,
+            -1.7053822575300464,
+            0.20921846259525667,
+            -0.14481120366033795,
+            0.8690238474756422
+        ],
+        "joint_names": [
+            "left-joint_arm_1",
+            "left-joint_arm_2",
+            "left-joint_arm_3",
+            "left-joint_arm_4",
+            "left-joint_arm_5",
+            "left-joint_arm_6",
+            "left-joint_arm_7"
+        ]
+    },
+    "right_arm": {
+        "position": [
+            -0.15807311305857452,
+            0.7269863392745876,
+            2.6151277892999376,
+            -1.8764078259417767,
+            -0.6630423121617531,
+            -0.3075517570246264,
+            -0.9819441980729814
+        ],
+        "joint_names": [
+            "right-joint_arm_1",
+            "right-joint_arm_2",
+            "right-joint_arm_3",
+            "right-joint_arm_4",
+            "right-joint_arm_5",
+            "right-joint_arm_6",
+            "right-joint_arm_7"
+        ]
+    },
+    "left_gripper": {
+        "position": [
+            0.0036650584331474508
+        ],
+        "joint_names": [
+            "left-joint_gripper_finger_1"
+        ]
+    },
+    "right_gripper": {
+        "position": [
+            0.04899715978848444
+        ],
+        "joint_names": [
+            "right-joint_gripper_finger_1"
+        ]
+    }
+}
