@@ -1,16 +1,65 @@
-# sudo： My robot work in Sudo company during 2026 in Shanghai
+# My Robot Work - Sudo Company (2026 Shanghai)
 
-# 1. pose
+Comprehensive robotics projects including AGV control, object pose estimation, and deployment environment validation.
 
-This directory is for object pose estimation from RGB image in robot manipulation tasks. 
+## 📁 Project Structure
 
---  ENVIRONMENT SETUP ------------- RTX 5060 8GB
+```
+main/
+├── agv-roboshoppro-control/    # AGV Robot Control System
+├── posemain/                    # Object Pose Estimation Module
+├── robot_deployenv_checker-main/ # Deployment Environment Checker
+└── README.md
+```
 
-reference link: [CSDN](https://blog.csdn.net/2504_93649063/article/details/159248787?spm=1001.2014.3001.5501) [CSDN](https://blog.csdn.net/2504_93649063/article/details/158879459?spm=1001.2014.3001.5501)
+---
 
-``` bash
-# cuda preperation
+## 1. AGV Robot Control System (`agv-roboshoppro-control/`)
+
+Control and calibration system for AGV robots with camera integration and motion control.
+
+### Contents
+- **calibrate/** - Camera calibration tools (ArUco, chessboard detection)
+- **config/** - Configuration files (camera, robot, control profiles)
+- **main/** - Main control loop and processing
+- **scripts/** - Utility scripts (control, navigation, testing)
+- **src/** - Source code (client, controller, types)
+- **output/** - Generated position data and capture results
+- **tests/** - Unit tests for motion controller
+
+### Key Features
+- Multi-camera calibration (ArUco and chessboard patterns)
+- V4L2 camera capture support
+- Robot motion control and navigation
+- Real-time position tracking (2D/3D)
+
+### Setup
+```bash
+cd agv-roboshoppro-control
+pip install -r requirements.txt
+python main/main.py
+```
+
+---
+
+## 2. Object Pose Estimation (`posemain/`)
+
+RGB-based object pose estimation for robot manipulation tasks.
+
+### Hardware Requirements
+- **GPU**: RTX 5060 8GB or better
+- **OS**: Linux x86_64
+- **Python**: 3.10+
+
+### Environment Setup
+
+Reference: [CSDN Blog 1](https://blog.csdn.net/2504_93649063/article/details/159248787?spm=1001.2014.3001.5501) | [CSDN Blog 2](https://blog.csdn.net/2504_93649063/article/details/158879459?spm=1001.2014.3001.5501)
+
+```bash
+# CUDA preparation
 pip3 install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu128
+
+# Verify CUDA setup
 python - <<'PY'
 import torch
 print("Torch Version:", torch.__version__)
@@ -20,14 +69,16 @@ print("CUDA Available:", torch.cuda.is_available())
 print("GPU sm type:", torch.cuda.get_device_capability(0))
 PY
 
-# dependency installation
+# Install dependencies
 pip install -r requirements.txt
 
+# Install specialized packages
 export TORCH_CUDA_ARCH_LIST="12.0"
 pip install git+https://github.com/Dao-AILab/flash-attention.git --no-build-isolation
 pip install --no-build-isolation git+https://github.com/facebookresearch/pytorch3d.git
 pip install --no-build-isolation --no-cache-dir git+https://github.com/NVlabs/nvdiffrast.git
 
+# Configure environment paths
 export all_proxy=socks5://127.0.0.1:7897
 export ALL_PROXY=socks5://127.0.0.1:7897
 export PYTHONPATH=$PYTHONPATH:/home/user/Desktop/main/posemain/segment_anything
@@ -35,32 +86,38 @@ export PYTHONPATH=$PYTHONPATH:/home/user/Desktop/main/posemain/segment_anything
 python scripts/project.py
 ```
 
-# 2
-# Robot Deploy Environment Checker
+### Key Modules
+- **BundleDF** - Pose estimation using bundle DF
+- **MiDaS** - Monocular depth estimation
+- **Depth Anything V2** - Advanced depth perception
+- **DINO v2** - Vision features
+- **Segment Anything** - Instance segmentation
+
+---
+
+## 3. Robot Deploy Environment Checker (`robot_deployenv_checker-main/`)
 
 Interactive tool for verifying robot task viability before deployment. Checks **reachability** (can the robot reach the workspace?) and **visibility** (can cameras see the workspace?) using a browser-based 3D visualization.
 
-Built on [Viser](https://github.com/nerfstudio-project/viser) with the `hbmp` motion planning library for IK solving and collision detection.
+**Built on**: [Viser](https://github.com/nerfstudio-project/viser) + `hbmp` motion planning library (IK solving and collision detection)
 
-## Features
+### Features
+- ✅ Config-driven scene setup (robots, objects, cameras, workspace bounds in YAML)
+- ✅ Drag EEF gizmos to test reachability via IK tracking (WBC-based)
+- ✅ Real-time self-collision detection with visual feedback
+- ✅ 8 robot-mounted cameras with frustum visualization
+- ✅ On-demand camera rendering from any mounted camera viewpoint
+- ✅ Workspace bounding box with adjustable wall constraints
 
-- Config-driven scene: define robot, objects, cameras, and workspace bounds in a single YAML
-- Drag EEF gizmos to test reachability via IK tracking (WBC-based)
-- Real-time self-collision detection with visual feedback
-- 8 robot-mounted cameras with frustum visualization
-- On-demand camera rendering from any mounted camera viewpoint
-- Workspace bounding box with adjustable wall constraints
+### Requirements
+- **OS**: Linux x86_64 (pre-built wheels are platform-specific)
+- **Python**: 3.10 (required by pre-built wheels)
+- Tool: [uv](https://docs.astral.sh/uv/) (recommended)
 
-## Requirements
-
-- Linux x86_64 (the `ampl` and `pywbc` wheels are platform-specific)
-- Python 3.10 (required by pre-built wheels)
-- [uv](https://docs.astral.sh/uv/) (recommended for venv setup)
-
-## Setup
+### Setup
 
 ```bash
-cd robot_deployenv_checker
+cd robot_deployenv_checker-main
 
 # Create Python 3.10 venv
 uv venv --python 3.10 .venv
@@ -77,26 +134,28 @@ uv pip install viser yourdfpy trimesh numpy pyyaml dacite
 uv pip install pytest
 ```
 
-## Usage
+### Usage
 
 ```bash
 source .venv/bin/activate
 PYTHONPATH=hbmp:src python -m deployenv_checker --config configs/example_scene.yaml
 ```
 
-Open http://localhost:8080 in a browser.
+Open **http://localhost:8080** in a browser.
 
-### Controls
+### GUI Controls
 
-1. **Track** button -- enables EEF tracking. Drag the left/right tool gizmos and the robot follows via IK.
-2. **Wall sliders** -- adjust workspace bounds (y-max, z-min/max). The robot's collision checker uses these.
-3. **Camera renders** -- expand a camera group folder, click "Render" to capture a snapshot from that camera's viewpoint. "Render All" captures all 8 cameras.
-4. **Show Frustums** -- toggle camera frustum wireframes in the scene.
-5. **View mode** -- switch between visual, collision, or both mesh displays.
+| Control | Function |
+|---------|----------|
+| **Track** button | Enable EEF tracking; drag left and right tool gizmos for IK following |
+| **Wall sliders** | Adjust workspace bounds (y-max, z-min/max) |
+| **Camera renders** | Capture snapshots from camera viewpoints; "Render All" for all 8 cameras |
+| **Show Frustums** | Toggle camera frustum wireframes |
+| **View mode** | Switch between visual, collision, or both mesh displays |
 
-### Custom scene config
+### Custom Scene Config
 
-Create a YAML file (see `configs/example_scene.yaml` for reference):
+Create a YAML file (example below and in `configs/example_scene.yaml`):
 
 ```yaml
 scene:
@@ -136,17 +195,17 @@ workspace:
   show_bounds: true
 ```
 
-## Tests
+### Testing
 
 ```bash
 source .venv/bin/activate
 PYTHONPATH=hbmp:src python -m pytest tests/ -v
 ```
 
-## Project structure
+### Project Structure
 
 ```
-robot_deployenv_checker/
+robot_deployenv_checker-main/
 ├── configs/
 │   ├── camera_config.json       # 8-camera calibration (intrinsics + extrinsics)
 │   └── example_scene.yaml       # Example scene config
@@ -166,3 +225,43 @@ robot_deployenv_checker/
 │   └── test_hbmp.py             # Unit tests for hbmp
 └── pyproject.toml
 ```
+
+---
+
+## 🛠️ Quick Start Guide
+
+### For AGV Control
+```bash
+cd agv-roboshoppro-control
+pip install -r requirements.txt
+python main/main.py
+```
+
+### For Pose Estimation (CUDA-enabled)
+```bash
+cd posemain
+# Follow environment setup above with CUDA
+python run_demo.py
+```
+
+### For Deployment Checking
+```bash
+cd robot_deployenv_checker-main
+source .venv/bin/activate
+PYTHONPATH=hbmp:src python -m deployenv_checker --config configs/example_scene.yaml
+# Open http://localhost:8080
+```
+
+---
+
+## 📝 Notes
+
+- Each project has independent dependencies in respective `requirements.txt`
+- CUDA and GPU setup is critical for `posemain`
+- Ensure Python 3.10 for `robot_deployenv_checker-main` (pre-built wheels requirement)
+- See individual project directories for detailed documentation
+
+---
+
+## ✨ Last Updated
+2026年4月29日
