@@ -7,6 +7,7 @@ Comprehensive robotics projects including AGV control, object pose estimation, a
 ```
 main/
 ├── agv-roboshoppro-control/    # AGV Robot Control System
+├── main2/                       # Stereo Depth Inference Module
 ├── posemain/                    # Object Pose Estimation Module
 ├── robot_deployenv_checker-main/ # Deployment Environment Checker
 └── README.md
@@ -251,6 +252,21 @@ source .venv/bin/activate
 PYTHONPATH=hbmp:src python -m deployenv_checker --config configs/example_scene.yaml
 # Open http://localhost:8080
 ```
+
+---
+
+## 4. Stereo Depth Inference Module (`main2/`)
+
+Module for stereo depth inference and depth map (EXR) processing.
+
+### Key Features
+- Reading, writing, and processing `.exr` depth maps
+- Camera math operations (Plücker rays calculation, spatial transforms via `calibur`)
+- Preprocessing utilities: Image cropping, intrinsic camera matrix updating (`stereo_depth_inference_middleburry.py`)
+- Camera configurations and specific pose presets (`aililight_cameras/`, `near_pose`, `far_pose`, `wait_pose`)
+
+### Requirements
+- **Python libraries**: `torch`, `OpenEXR`, `numpy`, `opencv-python`, `Pillow`, `calibur`, `Imath`, `pyyaml`
 
 ---
 
