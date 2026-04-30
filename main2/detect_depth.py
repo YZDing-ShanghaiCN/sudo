@@ -68,15 +68,16 @@ def iter_exr_files(input_dir: str) -> list[str]:
 
 
 def main() -> int:
+	dir_name = "wait_pose"
 	parser = argparse.ArgumentParser(description="Compute per-file depth statistics for EXR files.")
 	parser.add_argument(
 		"--input-dir",
-		default="/home/user/Desktop/main/main2/far_pose/output_depth",
+		default=f"/home/user/Desktop/main/main2/{dir_name}/output_depth",
 		help="Directory containing depth EXR files.",
 	)
 	parser.add_argument(
 		"--output-file",
-		default="/home/user/Desktop/main/main2/far_pose/depth_stats.jsonl",
+		default=f"/home/user/Desktop/main/main2/{dir_name}/depth_stats.jsonl",
 		help="Output JSONL file path.",
 	)
 	args = parser.parse_args()

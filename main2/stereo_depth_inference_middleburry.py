@@ -283,7 +283,8 @@ for i in range(20):
     depths = np.stack(depths, axis=0)
     Ks = np.stack(Ks, axis=0)
     c2ws = np.stack(c2ws, axis=0)
-    crop_size = 640
+    # crop_size = 640
+    crop_size = 1280
     inputs = preprocess(images,depths,Ks,c2ws,crop_size)
     outputs = model(*inputs)
     metric_depth = postprocess(outputs[0])
