@@ -45,11 +45,20 @@ if __name__ == "__main__":
 	stl_path = "/home/user/Desktop/main/main2/add/底盘.STL"
 	points = load_stl_points(stl_path)
 
-	R = rot_z(np.deg2rad(15.0))
-	t = np.array([0.05, -0.02, 0.10], dtype=np.float64)
+	# Replace these placeholders with the actual arrays printed by icp.py
+	R = [[ 0.047612, -0.093111, -0.994517],
+	     [-0.876366,  0.473848, -0.08632 ],
+		 [ 0.479287,  0.87567,  -0.059038]]
+	t = np.zeros(3, dtype=np.float64)  # TODO: Put ICP t here
 
+	# Ground truth (Replace with your actual GT rotation and translation)
 	R_gt = np.eye(3, dtype=np.float64)
 	t_gt = np.array([0.02, 0.00, 0.08], dtype=np.float64)
 
-	add_value = add_metric(points, R, t, R_gt, t_gt)
-	print(f"ADD: {add_value:.6f}")
+	# Remember to scale the points if your STL is in mm but R, t are in meters!
+	# (icp.py uses 0.001 scale)
+	scale = 0.001
+	points_scaled = points * scale
+
+	add_value = add_metric(points_scaled, R, t, R_gt, t_gt)
+	print(f"ADD (meters): {add_value:.6f}")
