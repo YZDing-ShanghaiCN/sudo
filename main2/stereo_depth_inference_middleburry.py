@@ -9,6 +9,8 @@ import OpenEXR
 import Imath
 import yaml
 
+from scipy.spatial.transform import Rotation as R
+
 
 def read_exr(file_path):
     """
@@ -61,6 +63,32 @@ def save_exr(save_path, depth_map):
     exr_file = OpenEXR.OutputFile(save_path, header)
     exr_file.writePixels({'Z': depth_data.tobytes()})
     exr_file.close()
+
+def load_camera_intrinsics_from_yaml(yaml_path):
+    with open(yaml_path, "r") as f:
+        data = yaml.safe_load(f)
+    K = np.array(data["intrinsic"], dtype=np.float32)
+    D = np.array(data.get("distortion", []), dtype=np.float32)
+    return K, D
+
+
+def undistort_image_and_intrinsics(image: Union[Image.Image, np.ndarray], K: np.ndarray, D: np.ndarray):
+    if isinstance(image, Image.Image):
+        image_np = np.array(image)
+    else:
+        image_np = image
+
+    h, w = image_np.shape[:2]
+    if D.size == 0 or np.allclose(D, 0):
+        return image, K
+
+    newK, _ = cv2.getOptimalNewCameraMatrix(K, D, (w, h), alpha=0, centerPrincipalPoint=1)
+    undistorted = cv2.undistort(image_np, K, D, None, newK)
+
+    if isinstance(image, Image.Image):
+        return Image.fromarray(undistorted), newK
+    return undistorted, newK
+
 
 def compute_plucker_ray(c2w, K, h, w, ray_scale):
     """
@@ -226,7 +254,7 @@ def postprocess(output):
 
 model = torch.jit.load("/home/user/Desktop/checkpoints/joint-scene-l-640-ps16-fdv210ufdv3base-3G-2view-depth-err-rec-1e-1-noscale-8n-200k-dpt-ft.ts")
 # root_path = "/main-cpfs/yachi/data/middleburry/2014"
-root_path = "./wait_pose"
+root_path = "./near_pose"
 # index_list = os.path.join(root_path, "diffx_list.txt")
 # output_path = "/main-cpfs/yachi/test/middleburry/2014_dpt_ft_ts_bf16"
 output_path = os.path.join(root_path, "output")
@@ -246,11 +274,12 @@ for i in range(20):
     # right_depth = read_exr(os.path.join(root_path, "depth1.exr"))
     left_depth = np.zeros((left_image.size[1], left_image.size[0]), dtype=np.float32)
     right_depth = np.zeros((right_image.size[1], right_image.size[0]), dtype=np.float32)
-    left_calib_file = os.path.join(root_path, "intrinsics", "left_hand_left_camera_intrinsics.txt")
-    K1 = np.loadtxt(left_calib_file, dtype=np.float32)
-    right_calib_file = os.path.join(root_path, "intrinsics", "left_hand_right_camera_intrinsics.txt")
-    K2 = np.loadtxt(right_calib_file, dtype=np.float32)
-    # calib_file = os.path.join(root_path, "calib.txt")
+    left_extrinsics_file = "./aililight_cameras/left_hand_left_camera_20260423.yaml"
+    right_extrinsics_file = "./aililight_cameras/left_hand_right_camera_20260423.yaml"
+    K1, D1 = load_camera_intrinsics_from_yaml(left_extrinsics_file)
+    K2, D2 = load_camera_intrinsics_from_yaml(right_extrinsics_file)
+    left_image, K1 = undistort_image_and_intrinsics(left_image, K1, D1)
+    right_image, K2 = undistort_image_and_intrinsics(right_image, K2, D2)
     # with open(calib_file, "r") as f:
     #     lines = f.readlines()
     #     K1 = lines[0].split("=")[1].replace('[', '').replace(']', '').replace(';', '').split()
@@ -263,28 +292,32 @@ for i in range(20):
         # height = int(lines[5].split("=")[1])
         # doffs = float(lines[2].split("=")[1])
         # baseline = float(lines[3].split("=")[1])
-    left_extrinsics_file = "./aililight_cameras/left_hand_left_camera_20260423.yaml"
-    right_extrinsics_file = "./aililight_cameras/left_hand_right_camera_20260423.yaml"
     with open(left_extrinsics_file, "r") as f:
-        left_p = np.array(yaml.safe_load(f)["extrinsic_pose"]["p"])
+        left_yaml = yaml.safe_load(f)
+        left_p = np.array(left_yaml["extrinsic_pose"]["p"])
+        left_q = np.array(left_yaml["extrinsic_pose"]["q"])
     with open(right_extrinsics_file, "r") as f:
-        right_p = np.array(yaml.safe_load(f)["extrinsic_pose"]["p"])
+        right_yaml = yaml.safe_load(f)
+        right_p = np.array(right_yaml["extrinsic_pose"]["p"])
+        right_q = np.array(right_yaml["extrinsic_pose"]["q"])
+    c2w_0 = np.eye(4)
+    c2w_0[:3, :3] = R.from_quat(left_q).as_matrix()
+    c2w_0[:3, 3] = left_p
+    c2w_1 = np.eye(4)
+    c2w_1[:3, :3] = R.from_quat(right_q).as_matrix()
+    c2w_1[:3, 3] = right_p
     baseline = np.linalg.norm(left_p - right_p) * 1000.0
     view_image_0 = {}
     view_image_1 = {}
-    extrinsics_0 = np.eye(4)
-    extrinsics_1 = np.eye(4)
-    extrinsics_1[0, 3] = -1*baseline/1000
     Ks = np.array([K1, K2])
-    c2ws = np.array([np.linalg.inv(extrinsics_0), np.linalg.inv(extrinsics_1)])
+    c2ws = np.array([np.linalg.inv(c2w_0), np.linalg.inv(c2w_1)])
     images = np.array([left_image, right_image])
     depths = np.array([left_depth, right_depth])
     images = np.stack(images, axis=0)
     depths = np.stack(depths, axis=0)
     Ks = np.stack(Ks, axis=0)
     c2ws = np.stack(c2ws, axis=0)
-    # crop_size = 640
-    crop_size = 1280
+    crop_size = 640
     inputs = preprocess(images,depths,Ks,c2ws,crop_size)
     outputs = model(*inputs)
     metric_depth = postprocess(outputs[0])
@@ -294,8 +327,8 @@ for i in range(20):
     save_exr(os.path.join(output_path, f"{i:06d}_depth_pred1.exr"), metric_depth[1])
     gt_depth = inputs[1][0, 0, :, :, :]
     gt_depth = gt_depth.float().cpu().numpy()
-    save_exr(os.path.join(output_path, f"{i:06d}_depth0.exr"), gt_depth[0])
-    save_exr(os.path.join(output_path, f"{i:06d}_depth1.exr"), gt_depth[1])
+    # save_exr(os.path.join(output_path, f"{i:06d}_depth0.exr"), gt_depth[0])
+    # save_exr(os.path.join(output_path, f"{i:06d}_depth1.exr"), gt_depth[1])
     images = inputs[0][0, 0, :, :, :]
     images = images.float().cpu().numpy()
     images = images * 255.0
@@ -308,4 +341,3 @@ for i in range(20):
     print(np.median(metric_depth[1]))
     print(np.median(gt_depth[0]))
     print(np.median(gt_depth[1]))
-    
