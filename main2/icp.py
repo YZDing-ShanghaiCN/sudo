@@ -229,7 +229,7 @@ def main() -> None:
 	parser.add_argument(
 		"--icp-threshold",
 		type=float,
-		default=0.02,
+		default=0.01,
 		help="ICP distance threshold",
 	)
 	parser.add_argument(
@@ -239,11 +239,23 @@ def main() -> None:
 		help="Voxel size for downsampling (0 to disable)",
 	)
 	parser.add_argument(
-		"--max-iter",
-		type=int,
-		default=80,
-		help="ICP max iterations",
+		"--center-pixel",
+		type=str,
+		default="640,400",
+		help="Center pixel of object in middle camera 'u,v', default is 640,400 (center of 1280x800)",
 	)
+	parser.add_argument(
+		"--center-depth",
+		type=float,
+		default=0.0,
+		help="Depth (Z) of that center pixel in middle camera (in meters)",
+	)
+	parser.add_argument(
+        "--max-iter",
+        type=int,
+        default=100,
+        help="Maximum number of ICP iterations",
+    )
 
 	args = parser.parse_args()
 
@@ -272,13 +284,55 @@ def main() -> None:
 	if args.voxel_size > 0:
 		observed = observed.voxel_down_sample(args.voxel_size)
 		model = model.voxel_down_sample(args.voxel_size)
+		
+	# Method for initial guess:
+	# 1. User specified estimated translation (e.g. from Center camera projection)
+	# currently we approximate with observed point cloud center, but you can plug global center here.
+	obs_center = observed.get_center()
+
+	if args.center_pixel and args.center_depth > 0:
+		u_str, v_str = args.center_pixel.split(",")
+		u, v = float(u_str), float(v_str)
+		# Load center camera intrinsics
+		k_center = load_intrinsics(DEFAULT_INTRINSICS["center"])
+		fx_c = k_center[0, 0]
+		fy_c = k_center[1, 1]
+		cx_c = k_center[0, 2]
+		cy_c = k_center[1, 2]
+		z_c = args.center_depth
+		x_c = (u - cx_c) * z_c / fx_c
+		y_c = (v - cy_c) * z_c / fy_c
+		estimated_obj_center_in_camera = np.array([x_c, y_c, z_c])
+		print(f"Using estimated center from Center Camera RGB pixel: {estimated_obj_center_in_camera}")
+	else:
+		estimated_obj_center_in_camera = obs_center
+
+	mod_center = model.get_center()
+	init_transform = np.eye(4, dtype=np.float64)
+	
+	# 2. Apply suggested rotation: X +90 deg, Z -90 deg
+	rx_90 = np.array([
+		[1.0,  0.0,  0.0],
+		[0.0,  0.0, -1.0],
+		[0.0,  1.0,  0.0]
+	])
+	rz_n90 = np.array([
+		[ 0.0,  1.0,  0.0],
+		[-1.0,  0.0,  0.0],
+		[ 0.0,  0.0,  1.0]
+	])
+	r_init = rz_n90 @ rx_90
+	
+	# Apply initial rotation and translation
+	init_transform[:3, :3] = r_init
+	init_transform[:3, 3] = estimated_obj_center_in_camera - (r_init @ mod_center)
 
 	result = run_icp(
 		source=model,
 		target=observed,
 		threshold=float(args.icp_threshold),
 		max_iter=int(args.max_iter),
-		init=np.eye(4, dtype=np.float64),
+		init=init_transform
 	)
 
 	tform = result.transformation
@@ -292,8 +346,8 @@ def main() -> None:
 	print(r)
 	print("\nt (3,):")
 	print(t)
-	print("\nICP fitness:", result.fitness)
-	print("ICP inlier_rmse:", result.inlier_rmse)
+	print(f"\nICP fitness (overlapping ratio of model points): {result.fitness:.4f}")
+	print(f"ICP inlier_rmse (avg distance of overlapping points): {result.inlier_rmse:.4f}")
 
 
 if __name__ == "__main__":
