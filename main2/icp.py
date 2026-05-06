@@ -153,12 +153,13 @@ def make_point_cloud(points: np.ndarray) -> o3d.geometry.PointCloud:
 	return pcd
 
 
-def load_and_sample_stl(stl_path: str, num_points: int = 10000) -> o3d.geometry.PointCloud:
-	mesh = o3d.io.read_triangle_mesh(stl_path)
-	if mesh.is_empty():
-		raise ValueError(f"Failed to load STL: {stl_path}")
-	mesh.compute_vertex_normals()
-	return mesh.sample_points_uniformly(number_of_points=num_points)
+def load_and_sample_stl(stl_path: str, num_points: int = 10000, scale: float = 0.001) -> o3d.geometry.PointCloud:
+    mesh = o3d.io.read_triangle_mesh(stl_path)
+    if mesh.is_empty():
+        raise ValueError(f"Failed to load STL: {stl_path}")
+    mesh.scale(scale, center=(0, 0, 0))
+    mesh.compute_vertex_normals()
+    return mesh.sample_points_uniformly(number_of_points=num_points)
 
 
 def run_icp(
@@ -206,6 +207,12 @@ def main() -> None:
 		type=float,
 		default=1.0,
 		help="Scale factor to convert depth units to meters",
+	)
+	parser.add_argument(
+		"--model-scale",
+		type=float,
+		default=0.001,
+		help="Scale factor to convert STL model units (e.g., mm to m)",
 	)
 	parser.add_argument(
 		"--depth-trunc",
@@ -260,7 +267,7 @@ def main() -> None:
 		depth, k, stride=args.stride, depth_scale=args.depth_scale, depth_trunc=depth_trunc
 	)
 	observed = make_point_cloud(points)
-	model = load_and_sample_stl(args.stl, num_points=args.sample_points)
+	model = load_and_sample_stl(args.stl, num_points=args.sample_points, scale=args.model_scale)
 
 	if args.voxel_size > 0:
 		observed = observed.voxel_down_sample(args.voxel_size)
