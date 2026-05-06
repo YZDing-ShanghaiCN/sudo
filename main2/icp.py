@@ -321,9 +321,12 @@ def main() -> None:
 		[-1.0,  0.0,  0.0],
 		[ 0.0,  0.0,  1.0]
 	])
+	# Combine rotations: first X, then Z (R = Rz * Rx)
 	r_init = rz_n90 @ rx_90
 	
 	# Apply initial rotation and translation
+	# Using intermediate camera RGB pixel to get the spatial center,
+	# and we subtract the rotated model's native center offset. 
 	init_transform[:3, :3] = r_init
 	init_transform[:3, 3] = estimated_obj_center_in_camera - (r_init @ mod_center)
 
