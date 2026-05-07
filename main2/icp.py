@@ -18,6 +18,7 @@ from typing import Dict, Optional
 
 import numpy as np
 import open3d as o3d
+import imageio.v3
 
 
 DEFAULT_INTRINSICS: Dict[str, str] = {
@@ -273,6 +274,12 @@ def main() -> None:
 
 	k = load_intrinsics(intrinsics_path)
 	depth = read_depth_exr(args.depth)
+	cur_h, cur_w = depth.shape
+	pre_w, pre_h = 1280.0, 800.0
+	k[0, 0] *= (cur_w / pre_w)
+	k[1, 1] *= (cur_h / pre_h)
+	k[0, 2] *= (cur_w / pre_w)
+	k[1, 2] *= (cur_h / pre_h)
 
 	depth_trunc = None if args.depth_trunc <= 0 else float(args.depth_trunc)
 	points = depth_to_points(
