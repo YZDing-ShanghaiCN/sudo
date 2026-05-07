@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import argparse
 import os
+import json
 from typing import Dict, Optional
 
 import numpy as np
@@ -90,7 +91,7 @@ def _parse_intrinsic_from_text(text: str) -> np.ndarray:
 	return np.array(rows, dtype=np.float64)
 
 
-def load_intrinsics(yaml_path: str) -> np.ndarray:
+def load_intrinsics_from_yaml(yaml_path: str) -> np.ndarray:
 	with open(yaml_path, "r", encoding="utf-8") as f:
 		text = f.read()
 
@@ -106,6 +107,22 @@ def load_intrinsics(yaml_path: str) -> np.ndarray:
 	if k.shape != (3, 3):
 		raise ValueError(f"Invalid intrinsic matrix shape: {k.shape}")
 	return k
+
+
+def load_intrinsics_from_json(json_path: str) -> np.ndarray:
+	with open(json_path, "r", encoding="utf-8") as f:
+		data = json.load(f)
+	k = np.array(data["intrinsic"], dtype=np.float64)
+	if k.shape != (3, 3):
+		raise ValueError(f"Invalid intrinsic matrix shape: {k.shape}")
+	return k
+
+
+def load_intrinsics(path: str) -> np.ndarray:
+	ext = os.path.splitext(path)[1].lower()
+	if ext == ".json":
+		return load_intrinsics_from_json(path)
+	return load_intrinsics_from_yaml(path)
 
 
 def depth_to_points(
@@ -163,6 +180,138 @@ def load_and_sample_stl(stl_path: str, num_points: int = 10000, scale: float = 0
     return mesh.sample_points_uniformly(number_of_points=num_points)
 
 
+def resolve_intrinsics_path(depth_path: str, camera: str, override: str) -> str:
+	if override:
+		return override
+
+	depth_dir = os.path.dirname(depth_path)
+	stem = os.path.splitext(os.path.basename(depth_path))[0]
+	frame_id = stem.split("_")[0]
+	candidates = [
+		os.path.join(depth_dir, f"{stem}_intrinsic.json"),
+		os.path.join(depth_dir, f"{frame_id}_{camera}_intrinsic.json"),
+	]
+	for candidate in candidates:
+		if os.path.exists(candidate):
+			return candidate
+	return DEFAULT_INTRINSICS[camera]
+
+
+def rotation_matrix_from_xyz_deg(rx_deg: float, ry_deg: float, rz_deg: float) -> np.ndarray:
+	rx, ry, rz = np.deg2rad([rx_deg, ry_deg, rz_deg])
+	cx, sx = np.cos(rx), np.sin(rx)
+	cy, sy = np.cos(ry), np.sin(ry)
+	cz, sz = np.cos(rz), np.sin(rz)
+
+	rx_m = np.array(
+		[
+			[1.0, 0.0, 0.0],
+			[0.0, cx, -sx],
+			[0.0, sx, cx],
+		],
+		dtype=np.float64,
+	)
+	ry_m = np.array(
+		[
+			[cy, 0.0, sy],
+			[0.0, 1.0, 0.0],
+			[-sy, 0.0, cy],
+		],
+		dtype=np.float64,
+	)
+	rz_m = np.array(
+		[
+			[cz, -sz, 0.0],
+			[sz, cz, 0.0],
+			[0.0, 0.0, 1.0],
+		],
+		dtype=np.float64,
+	)
+	return rz_m @ ry_m @ rx_m
+
+
+def parse_init_rotation(text: str) -> np.ndarray:
+	parts = [p.strip() for p in text.split(",") if p.strip()]
+	if len(parts) != 3:
+		raise ValueError("--init-rotation must be 'rx,ry,rz' in degrees")
+	rx_deg, ry_deg, rz_deg = (float(p) for p in parts)
+	return rotation_matrix_from_xyz_deg(rx_deg, ry_deg, rz_deg)
+
+
+def remove_outliers(
+	pcd: o3d.geometry.PointCloud,
+	method: str,
+	sor_nb_neighbors: int,
+	sor_std_ratio: float,
+	ror_nb_points: int,
+	ror_radius: float,
+) -> o3d.geometry.PointCloud:
+	if len(pcd.points) == 0:
+		return pcd
+	if method == "sor":
+		filtered, _ = pcd.remove_statistical_outlier(
+			nb_neighbors=int(sor_nb_neighbors),
+			std_ratio=float(sor_std_ratio),
+		)
+		return filtered
+	if method == "ror":
+		filtered, _ = pcd.remove_radius_outlier(
+			nb_points=int(ror_nb_points),
+			radius=float(ror_radius),
+		)
+		return filtered
+	return pcd
+
+
+def estimate_normals(pcd: o3d.geometry.PointCloud, radius: float, max_nn: int) -> None:
+	if len(pcd.points) == 0:
+		return
+	pcd.estimate_normals(
+		o3d.geometry.KDTreeSearchParamHybrid(
+			radius=float(radius),
+			max_nn=int(max_nn),
+		)
+	)
+	pcd.normalize_normals()
+
+
+def compute_fpfh(pcd: o3d.geometry.PointCloud, voxel_size: float) -> o3d.pipelines.registration.Feature:
+	search_param = o3d.geometry.KDTreeSearchParamHybrid(
+		radius=float(voxel_size) * 5.0,
+		max_nn=100,
+	)
+	return o3d.pipelines.registration.compute_fpfh_feature(pcd, search_param)
+
+
+def run_global_registration(
+	source: o3d.geometry.PointCloud,
+	target: o3d.geometry.PointCloud,
+	voxel_size: float,
+) -> o3d.pipelines.registration.RegistrationResult:
+	if voxel_size <= 0:
+		raise ValueError("voxel_size must be > 0 for global registration")
+
+	source_fpfh = compute_fpfh(source, voxel_size)
+	target_fpfh = compute_fpfh(target, voxel_size)
+	distance_threshold = float(voxel_size) * 1.5
+	result = o3d.pipelines.registration.registration_ransac_based_on_feature_matching(
+		source,
+		target,
+		source_fpfh,
+		target_fpfh,
+		True,
+		distance_threshold,
+		o3d.pipelines.registration.TransformationEstimationPointToPoint(False),
+		4,
+		[
+			o3d.pipelines.registration.CorrespondenceCheckerBasedOnEdgeLength(0.9),
+			o3d.pipelines.registration.CorrespondenceCheckerBasedOnDistance(distance_threshold),
+		],
+		o3d.pipelines.registration.RANSACConvergenceCriteria(100000, 0.999),
+	)
+	return result
+
+
 def run_icp(
 	source: o3d.geometry.PointCloud,
 	target: o3d.geometry.PointCloud,
@@ -181,7 +330,7 @@ def run_icp(
 		target,
 		threshold,
 		init,
-		o3d.pipelines.registration.TransformationEstimationPointToPoint(),
+		o3d.pipelines.registration.TransformationEstimationPointToPlane(),
 		criteria,
 	)
 	return result
@@ -200,7 +349,7 @@ def main() -> None:
 	parser.add_argument(
 		"--intrinsics",
 		default="",
-		help="Override intrinsics YAML path (takes precedence over --camera)",
+		help="Override intrinsics path (JSON or YAML, takes precedence over --camera)",
 	)
 	parser.add_argument("--stride", type=int, default=2, help="Pixel stride")
 	parser.add_argument(
@@ -236,8 +385,61 @@ def main() -> None:
 	parser.add_argument(
 		"--voxel-size",
 		type=float,
-		default=0.0,
+		default=0.005,
 		help="Voxel size for downsampling (0 to disable)",
+	)
+	parser.add_argument(
+		"--outlier-removal",
+		choices=["none", "sor", "ror"],
+		default="sor",
+		help="Outlier removal for observed point cloud",
+	)
+	parser.add_argument(
+		"--sor-nb-neighbors",
+		type=int,
+		default=20,
+		help="SOR: number of neighbors",
+	)
+	parser.add_argument(
+		"--sor-std-ratio",
+		type=float,
+		default=2.0,
+		help="SOR: standard deviation ratio",
+	)
+	parser.add_argument(
+		"--ror-nb-points",
+		type=int,
+		default=16,
+		help="ROR: minimum number of neighbors",
+	)
+	parser.add_argument(
+		"--ror-radius",
+		type=float,
+		default=0.02,
+		help="ROR: radius",
+	)
+	parser.add_argument(
+		"--normal-radius",
+		type=float,
+		default=0.02,
+		help="Normal estimation radius",
+	)
+	parser.add_argument(
+		"--normal-max-nn",
+		type=int,
+		default=30,
+		help="Normal estimation max neighbors",
+	)
+	parser.add_argument(
+		"--init-rotation",
+		type=str,
+		default="0,0,0",
+		help="Initial rotation in degrees as 'rx,ry,rz' (XYZ order)",
+	)
+	parser.add_argument(
+		"--use-global-registration",
+		action="store_true",
+		help="Use FPFH + RANSAC global registration before ICP",
 	)
 	parser.add_argument(
 		"--center-pixel",
@@ -252,18 +454,15 @@ def main() -> None:
 		help="Depth (Z) of that center pixel in middle camera (in meters)",
 	)
 	parser.add_argument(
-        "--max-iter",
-        type=int,
-        default=100,
-        help="Maximum number of ICP iterations",
-    )
+		"--max-iter",
+		type=int,
+		default=100,
+		help="Maximum number of ICP iterations",
+	)
 
 	args = parser.parse_args()
 
-	if args.intrinsics:
-		intrinsics_path = args.intrinsics
-	else:
-		intrinsics_path = DEFAULT_INTRINSICS[args.camera]
+	intrinsics_path = resolve_intrinsics_path(args.depth, args.camera, args.intrinsics)
 
 	if not os.path.exists(args.depth):
 		raise FileNotFoundError(f"Depth file not found: {args.depth}")
@@ -274,23 +473,32 @@ def main() -> None:
 
 	k = load_intrinsics(intrinsics_path)
 	depth = read_depth_exr(args.depth)
-	cur_h, cur_w = depth.shape
-	pre_w, pre_h = 1280.0, 800.0
-	k[0, 0] *= (cur_w / pre_w)
-	k[1, 1] *= (cur_h / pre_h)
-	k[0, 2] *= (cur_w / pre_w)
-	k[1, 2] *= (cur_h / pre_h)
 
 	depth_trunc = None if args.depth_trunc <= 0 else float(args.depth_trunc)
 	points = depth_to_points(
 		depth, k, stride=args.stride, depth_scale=args.depth_scale, depth_trunc=depth_trunc
 	)
 	observed = make_point_cloud(points)
+	if args.outlier_removal != "none":
+		observed = remove_outliers(
+			observed,
+			method=args.outlier_removal,
+			sor_nb_neighbors=args.sor_nb_neighbors,
+			sor_std_ratio=args.sor_std_ratio,
+			ror_nb_points=args.ror_nb_points,
+			ror_radius=args.ror_radius,
+		)
 	model = load_and_sample_stl(args.stl, num_points=args.sample_points, scale=args.model_scale)
 
 	if args.voxel_size > 0:
 		observed = observed.voxel_down_sample(args.voxel_size)
 		model = model.voxel_down_sample(args.voxel_size)
+
+	normal_radius = float(args.normal_radius)
+	if normal_radius <= 0:
+		normal_radius = max(float(args.voxel_size) * 2.5, 0.01)
+	estimate_normals(observed, normal_radius, args.normal_max_nn)
+	estimate_normals(model, normal_radius, args.normal_max_nn)
 		
 	# Method for initial guess:
 	# 1. User specified estimated translation (e.g. from Center camera projection)
@@ -316,26 +524,15 @@ def main() -> None:
 
 	mod_center = model.get_center()
 	init_transform = np.eye(4, dtype=np.float64)
-	
-	# 2. Apply suggested rotation: X +90 deg, Z -90 deg
-	rx_90 = np.array([
-		[1.0,  0.0,  0.0],
-		[0.0,  0.0, -1.0],
-		[0.0,  1.0,  0.0]
-	])
-	rz_n90 = np.array([
-		[ 0.0,  1.0,  0.0],
-		[-1.0,  0.0,  0.0],
-		[ 0.0,  0.0,  1.0]
-	])
-	# Combine rotations: first X, then Z (R = Rz * Rx)
-	r_init = rz_n90 @ rx_90
-	
-	# Apply initial rotation and translation
-	# Using intermediate camera RGB pixel to get the spatial center,
-	# and we subtract the rotated model's native center offset. 
+
+	r_init = parse_init_rotation(args.init_rotation)
 	init_transform[:3, :3] = r_init
 	init_transform[:3, 3] = estimated_obj_center_in_camera - (r_init @ mod_center)
+
+	if args.use_global_registration:
+		global_voxel = args.voxel_size if args.voxel_size > 0 else 0.005
+		global_result = run_global_registration(model, observed, global_voxel)
+		init_transform = global_result.transformation
 
 	result = run_icp(
 		source=model,

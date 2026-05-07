@@ -8,6 +8,7 @@ import os
 import OpenEXR
 import Imath
 import yaml
+import json
 
 from scipy.spatial.transform import Rotation as R
 
@@ -70,6 +71,12 @@ def load_camera_intrinsics_from_yaml(yaml_path):
     K = np.array(data["intrinsic"], dtype=np.float32)
     D = np.array(data.get("distortion", []), dtype=np.float32)
     return K, D
+
+
+def save_intrinsics_json(save_path: str, k: np.ndarray) -> None:
+    payload = {"intrinsic": k.tolist()}
+    with open(save_path, "w", encoding="utf-8") as f:
+        json.dump(payload, f, indent=2)
 
 
 def undistort_image_and_intrinsics(image: Union[Image.Image, np.ndarray], K: np.ndarray, D: np.ndarray):
@@ -325,6 +332,10 @@ for i in range(20):
     os.makedirs(os.path.join(output_path), exist_ok=True)
     save_exr(os.path.join(output_path, f"{i:06d}_depth_pred0.exr"), metric_depth[0])
     save_exr(os.path.join(output_path, f"{i:06d}_depth_pred1.exr"), metric_depth[1])
+    ks_tensor = inputs[17]
+    new_ks = ks_tensor[0, 0].float().cpu().numpy()
+    save_intrinsics_json(os.path.join(output_path, f"{i:06d}_left_intrinsic.json"), new_ks[0])
+    save_intrinsics_json(os.path.join(output_path, f"{i:06d}_right_intrinsic.json"), new_ks[1])
     gt_depth = inputs[1][0, 0, :, :, :]
     gt_depth = gt_depth.float().cpu().numpy()
     # save_exr(os.path.join(output_path, f"{i:06d}_depth0.exr"), gt_depth[0])

@@ -1,0 +1,9 @@
+cd ~/Desktop/main/
+conda activate main
+
+===================  1. stereo ===================
+-- command
+python main2/stereo_depth_inference_middleburry.py
+
+====================  2. add =====================
+python 
