@@ -3,7 +3,16 @@ conda activate main
 
 ===================  1. stereo ===================
 -- command
-python main2/stereo_depth_inference_middleburry.py
+cd ~/Desktop/main/main2
+python stereo_depth_inference_middleburry.py
 
-====================  2. add =====================
-python 
+-- usage
+alter around line 64 "root_path"
+
+====================  2. icp =====================
+-- command
+cd ~/Desktop/main/main2
+python icp.py
+
+-- usage
+change around line 25~40 "index" / "position"

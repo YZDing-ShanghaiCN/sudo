@@ -28,8 +28,13 @@ DEFAULT_INTRINSICS: Dict[str, str] = {
 	"right": "/home/user/Desktop/main/main2/aililight_cameras/left_hand_right_camera_20260423.yaml",
 }
 
-DEFAULT_DEPTH = "/home/user/Desktop/main/main2/near_pose/output/000000_depth_pred0.exr"
-DEFAULT_STL = "/home/user/Desktop/main/main2/add/底盘.STL"
+position = "near_pose"  # "far_pose" / "near_pose" / "wait_pose"
+index = "000000"  # e.g. "000000", "000001", etc.
+DEFAULT_DEPTH = f"/home/user/Desktop/main/main2/{position}/output/{index}_depth_pred0.exr"
+DEFAULT_STL = f"/home/user/Desktop/main/main2/add/底盘.STL"
+
+left_camera_intrinsic = f"./{position}/output/{index}_left_intrinsic.json"
+right_camera_intrinsic = f"./{position}/output/{index}_right_intrinsic.json"
 
 
 def read_depth_exr(path: str) -> np.ndarray:
@@ -184,6 +189,29 @@ def resolve_intrinsics_path(depth_path: str, camera: str, override: str) -> str:
 	if override:
 		return override
 
+	# If caller supplied explicit left/right JSON paths at top of file, prefer them
+	# Resolve relative paths relative to this script's directory.
+	script_dir = os.path.dirname(os.path.abspath(__file__))
+	if camera == "left":
+		if "left_camera_intrinsic" in globals() and left_camera_intrinsic:
+			cand = (
+				left_camera_intrinsic
+				if os.path.isabs(left_camera_intrinsic)
+				else os.path.join(script_dir, left_camera_intrinsic)
+			)
+			if os.path.exists(cand):
+				return cand
+	if camera == "right":
+		if "right_camera_intrinsic" in globals() and right_camera_intrinsic:
+			cand = (
+				right_camera_intrinsic
+				if os.path.isabs(right_camera_intrinsic)
+				else os.path.join(script_dir, right_camera_intrinsic)
+			)
+			if os.path.exists(cand):
+				return cand
+
+	# Fallback: look for intrinsic JSON next to the depth file (frame-based naming)
 	depth_dir = os.path.dirname(depth_path)
 	stem = os.path.splitext(os.path.basename(depth_path))[0]
 	frame_id = stem.split("_")[0]
@@ -194,6 +222,8 @@ def resolve_intrinsics_path(depth_path: str, camera: str, override: str) -> str:
 	for candidate in candidates:
 		if os.path.exists(candidate):
 			return candidate
+
+	# Last resort: use configured YAML defaults
 	return DEFAULT_INTRINSICS[camera]
 
 
@@ -433,7 +463,7 @@ def main() -> None:
 	parser.add_argument(
 		"--init-rotation",
 		type=str,
-		default="0,0,0",
+		default="90,0,-90",
 		help="Initial rotation in degrees as 'rx,ry,rz' (XYZ order)",
 	)
 	parser.add_argument(
