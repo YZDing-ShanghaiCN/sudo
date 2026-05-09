@@ -1,0 +1,16 @@
+{
+  "task_name": "nearpose_right_chest_origin",
+  "rgb_dir": "/home/user/Desktop/main/main2/20260508/rgb_all/nearpose_right_chest_origin",
+  "depth_dir": "/home/user/Desktop/main/main2/20260508/depth_all_new/nearpose_right_chest_origin",
+  "num_pairs": 20,
+  "num_valid_images": 20,
+  "total_valid_pixels": 1616200,
+  "min_depth": 0.10644243657588959,
+  "max_depth": 0.4854796528816223,
+  "mean_depth": 0.17572223212005697,
+  "variance_depth": 0.002007149210475552,
+  "std_depth": 0.04480121885033433,
+  "median_depth": 0.16820493340492249,
+  "p25_depth": 0.14338774234056473,
+  "p75_depth": 0.19638576358556747
+}

@@ -1,0 +1,16 @@
+{
+  "task_name": "farpose_right_chest_origin",
+  "rgb_dir": "/home/user/Desktop/main/main2/20260508/rgb_all/farpose_right_chest_origin",
+  "depth_dir": "/home/user/Desktop/main/main2/20260508/depth_all_new/farpose_right_chest_origin",
+  "num_pairs": 20,
+  "num_valid_images": 20,
+  "total_valid_pixels": 1295700,
+  "min_depth": 0.09749327600002289,
+  "max_depth": 0.52044278383255,
+  "mean_depth": 0.16646121822796117,
+  "variance_depth": 0.001865089258797086,
+  "std_depth": 0.04318667918232526,
+  "median_depth": 0.1593615710735321,
+  "p25_depth": 0.13307469710707664,
+  "p75_depth": 0.18699190765619278
+}

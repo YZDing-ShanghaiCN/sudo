@@ -1,0 +1,24 @@
+{
+  "units_assumed": "m",
+  "meters_per_unit": 1.0,
+  "num_frames": 20,
+  "total_valid_pixels": 64785,
+  "thresholds_meters": {
+    "1cm": 0.01,
+    "2cm": 0.02,
+    "5cm": 0.05,
+    "10cm": 0.1
+  },
+  "counts": {
+    "1cm": 7563,
+    "2cm": 26282,
+    "5cm": 64000,
+    "10cm": 64785
+  },
+  "proportions": {
+    "1cm": 0.11673998610789535,
+    "2cm": 0.405680327236243,
+    "5cm": 0.9878829976074709,
+    "10cm": 1.0
+  }
+}

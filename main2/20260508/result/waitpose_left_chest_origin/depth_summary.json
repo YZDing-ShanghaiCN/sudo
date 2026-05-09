@@ -1,0 +1,16 @@
+{
+  "task_name": "waitpose_left_chest_origin",
+  "rgb_dir": "/home/user/Desktop/main/main2/20260508/rgb_all/waitpose_left_chest_origin",
+  "depth_dir": "/home/user/Desktop/main/main2/20260508/depth_all_new/waitpose_left_chest_origin",
+  "num_pairs": 20,
+  "num_valid_images": 20,
+  "total_valid_pixels": 604260,
+  "min_depth": 0.11565876752138138,
+  "max_depth": 2.7747769355773926,
+  "mean_depth": 0.2640685775146326,
+  "variance_depth": 0.01390544744927418,
+  "std_depth": 0.11792136129333897,
+  "median_depth": 0.2462490275502205,
+  "p25_depth": 0.1858842670917511,
+  "p75_depth": 0.3104856461286545
+}

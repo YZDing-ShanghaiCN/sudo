@@ -259,13 +259,38 @@ def postprocess(output):
     metric_depth = metric_depth[0, 0, :, :,:]
     return metric_depth
 
+
+def save_depth_colormap(save_path: str, depth_map: np.ndarray) -> None:
+    depth = depth_map.astype(np.float32)
+    valid = np.isfinite(depth) & (depth > 0)
+    if not np.any(valid):
+        normalized = np.zeros_like(depth, dtype=np.uint8)
+    else:
+        valid_depth = depth[valid]
+        d_min = float(np.percentile(valid_depth, 2))
+        d_max = float(np.percentile(valid_depth, 98))
+        if d_max <= d_min:
+            d_min = float(valid_depth.min())
+            d_max = float(valid_depth.max())
+        if d_max <= d_min:
+            normalized = np.zeros_like(depth, dtype=np.uint8)
+        else:
+            clipped = np.clip(depth, d_min, d_max)
+            normalized = ((clipped - d_min) / (d_max - d_min) * 255.0).astype(np.uint8)
+
+    colored = cv2.applyColorMap(normalized, cv2.COLORMAP_TURBO)
+    cv2.imwrite(save_path, colored)
+
 model = torch.jit.load("/home/user/Desktop/checkpoints/joint-scene-l-640-ps16-fdv210ufdv3base-3G-2view-depth-err-rec-1e-1-noscale-8n-200k-dpt-ft.ts")
 # root_path = "/main-cpfs/yachi/data/middleburry/2014"
 root_path = "./near_pose"
 # index_list = os.path.join(root_path, "diffx_list.txt")
 # output_path = "/main-cpfs/yachi/test/middleburry/2014_dpt_ft_ts_bf16"
 output_path = os.path.join(root_path, "output")
-os.makedirs(output_path, exist_ok=True)
+depth_pred_dir = os.path.join(output_path, "depth_pred")
+colormap_dir = os.path.join(output_path, "colormap")
+os.makedirs(depth_pred_dir, exist_ok=True)
+os.makedirs(colormap_dir, exist_ok=True)
 # with open(index_list, "r") as f:
 #     index_list = f.readlines()
 #     index_list = [line.strip() for line in index_list]
@@ -328,10 +353,19 @@ for i in range(20):
     inputs = preprocess(images,depths,Ks,c2ws,crop_size)
     outputs = model(*inputs)
     metric_depth = postprocess(outputs[0])
-    metric_depth = metric_depth.float().cpu().numpy()
-    os.makedirs(os.path.join(output_path), exist_ok=True)
-    save_exr(os.path.join(output_path, f"{i:06d}_depth_pred0.exr"), metric_depth[0])
-    save_exr(os.path.join(output_path, f"{i:06d}_depth_pred1.exr"), metric_depth[1])
+    metric_depth = metric_depth.float().cpu().numpy().astype(np.float32)
+    Image.fromarray(metric_depth[0], mode="F").save(
+        os.path.join(depth_pred_dir, f"{i:06d}_depth_pred0.tiff"), format="TIFF"
+    )
+    Image.fromarray(metric_depth[1], mode="F").save(
+        os.path.join(depth_pred_dir, f"{i:06d}_depth_pred1.tiff"), format="TIFF"
+    )
+    save_depth_colormap(
+        os.path.join(colormap_dir, f"{i:06d}_depth_pred0.png"), metric_depth[0]
+    )
+    save_depth_colormap(
+        os.path.join(colormap_dir, f"{i:06d}_depth_pred1.png"), metric_depth[1]
+    )
     ks_tensor = inputs[17]
     new_ks = ks_tensor[0, 0].float().cpu().numpy()
     save_intrinsics_json(os.path.join(output_path, f"{i:06d}_left_intrinsic.json"), new_ks[0])
@@ -340,14 +374,6 @@ for i in range(20):
     gt_depth = gt_depth.float().cpu().numpy()
     # save_exr(os.path.join(output_path, f"{i:06d}_depth0.exr"), gt_depth[0])
     # save_exr(os.path.join(output_path, f"{i:06d}_depth1.exr"), gt_depth[1])
-    images = inputs[0][0, 0, :, :, :]
-    images = images.float().cpu().numpy()
-    images = images * 255.0
-    images = images.astype(np.uint8)
-    left_image = Image.fromarray(images[0])
-    left_image.save(os.path.join(output_path, f"{i:06d}_im0.png"))
-    right_image = Image.fromarray(images[1])
-    right_image.save(os.path.join(output_path, f"{i:06d}_im1.png"))
     print(np.median(metric_depth[0]))
     print(np.median(metric_depth[1]))
     print(np.median(gt_depth[0]))
