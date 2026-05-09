@@ -107,7 +107,16 @@ def main():
         else:
             task_list = args.task_names
     else:
-        task_list = [args.task_name]
+        # auto-discover task names by listing subdirectories in base/<out_root>
+        result_dir = base / args.out_root
+        if result_dir.exists() and result_dir.is_dir():
+            task_list = sorted([p.name for p in result_dir.iterdir() if p.is_dir()])
+            if len(task_list) == 0:
+                task_list = [args.task_name]
+            else:
+                print(f"Discovered tasks: {task_list}")
+        else:
+            task_list = [args.task_name]
 
     for task in task_list:
         try:
@@ -117,15 +126,20 @@ def main():
                 if not depth_path.is_absolute():
                     depth_path = base / depth_path
             else:
+                # prefer base/<out_root>/<task>/<depth-file>, then base/<task>/<depth-file>, then base/<depth-file>
+                cand0 = base / args.out_root / task / args.depth_file
                 cand1 = base / task / args.depth_file
                 cand2 = base / args.depth_file
-                if cand1.exists():
+                if cand0.exists():
+                    depth_path = cand0
+                elif cand1.exists():
                     depth_path = cand1
                 elif cand2.exists():
                     depth_path = cand2
                 else:
-                    # fallback to provided path (absolute or relative)
                     depth_path = Path(args.depth_file)
+                    if not depth_path.is_absolute():
+                        depth_path = base / depth_path
 
             # resolve stl for this task
             if "{task}" in args.stl_file:
