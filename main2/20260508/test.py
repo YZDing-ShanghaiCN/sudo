@@ -1,373 +1,165 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Batch ICP alignment for the 20260508 depth_mean tasks."""
+"""
+ICP 对齐脚本：将 depth_mean.npy 点云与 STL 模型对齐并输出变换矩阵与损失。
 
-from __future__ import annotations
+输出路径：<base_dir>/result/<task_name>/result.txt
+格式示例：
+transform metrix:
+[[r11, r12, r13, t1],
+ [r21, r22, r23, t2],
+ [r31, r32, r33, t3],
+ [0,   0,   0,   1]]
+loss: 0.12345
+"""
 
-import argparse
 from pathlib import Path
-
+import argparse
+import sys
 import numpy as np
-import open3d as o3d
+
+try:
+    import open3d as o3d
+except Exception as e:
+    print("Error: open3d is required for this script. Install with `pip install open3d`.")
+    raise
 
 
-SCRIPT_DIR = Path(__file__).resolve().parent
-RESULT_ROOT = SCRIPT_DIR / "result"
-MODEL_PATH = SCRIPT_DIR / "底盘.STL"
-CAMERA_INTRINSICS = {
-    "left": SCRIPT_DIR.parent / "aililight_cameras" / "chest_left_camera.yaml",
-    "right": SCRIPT_DIR.parent / "aililight_cameras" / "chest_right_camera.yaml",
-}
-
-DEPTH_STRIDE = 2
-MODEL_SAMPLE_POINTS = 10000
-POINT_VOXEL_SIZE = 0.005
-NORMAL_RADIUS = 0.02
-NORMAL_MAX_NN = 30
-SEARCH_THRESHOLD = 0.03
-SEARCH_MAX_ITER = 35
-FINAL_THRESHOLD = 0.02
-FINAL_MAX_ITER = 80
-INTRINSIC_SCALE = 0.5
-
-SEARCH_ROTATIONS = (
-    (90.0, 0.0, -90.0),
-    (90.0, 0.0, 90.0),
-    (-90.0, 0.0, -90.0),
-    (-90.0, 0.0, 90.0),
-    (0.0, 0.0, 0.0),
-    (180.0, 0.0, 0.0),
-    (0.0, 90.0, 0.0),
-    (0.0, -90.0, 0.0),
-    (0.0, 0.0, 90.0),
-    (0.0, 0.0, -90.0),
-    (180.0, 90.0, 0.0),
-    (180.0, -90.0, 0.0),
-)
-
-
-def parse_intrinsics_from_text(text: str) -> np.ndarray:
-    lines = [line.strip() for line in text.splitlines()]
-    start = None
-    for index, line in enumerate(lines):
-        if line.startswith("intrinsic:"):
-            start = index + 1
-            break
-    if start is None:
-        raise ValueError("Missing intrinsic section in camera YAML.")
-
-    rows = []
-    for line in lines[start:]:
-        if line.startswith("- [") and line.endswith("]"):
-            row_text = line[3:-1]
-            row = [float(value.strip()) for value in row_text.split(",")]
-            rows.append(row)
-            if len(rows) == 3:
-                break
-    if len(rows) != 3:
-        raise ValueError("Failed to parse 3x3 intrinsic matrix.")
-    return np.array(rows, dtype=np.float64)
-
-
-def load_intrinsics(yaml_path: Path) -> np.ndarray:
-    if not yaml_path.exists():
-        raise FileNotFoundError(f"Camera intrinsics file not found: {yaml_path}")
-
-    text = yaml_path.read_text(encoding="utf-8")
-    try:
-        import yaml  # type: ignore
-
-        data = yaml.safe_load(text)
-        k = np.array(data["intrinsic"], dtype=np.float64)
-    except Exception:
-        k = parse_intrinsics_from_text(text)
-
-    if k.shape != (3, 3):
-        raise ValueError(f"Invalid intrinsic matrix shape: {k.shape}")
-    return k
-
-
-def scale_intrinsics(k: np.ndarray, scale: float) -> np.ndarray:
-    scaled = np.array(k, dtype=np.float64, copy=True)
-    scaled[0, 0] *= scale
-    scaled[1, 1] *= scale
-    scaled[0, 2] *= scale
-    scaled[1, 2] *= scale
-    return scaled
-
-
-def rotation_matrix_from_xyz_deg(rx_deg: float, ry_deg: float, rz_deg: float) -> np.ndarray:
-    rx, ry, rz = np.deg2rad([rx_deg, ry_deg, rz_deg])
-    cx, sx = np.cos(rx), np.sin(rx)
-    cy, sy = np.cos(ry), np.sin(ry)
-    cz, sz = np.cos(rz), np.sin(rz)
-
-    rx_m = np.array(
-        [[1.0, 0.0, 0.0], [0.0, cx, -sx], [0.0, sx, cx]], dtype=np.float64
-    )
-    ry_m = np.array(
-        [[cy, 0.0, sy], [0.0, 1.0, 0.0], [-sy, 0.0, cy]], dtype=np.float64
-    )
-    rz_m = np.array(
-        [[cz, -sz, 0.0], [sz, cz, 0.0], [0.0, 0.0, 1.0]], dtype=np.float64
-    )
-    return rz_m @ ry_m @ rx_m
-
-
-def depth_to_points(depth: np.ndarray, k: np.ndarray, stride: int) -> np.ndarray:
-    if stride < 1:
-        raise ValueError("stride must be >= 1")
-
-    sampled = np.asarray(depth, dtype=np.float64)[::stride, ::stride]
-    valid = np.isfinite(sampled) & (sampled > 0.0)
-    if not np.any(valid):
-        return np.empty((0, 3), dtype=np.float64)
-
-    ys, xs = np.indices(sampled.shape)
-    xs = xs.astype(np.float64) * float(stride)
-    ys = ys.astype(np.float64) * float(stride)
-
-    z = sampled[valid]
-    fx = float(k[0, 0])
-    fy = float(k[1, 1])
-    cx = float(k[0, 2])
-    cy = float(k[1, 2])
-
-    x = (xs[valid] - cx) * z / fx
-    y = (ys[valid] - cy) * z / fy
-    return np.stack((x, y, z), axis=1)
-
-
-def points_to_cloud(points: np.ndarray) -> o3d.geometry.PointCloud:
-    cloud = o3d.geometry.PointCloud()
-    cloud.points = o3d.utility.Vector3dVector(np.asarray(points, dtype=np.float64))
-    return cloud
-
-
-def prepare_cloud(points: np.ndarray, voxel_size: float) -> o3d.geometry.PointCloud:
-    cloud = points_to_cloud(points)
-    if len(cloud.points) == 0:
-        return cloud
-
-    if voxel_size > 0:
-        downsampled = cloud.voxel_down_sample(voxel_size)
-        if len(downsampled.points) > 0:
-            cloud = downsampled
-
-    if len(cloud.points) > 0:
-        cloud.estimate_normals(
-            o3d.geometry.KDTreeSearchParamHybrid(
-                radius=float(NORMAL_RADIUS),
-                max_nn=int(NORMAL_MAX_NN),
-            )
-        )
-        cloud.normalize_normals()
-
-    return cloud
-
-
-def load_model_cloud() -> o3d.geometry.PointCloud:
-    mesh = o3d.io.read_triangle_mesh(str(MODEL_PATH))
-    if mesh.is_empty():
-        raise ValueError(f"Failed to load STL mesh: {MODEL_PATH}")
-
-    mesh.scale(0.001, center=(0.0, 0.0, 0.0))
-    mesh.compute_vertex_normals()
-    model = mesh.sample_points_uniformly(number_of_points=int(MODEL_SAMPLE_POINTS))
-    if len(model.points) == 0:
-        raise ValueError(f"Failed to sample points from STL: {MODEL_PATH}")
-    return prepare_cloud(np.asarray(model.points), POINT_VOXEL_SIZE)
-
-
-def choose_camera(task_name: str) -> str:
-    if "left_chest_origin" in task_name:
-        return "left"
-    if "right_chest_origin" in task_name:
-        return "right"
-    raise ValueError(f"Cannot infer camera side from task name: {task_name}")
-
-
-def score_result(result: o3d.pipelines.registration.RegistrationResult) -> tuple[float, float]:
-    fitness = float(result.fitness)
-    rmse = float(result.inlier_rmse)
-    if not np.isfinite(fitness):
-        fitness = -np.inf
-    if not np.isfinite(rmse):
-        rmse = np.inf
-    return fitness, -rmse
-
-
-def search_initial_transform(
-    model: o3d.geometry.PointCloud,
-    observed: o3d.geometry.PointCloud,
-) -> tuple[np.ndarray, o3d.pipelines.registration.RegistrationResult, tuple[float, float, float]]:
-    model_center = np.asarray(model.get_center(), dtype=np.float64)
-    observed_center = np.asarray(observed.get_center(), dtype=np.float64)
-
-    best_result = None
-    best_transform = np.eye(4, dtype=np.float64)
-    best_rotation = (0.0, 0.0, 0.0)
-    best_score = (-np.inf, -np.inf)
-
-    criteria = o3d.pipelines.registration.ICPConvergenceCriteria(
-        max_iteration=int(SEARCH_MAX_ITER)
-    )
-    estimator = o3d.pipelines.registration.TransformationEstimationPointToPoint()
-
-    for rotation_spec in SEARCH_ROTATIONS:
-        rotation = rotation_matrix_from_xyz_deg(*rotation_spec)
-        init = np.eye(4, dtype=np.float64)
-        init[:3, :3] = rotation
-        init[:3, 3] = observed_center - rotation @ model_center
-
-        result = o3d.pipelines.registration.registration_icp(
-            model,
-            observed,
-            float(SEARCH_THRESHOLD),
-            init,
-            estimator,
-            criteria,
-        )
-
-        score = score_result(result)
-        if score > best_score:
-            best_score = score
-            best_result = result
-            best_transform = result.transformation
-            best_rotation = rotation_spec
-
-    if best_result is None:
-        raise RuntimeError("ICP search failed to produce a valid result.")
-
-    return best_transform, best_result, best_rotation
-
-
-def refine_transform(
-    model: o3d.geometry.PointCloud,
-    observed: o3d.geometry.PointCloud,
-    init: np.ndarray,
-) -> o3d.pipelines.registration.RegistrationResult:
-    criteria = o3d.pipelines.registration.ICPConvergenceCriteria(
-        max_iteration=int(FINAL_MAX_ITER)
-    )
-    estimator = o3d.pipelines.registration.TransformationEstimationPointToPlane()
-    return o3d.pipelines.registration.registration_icp(
-        model,
-        observed,
-        float(FINAL_THRESHOLD),
-        np.asarray(init, dtype=np.float64),
-        estimator,
-        criteria,
-    )
-
-
-def format_float(value: float) -> str:
-    text = f"{float(value):.6f}".rstrip("0").rstrip(".")
-    if text in {"-0", ""}:
-        text = "0"
-    if "." not in text:
-        text += ".0"
-    return text
-
-
-def format_matrix(matrix: np.ndarray) -> str:
-    matrix = np.asarray(matrix, dtype=np.float64)
-    rows = []
-    for index, row in enumerate(matrix):
-        row_text = ", ".join(format_float(value) for value in row)
-        if index == 0:
-            rows.append(f"[[{row_text}],")
-        elif index == len(matrix) - 1:
-            rows.append(f"    [{row_text}]]")
+def load_points(np_path):
+    pts = np.load(str(np_path))
+    if pts.ndim == 1:
+        if pts.size % 3 == 0:
+            pts = pts.reshape((-1, 3))
         else:
-            rows.append(f"    [{row_text}],")
-    return "\n".join(rows)
+            raise ValueError("Unsupported numpy shape for points: {}".format(pts.shape))
+    if pts.ndim == 2 and pts.shape[1] >= 3:
+        pts = pts[:, :3]
+    else:
+        raise ValueError("Point array must have shape (N,>=3). Got {}".format(pts.shape))
+    mask = np.isfinite(pts).all(axis=1)
+    pts = pts[mask]
+    return pts
 
 
-def write_result_file(task_dir: Path, loss: float, transform: np.ndarray) -> Path:
-    content = f"loss: {loss:.6f}\nT: {format_matrix(transform)}\n"
-    result_path = task_dir / "result.txt"
-    result_path.write_text(content, encoding="utf-8")
-    return result_path
+def prepare_pcd(points, voxel_size):
+    pcd = o3d.geometry.PointCloud()
+    pcd.points = o3d.utility.Vector3dVector(points)
+    if voxel_size and voxel_size > 0:
+        pcd = pcd.voxel_down_sample(voxel_size)
+    radius = max(voxel_size * 2.0, 0.01)
+    pcd.estimate_normals(search_param=o3d.geometry.KDTreeSearchParamHybrid(radius=radius, max_nn=30))
+    return pcd
 
 
-def load_task_dirs(task_name: str | None = None) -> list[Path]:
-    if task_name:
-        task_dir = RESULT_ROOT / task_name
-        if not task_dir.exists():
-            raise FileNotFoundError(f"Task directory not found: {task_dir}")
-        return [task_dir]
-
-    task_dirs = [
-        path
-        for path in sorted(RESULT_ROOT.iterdir())
-        if path.is_dir() and (path / "depth_mean.npy").exists()
-    ]
-    return task_dirs
+def load_and_sample_mesh(stl_path, sample_points, voxel_size):
+    mesh = o3d.io.read_triangle_mesh(str(stl_path))
+    if mesh.is_empty():
+        raise RuntimeError(f"Failed to load mesh: {stl_path}")
+    mesh.compute_vertex_normals()
+    mesh_pcd = mesh.sample_points_uniformly(number_of_points=sample_points)
+    if voxel_size and voxel_size > 0:
+        mesh_pcd = mesh_pcd.voxel_down_sample(voxel_size)
+    radius = max(voxel_size * 2.0, 0.01)
+    mesh_pcd.estimate_normals(search_param=o3d.geometry.KDTreeSearchParamHybrid(radius=radius, max_nn=30))
+    return mesh_pcd
 
 
-def align_task(task_dir: Path, model: o3d.geometry.PointCloud) -> tuple[float, np.ndarray, o3d.pipelines.registration.RegistrationResult]:
-    task_name = task_dir.name
-    camera_key = choose_camera(task_name)
-    intrinsics = scale_intrinsics(load_intrinsics(CAMERA_INTRINSICS[camera_key]), INTRINSIC_SCALE)
-
-    depth_path = task_dir / "depth_mean.npy"
-    if not depth_path.exists():
-        raise FileNotFoundError(f"Missing depth_mean.npy: {depth_path}")
-
-    depth = np.load(depth_path)
-    points = depth_to_points(depth, intrinsics, DEPTH_STRIDE)
-    if points.size == 0:
-        raise RuntimeError(f"No valid depth points in {depth_path}")
-
-    observed = prepare_cloud(points, POINT_VOXEL_SIZE)
-    if len(observed.points) == 0:
-        raise RuntimeError(f"Failed to build observed cloud for {task_name}")
-
-    init_transform, coarse_result, rotation_spec = search_initial_transform(model, observed)
-
-    try:
-        final_result = refine_transform(model, observed, init_transform)
-    except Exception:
-        final_result = coarse_result
-
-    loss = float(final_result.inlier_rmse)
-    result_path = write_result_file(task_dir, loss, final_result.transformation)
-
-    print(
-        f"[OK] {task_name}: camera={camera_key}, rotation={rotation_spec}, "
-        f"loss={loss:.6f}, fitness={final_result.fitness:.4f}, saved={result_path}"
-    )
-
-    return loss, final_result.transformation, final_result
+def write_result(transform, loss, out_path):
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    mat = np.array(transform)
+    with out_path.open("w", encoding="utf-8") as f:
+        f.write("transform metrix:\n")
+        f.write("[")
+        for i in range(4):
+            row = mat[i]
+            f.write("[")
+            f.write(", ".join([f"{float(x):.6f}" for x in row]))
+            f.write("]")
+            if i < 3:
+                f.write(",\n ")
+            else:
+                f.write("\n")
+        f.write("]\n")
+        f.write(f"loss: {float(loss):.5f}\n")
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser(description="Batch ICP alignment for depth_mean.npy tasks.")
-    parser.add_argument("--task", default="", help="Process only one task directory name.")
+def main():
+    parser = argparse.ArgumentParser(description="ICP align depth_mean.npy point cloud with STL model")
+    parser.add_argument("--base-dir", default=str(Path(__file__).resolve().parent), help="base directory where depth_mean.npy and STL are located")
+    parser.add_argument("--depth-file", default="depth_mean.npy", help="depth point cloud numpy file (relative to base-dir if not absolute)")
+    parser.add_argument("--stl-file", default="底盘.STL", help="STL model file (relative to base-dir if not absolute)")
+    parser.add_argument("--task-name", default="task", help="task name used for result subfolder")
+    parser.add_argument("--out-root", default="result", help="root folder for results (relative to base-dir)")
+    parser.add_argument("--voxel-size", type=float, default=0.005, help="voxel size for downsampling (meters)")
+    parser.add_argument("--sample-points", type=int, default=20000, help="number of points to sample from mesh")
+    parser.add_argument("--max-corr-coarse", type=float, default=0.05, help="max correspondence distance for coarse ICP")
+    parser.add_argument("--max-corr-fine", type=float, default=0.01, help="max correspondence distance for fine ICP")
     args = parser.parse_args()
 
-    if not MODEL_PATH.exists():
-        raise FileNotFoundError(f"STL model not found: {MODEL_PATH}")
+    base = Path(args.base_dir)
+    depth_path = Path(args.depth_file)
+    if not depth_path.is_absolute():
+        depth_path = base / depth_path
+    stl_path = Path(args.stl_file)
+    if not stl_path.is_absolute():
+        stl_path = base / stl_path
 
-    model = load_model_cloud()
-    task_dirs = load_task_dirs(args.task or None)
-    if not task_dirs:
-        raise RuntimeError(f"No task directories with depth_mean.npy found under {RESULT_ROOT}")
+    if not depth_path.exists():
+        print(f"Error: depth file not found: {depth_path}")
+        sys.exit(2)
+    if not stl_path.exists():
+        print(f"Error: stl file not found: {stl_path}")
+        sys.exit(2)
 
-    failures = []
-    for task_dir in task_dirs:
-        try:
-            align_task(task_dir, model)
-        except Exception as exc:
-            message = f"{task_dir.name}: {exc}"
-            print(f"[ERR] {message}")
-            failures.append(message)
+    print(f"Loading point cloud from {depth_path}")
+    points = load_points(depth_path)
+    print(f"Points loaded: {points.shape[0]}")
 
-    if failures:
-        raise RuntimeError("Some tasks failed: " + "; ".join(failures))
+    print(f"Preparing point cloud (voxel_size={args.voxel_size})")
+    target_pcd = prepare_pcd(points, args.voxel_size)
+
+    print(f"Loading and sampling mesh from {stl_path} (sample {args.sample_points} points)")
+    source_pcd = load_and_sample_mesh(stl_path, args.sample_points, args.voxel_size)
+
+    # initial translation to align centroids
+    src_np = np.asarray(source_pcd.points)
+    tgt_np = np.asarray(target_pcd.points)
+    if src_np.size == 0 or tgt_np.size == 0:
+        raise RuntimeError("Empty point cloud after loading/downsampling")
+    src_centroid = src_np.mean(axis=0)
+    tgt_centroid = tgt_np.mean(axis=0)
+    init_trans = np.eye(4)
+    init_trans[:3, 3] = tgt_centroid - src_centroid
+
+    print("Running coarse ICP...")
+    icp_coarse = o3d.pipelines.registration.registration_icp(
+        source_pcd, target_pcd, args.max_corr_coarse, init_trans,
+        o3d.pipelines.registration.TransformationEstimationPointToPoint()
+    )
+
+    print("Running fine ICP (point-to-plane)...")
+    icp_fine = o3d.pipelines.registration.registration_icp(
+        source_pcd, target_pcd, args.max_corr_fine, icp_coarse.transformation,
+        o3d.pipelines.registration.TransformationEstimationPointToPlane()
+    )
+
+    transform = icp_fine.transformation
+    loss = icp_fine.inlier_rmse
+
+    out_dir = base / args.out_root / args.task_name
+    out_file = out_dir / "result.txt"
+    print(f"Writing result to {out_file}")
+    write_result(transform, loss, out_file)
+
+    # also save npy for convenience
+    np.save(out_dir / "transform.npy", transform)
+
+    print("Done. Transform:")
+    np.set_printoptions(precision=6, suppress=True)
+    print(transform)
+    print(f"loss: {loss:.5f}")
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
 
