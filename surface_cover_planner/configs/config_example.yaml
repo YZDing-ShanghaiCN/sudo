@@ -1,0 +1,395 @@
+# Boustrophedon surface-cover planner — example config.
+#
+# Tuned to objects/table.glb (a thin slab: X in [-0.4, 0.4] m,
+# Y in [-0.005, 0.005] m, Z in [-0.75, 0.75] m, top face at y = 0.005 m).
+# Edit `polygon` to choose a different region.
+
+mesh:
+  # Path is resolved relative to the config file's directory (or pass an absolute path).
+  mesh_path: objects/table.glb
+  flip_normals: false
+
+  # Rigid transform applied to the mesh BEFORE all geometry / raycast work.
+  transform:
+    translation: [0.4, 0.0, 0.75]
+    # rotation_mode: 'quat' | 'euler_xyz_deg' | 'matrix'
+    rotation_mode: euler_xyz_deg
+    quat: [1.0, 0.0, 0.0, 0.0]            # [w, x, y, z]; used when rotation_mode == 'quat'
+    euler_xyz_deg: [90, 0, 0]        # roll/pitch/yaw (deg); used when rotation_mode == 'euler_xyz_deg'
+    matrix:                                # used when rotation_mode == 'matrix'
+      - [1, 0, 0]
+      - [0, 1, 0]
+      - [0, 0, 1]
+    scale: 1.0
+
+region:
+  # Coplanar 3D points (>= 3) defining the polygon boundary, in WORLD frame
+  # (i.e. after mesh.transform has been applied). The plane is taken directly
+  # from polygon[0..2] — points are assumed coplanar (no SVD, no fit).
+  #
+  # The polygon below is a 0.6 m x 1.2 m rectangle on the tabletop
+  # (y = 0.005, inset 0.1 m and 0.15 m from the edges).
+
+  # Actual region is 590 * 614
+  # polygon:
+  #   - [0.5, 0.2, 0.79]
+  #   - [0.5, 0.79, 0.79]
+  #   - [1.114, 0.79,  0.79]
+  #   - [1.114, 0.2,  0.79]
+
+  polygon:
+    - [0.5, 0.3, 0.75]
+    - [0.6, 0.3, 0.75]
+    - [0.6, 0.5, 0.75]
+    - [0.5, 0.5, 0.75]
+
+  
+
+pattern:
+  step_over: 0.05            # distance between adjacent passes (m)
+  point_spacing: 0.02        # waypoint spacing along each pass (m)
+  sweep_axis: v              # 'u' or 'v' (in the plane's local 2D frame; u = first polygon edge)
+  start_corner: uv_min       # uv_min | uv_max | u_min_v_max | u_max_v_min
+  serpentine: true           # alternate direction each pass
+
+  # Round the 180° corners between serpentine passes with a smooth arc that
+  # sits INSIDE the polygon. Each row leg is trimmed back by `trim`, then a
+  # half-circle (radius forced to step_over/2 by tangent-matching geometry)
+  # is sampled between the trimmed ends. With trim = step_over/2, the arc
+  # peaks exactly on the polygon edge; larger trim moves the arc inward.
+  turn:
+    enabled: true            # set false to keep sharp 180° turns
+    shape: half_circle       # only 'half_circle' is implemented today
+    radius: null             # m; null → step_over/2 (forced for half_circle)
+    trim: null               # m; null → step_over/2 (must be ≥ step_over/2)
+    point_spacing: null      # m; null → pattern.point_spacing / 2 (used only when num_points is null)
+    num_points: 8            # # of interior arc samples (excluding row endpoints).
+                             # When set, overrides point_spacing — angles are evenly
+                             # spaced in (0, π). null → fall back to point_spacing.
+
+tcp:
+  # 'align_z_to_normal': tool Z = -outward_surface_normal (Z points INTO the surface).
+  # 'fixed_quat': use the supplied quaternion verbatim for every waypoint.
+  # robot_check seeds at the first waypoint with the canonical aligned quat,
+  # then walks forward trying the previous waypoint's quat first; on failure
+  # it falls back to a ±1° (roll, pitch, yaw) local search.
+  rotation_mode: align_z_to_normal
+
+  yaw_deg: 0.0                          # yaw (deg) around tool Z (align_z_to_normal)
+  yaw_reference_axis: [1.0, 0.0, 0.0]   # world axis used as the yaw=0 reference
+
+  fixed_quat: [1.0, 0.0, 0.0, 0.0]      # [w, x, y, z]; only used when rotation_mode == 'fixed_quat'
+
+  standoff: 0.00            # +outward-normal offset (m); positive = away from surface
+
+  # OPTIONAL: rigid transform from gripper TCP frame (FRAME_TACTILE_L/R) to a
+  # user-defined tool tip frame. The planner generates poses for the *tool tip*;
+  # robot_check applies inv(this) when building IK targets and applies this when
+  # reporting the achieved tool position / Cartesian deviation. The output JSON's
+  # waypoint position/quaternion remain tool-tip poses; metadata.tool_offset_4x4
+  # carries the 4x4 so consumers can recover gripper poses if they need to.
+  # Default = identity (omit this block, or set translation=[0,0,0] + identity rotation).
+  tool_offset:
+    translation: [0.0, 0.0, 0.0]            # in gripper TCP frame (m)
+    rotation_mode: quat                     # 'quat' | 'euler_xyz_deg' | 'matrix'
+    quat: [1.0, 0.0, 0.0, 0.0]              # [w, x, y, z]
+    euler_xyz_deg: [0, 0, 0]                # used when rotation_mode == 'euler_xyz_deg'
+    matrix:                                 # used when rotation_mode == 'matrix'
+      - [1, 0, 0]
+      - [0, 1, 0]
+      - [0, 0, 1]
+
+output:
+  # Resolved relative to the config file's directory (or pass an absolute path).
+  json_path: outputs/example_trajectory.json
+
+robot:
+  # Robot feasibility check. When enabled, slerp-densifies the TCP trajectory
+  # at step = ee_speed / hz, runs analytical arm-only IK with continuity +
+  # self/wall-collision rejection, validates Cartesian deviation, and checks
+  # arm joint velocities. Torso (rail+waist) and the off-arm are FROZEN at
+  # initial_q for the entire trajectory. Requires the SudoDeploy docker
+  # container (provides ampl, wbc_py, RoboSkill).
+  enabled: true
+
+  arm: left_arm                   # 'left_arm' or 'right_arm'
+  hz: 30                           # control rate (Hz)
+  ee_speed: 0.05                   # m/s — used to densify slerp
+  min_waypoints: 2                 # minimum slerp samples per segment
+  nb_redundant_search: 512         # IK redundancy sweep size
+  max_cartesian_deviation: 0.002   # m — abort segment when IK drifts past this
+  ignore_rotation: false           # reserved (kept for parity with the skill)
+  hbmp_arm_left: hb11_left
+  hbmp_arm_right: hb11_right
+  hbmp_torso: hb11_torso
+
+  # AABB collision walls passed to hbmp_agent.set_wall().
+  wall:
+    x: [0.0, 1.5]
+    y: [-1.0, 1.0]
+    z: [0.6, 1.8]
+
+  # Optional convex mesh held by the active arm's gripper. When set, every
+  # Phase 1-4 collision query also checks the tool against robot links and
+  # world obstacles. The pose tracks the TCP frame (*_link_tactile_center)
+  # composed with `local_offset` (4x4 in TCP frame). `ignore_links` is the
+  # list of robot links the broad-phase should NOT check against the tool —
+  # default (null) auto-ignores the last 3 links of the active arm
+  # (arm_5/6/7 + hand/tactile) since the wrist physically holds the tool.
+  # Set to [] to keep every default pair active.
+  attached_tool: null
+  # attached_tool:
+  #   path: /home/yuzeren/sudo/ws/SudoDeploy/sandbox/zyu/data/objects/rigids/meshes/convex/tube.obj
+  #   local_offset:
+  #     translation: [0.0, 0.0, 0.0]
+  #     rotation_mode: quat
+  #     quat: [1.0, 0.0, 0.0, 0.0]
+  #   ignore_links: null
+
+  # Optional list of fixed world-frame convex obstacles, each one added to
+  # the colcvx scene at setup with the given pose. `name` must be unique
+  # within the scene (must not collide with any robot link name or
+  # "attached_tool"). Pose schema mirrors `tcp.tool_offset`.
+  world_obstacles: []
+  # world_obstacles:
+  #   - name: battery_cage
+  #     path: /home/yuzeren/sudo/ws/SudoDeploy/sandbox/zyu/data/objects/rigids/meshes/convex/battery_cage.obj
+  #     translation: [0.7, 0.0, 0.75]
+  #     rotation_mode: quat
+  #     quat: [1.0, 0.0, 0.0, 0.0]
+
+  # REQUIRED: 16-DOF starting state — [rail, waist, left_arm(7), right_arm(7)].
+  # No implicit default; the user must commit to a starting pose.
+  initial_q: [0.15, 0.3, 0.8, 0.64, 1.5, -1.65, -0.8, -0.8, 0.6,
+              0.8, 0.64, 1.5, -1.65, -0.8, -0.8, 0.6]
+
+  # 7 arm-DOF velocity limits (rad/s). Torso/rail are frozen and not checked.
+  # Set to null for the default of [1.0]*7.
+  joint_vel_limits: 1
+
+  # Yaw offsets (deg) around tool Z (= -surface_normal in align_z_to_normal
+  # mode) seeding the per-waypoint IK pool that the Phase 1 Weighted A*
+  # search expands over. The 0° entry is the canonical / planner-assigned
+  # quat; non-zero entries widen the pool. Default = 18 values at 10°
+  # spacing covering one half-circle (0°–170°), suitable for tools that are
+  # roughly symmetric about Z. Override with a full-circle list (e.g.,
+  # [-180, -170, …, 170]) for tools that are not Z-symmetric, or with a
+  # narrower list to speed up pool construction.
+  yaw_search_offsets_deg: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90,
+                            100, 110, 120, 130, 140, 150, 160, 170]
+
+  # Pitch offsets (deg) around tool Y — taken cartesian-product with the yaw
+  # offsets above. Useful for tools whose contact point sits off-axis (a
+  # small pitch rotates the contact angle without leaving the surface). Total
+  # IK calls per waypoint scale as len(yaw) * len(pitch) * nb_redundant_search,
+  # so widen sparingly. Default [0] = no pitch search.
+  pitch_search_offsets_deg: [-10, 0, 10]
+
+  # Phase 2 densification method.
+  #   slerp        — legacy: uniform-arc-length SLERP + per-step continuity
+  #                  IK at `step = ee_speed / hz`. `t_global` is path-time
+  #                  (Σ seg_dist / N) until Phase 4 restamps it. Velocity
+  #                  and acceleration tracking the Jacobian; unbounded
+  #                  acceleration at user-waypoint boundaries.
+  #   topp_smooth  — default: same SLERP + per-step IK pipeline at the
+  #                  same geometric resolution, but the resulting joint
+  #                  path is retimed with an analytic forward-backward
+  #                  TOPP pass (Bobrow / Pham) over (v_max, a_max), then
+  #                  resampled onto a uniform `1 / hz` grid. Emits
+  #                  control-time `t_global = k / hz` and a vel + accel
+  #                  feasible joint trajectory by construction. Requires
+  #                  `joint_accel_limits`.
+  densify:
+    method: topp_smooth
+    # Per-joint acceleration cap (rad/s²). Scalar broadcasts to length-7,
+    # or supply a length-7 list. Required when method == topp_smooth.
+    # 2.0 rad/s² gives a ~0.5s ramp from rest at v_max = 1 rad/s.
+    joint_accel_limits: 2.0
+    # Fractional slack below v_max / a_max (mirrors the `vel_headroom` knob
+    # in `optimize/retime.py:topp_retime`). 5% leaves the downstream
+    # joint-speed check + Phase 4 / Phase 5 some room without forcing
+    # corrective work.
+    vel_headroom: 0.05
+    accel_headroom: 0.05
+    # Per-segment time floor inside TOPP (seconds). Sub-`1/hz` so TOPP can
+    # outpace control rate where slack exists; the uniform-grid resampler
+    # then drops back to `1/hz` for emission. Setting this below the
+    # control-rate dt is also what guards the degenerate endpoint segments
+    # where β = 0.
+    dt_min: 0.005
+
+  # Phase 1 search knobs.
+  search:
+    # Phase 1 search strategy:
+    #   astar         — weighted A* with endpoint-only collision (default;
+    #                   uses heuristic_weight, heuristic_base_cost,
+    #                   jump_threshold). Swept collisions between
+    #                   adjacent IK picks fall through to Phase 2's
+    #                   dense slerp endpoint checks.
+    #   kshortest_dp  — iterative-mask DP: pre-cache per-layer edge-cost
+    #                   matrices, single-best forward DP per iteration,
+    #                   endpoint-collision-check the resulting path,
+    #                   mask colliding nodes, retry up to
+    #                   max_iterations times.
+    search_method: astar
+    # Iteration cap for the iterative-mask DP loop (kshortest_dp only).
+    # Raise when scenes have many local collisions; lower for tighter
+    # wall-clock budgets. Ignored when search_method == astar.
+    max_iterations: 20
+    # Heuristic weight W: f = g + W·(layers_remaining)·heuristic_base_cost.
+    # W=1 is admissible (optimal but slower); W>>1 turns the search greedy
+    # toward the goal layer. 5.0 is a good balance. (astar only)
+    heuristic_weight: 5.0
+    # Per-remaining-layer base cost (rad). Pairs with heuristic_weight.
+    # (astar only)
+    heuristic_base_cost: 0.1
+    # L_inf joint-jump prune (rad) between consecutive layers; edges where
+    # max|q_next - q_cur| exceeds this are skipped before being pushed.
+    # Tighten to forbid joint flips, loosen if too many waypoints are
+    # pruned away. (shared by astar and kshortest_dp)
+    jump_threshold: 1.5
+    # Soft acceleration cost added to the DP edge cost:
+    #   cost = weighted_L2(q_par → q_cur) +
+    #          accel_weight · weighted_L2(q_grandparent − 2·q_par + q_cur)
+    # Grandparent is the previous layer's lazy argmin parent (DP state
+    # stays (L, j); per-layer work stays O(P²)). Penalises IK-branch
+    # reversals the dist-only cost can't see. 0.0 (default) is byte-
+    # equivalent to the dist-only DP. Try 0.5–2.0 for a noticeable
+    # smoothness effect. (kshortest_dp only; astar ignores)
+    accel_weight: 0.0
+    # When true, Phase 1 anchors the IK chain at initial_q[arm_indices]:
+    # layer-0 candidates farther than `jump_threshold` (L_inf) from the
+    # initial arm pose are pruned, surviving candidates seed the search
+    # with cost = weighted-L2 distance from the anchor, and an empty
+    # post-prune layer-0 pool raises RuntimeError (precondition violation
+    # — the robot wasn't actually close to wp_0). Use when the executor
+    # will move into wp_0 directly from initial_q without a transit plan.
+    # Both astar and kshortest_dp honour this flag. Default false = legacy
+    # behaviour (q_arm[0] picked purely by chain cost).
+    keep_init: false
+
+  # Phase 3 — jerk-region refinement (greedy continuity-preferred IK).
+  # After Phase 2, walk the densified q_trajectory to find sub-step pairs
+  # where |Δq_arm|∞ exceeds `jump_threshold`, group flagged indices into
+  # anchored regions (padded by `region_buffer` on each side). For each
+  # region, walk interior steps left-to-right; at each step build a relaxed
+  # pool by perturbing the slerp-canonical target (cartesian product of
+  # yaw × pitch × xy) and pick the q_arm with the smallest weighted L2
+  # distance to the previous step's q_arm that is collision-free
+  # (sort then early-exit). xy offsets are in the surface PlaneFrame (u, v)
+  # axes (passed in from PlanResult.plane). When a step's pool is empty
+  # or every entry self-collides, the Phase 2 entry is kept and the walk
+  # continues — Phase 3 never makes the trajectory worse.
+  #
+  # Cost notes: IK calls per interior step ≈ n_yaw·n_pitch·n_xy·
+  # nb_redundant_search. With the defaults below this is 11·11·121·8 ≈
+  # 117k IK invocations per interior step. To shrink the budget, drop
+  # `xy_offsets_m` to a 5-point cross or null out yaw/pitch.
+  refine:
+    enabled: true
+    # rad — destination index i is flagged when max|q_arm[i]-q_arm[i-1]|>this.
+    jump_threshold: 0.1
+    # # of anchor steps padded on each side of a flagged run (gives the
+    # greedy walk a few buffer steps to converge before the end anchor).
+    region_buffer: 2
+    # Yaw offsets (deg) around tool Z applied to each interior step's
+    # planner-canonical quat. Default = 11 samples at 1° spacing covering
+    # ±5°. Set to null to use the default.
+    yaw_offsets_deg: [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]
+    # Pitch offsets (deg) around tool Y. Same default as yaw.
+    pitch_offsets_deg: [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]
+    # xy offsets (m) in the surface PlaneFrame (u, v) — per-step
+    # cartesian-product. Default = ±1 cm grid at 0.2 cm spacing
+    # (11 × 11 = 121 (du, dv) pairs). Set to null for the default, or
+    # narrow to e.g. [[0,0]] to disable xy relaxation.
+    xy_offsets_m: null
+    # Per-perturbed-pose IK redundant-search size. Kept small because the
+    # outer yaw/pitch/xy grid already supplies massive coverage.
+    nb_redundant_search: 8
+
+  # Phase 4 — joint-velocity resampling. After Phase 3, walk the densified
+  # q_trajectory and splice linearly-interpolated joint-space samples into
+  # adjacent pairs whose per-step joint deltas violate `joint_vel_limits`
+  # at control rate `1/dt`. Each violating pair is split into
+  # ceil(worst_ratio) equal sub-steps. Achieved fields on inserts come
+  # from FK on the lerped q_full so cartesian_deviation stays honest.
+  # Trajectory length grows; control rate stays at hz. Pre-Phase-4
+  # `t_global` was path-time; post-Phase-4 every entry is re-stamped to
+  # `i * dt` (control-rate time, which is what the velocity check at
+  # np.diff/dt already assumes).
+  resample:
+    enabled: false
+    # When true, every inserted q_full is checked for self/wall collision;
+    # collisions are logged as `kind="resample_collision"` failures but the
+    # point is kept (so the trajectory stays contiguous). Default false:
+    # with 0.1 rad/s × dt, sub-step deltas are tiny and collisions
+    # uncommon. Enable when resampling trajectories with large unrefined
+    # Phase 1 jumps where straight-line joint-interp could clip an obstacle.
+    check_collision: false
+    # Safety cap: abort resample (leaving q_trajectory untouched) and emit
+    # `kind="resample_overflow"` if projected post-resample length exceeds
+    # max_expansion * len_before. Protects against a misconfigured
+    # joint_vel_limits (e.g. 0.001 rad/s) blowing up to millions of samples.
+    max_expansion: 1000
+    # Per-joint speed cap (rad/s) Phase 4 targets when picking insert
+    # counts. Accepts a scalar (broadcast to all 7 arm DOFs) or a length-7
+    # list. When null, falls back to the top-level `joint_vel_limits`. Set
+    # tighter than the hardware limit to slow the executed trajectory below
+    # what the velocity check enforces — e.g. `0.1` for a smooth surface
+    # sweep while the velocity check stays at the [1.0]*7 hardware default.
+    joint_vel_limits: null
+
+
+# ---------------------------------------------------------------------------
+# Optional Phase 5 — trajectory optimizer (the former `sandbox/zyu/trajopt`).
+#
+# When `enabled: true` and the planner produced a usable q_trajectory
+# (i.e. `robot.enabled: true` above), `plan.py` hands the planner's
+# CheckResult directly to `optimize.solve()` in-memory (no temp warm-start
+# JSON). To run the optimizer standalone against an existing planner JSON,
+# set `input.warmstart_json` at the top of this config; that mode skips
+# the planner entirely.
+# ---------------------------------------------------------------------------
+
+# `input` is only consulted in optimizer-only mode. Leave commented in
+# end-to-end mode; the WarmStart bundle is built from the planner's
+# in-memory CheckResult instead.
+# input:
+#   warmstart_json: outputs/example_trajectory_20260513_185747.json
+#   decimate_stride: 1   # keep every Nth row; final row is always retained
+
+optimize:
+  # Off by default — flip to true once you have a `robot.enabled: true`
+  # planner pass that produces a feasible warm-start.
+  enabled: false
+
+  weights:
+    time: 1.0
+    jerk: 10.0
+    track_pos: 100.0
+    track_quat: 0.1
+    collision: 0.0           # legacy soft-cost weight; collision is a hard
+                              # constraint, kept here for back-compat only.
+
+  collision:
+    d_safe: 0.005             # m, sphere-BVH SDF hard floor (no auto-relax —
+                              # the solver raises if the warm-start violates it)
+    d_warn: 0.050             # m, broad-phase margin
+    top_k:  1                 # nearest contacts per macro-region
+
+  bounds:
+    trust_radius: 0.05        # rad, |q - q_warm|_inf box
+    dt_min: 0.01              # s, per-segment lower bound
+    dt_max: 1.0               # s
+    max_xy_deviation: 0.030   # m, in-plane cart cap (loose)
+    max_z_deviation:  0.005   # m, out-of-plane cap (strict, safety-critical)
+    pin_endpoints: true       # tight box on q[0] and q[N-1]
+
+  solver:
+    # `ipopt` is the default. Requires `pip install cyipopt`; when missing,
+    # the solver silently falls back to scipy's `trust-constr`.
+    method: ipopt
+    max_iters: 100
+    xtol: 1.0e-6
+    gtol: 1.0e-6
+    verbose: 1

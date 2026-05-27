@@ -1,0 +1,80 @@
+# Optimizer-only example: load a surface_cover_planner warm-start JSON and
+# refine it with the trajectory-optimization subpackage. Skips the planner
+# phases (boustrophedon raster + Phase 1-4 IK pipeline) entirely.
+#
+# Run with:
+#   cd tools/surface_cover_planner
+#   python3 plan.py --config configs/config_optimize_only.yaml
+#
+# Requires the SudoDeploy docker container (ampl + ampl_motion). IPOPT is
+# the default solver; `pip install cyipopt` to enable it (otherwise the
+# solver silently falls back to scipy's `trust-constr`).
+
+input:
+  # Resolved relative to this config file's directory. Point at any
+  # `robot.enabled: true` planner output JSON (must contain `q_trajectory`).
+  warmstart_json: ../outputs/example_trajectory.json
+  # Keep every Nth surviving q_trajectory row; the final row is always
+  # retained so endpoint pinning hits the true terminal pose. Stride 1 =
+  # no subsampling. Phase 4 typically emits 4k-20k points — pick a stride
+  # that puts N in the 30-100 range for a tractable solve.
+  decimate_stride: 1
+
+robot:
+  # Most fields are optional — when omitted, the warmstart JSON's metadata
+  # is used. Override here only when you need to deviate from how the
+  # warm-start was built.
+  arm: left_arm
+  hbmp_arm_left: hb11_left
+  hbmp_arm_right: hb11_right
+  hbmp_torso: hb11_torso
+  initial_q: null            # falls back to warmstart `q_full[0]`
+  joint_vel_limits: 1.0      # rad/s (scalar broadcasts to all 7 arm DOFs)
+  q_lo_arm: null             # default +/- pi; trust region keeps motion local
+  q_hi_arm: null
+  wall:
+    x: [0.0, 1.5]
+    y: [-1.0, 1.0]
+    z: [0.6, 1.8]
+  # tool_offset:
+  #   translation: [0.0, 0.0, 0.0]
+  #   rotation_mode: quat
+  #   quat: [1.0, 0.0, 0.0, 0.0]
+
+output:
+  json_path: outputs/optimize_only.json
+  # densify_dt: 0.05         # optional post-solve uniform-rate densification
+
+optimize:
+  enabled: true
+
+  weights:
+    time: 1.0
+    jerk: 10.0
+    track_pos: 100.0
+    track_quat: 0.1
+    collision: 0.0           # legacy soft-cost weight; collision is a hard
+                              # constraint, kept here for back-compat only.
+
+  collision:
+    d_safe: 0.005             # m, sphere-BVH SDF hard floor (no auto-relax —
+                              # the solver raises if the warm-start violates it)
+    d_warn: 0.050             # m, broad-phase margin
+    top_k:  1                 # nearest contacts per macro-region
+
+  bounds:
+    trust_radius: 0.05        # rad, |q - q_warm|_inf box
+    dt_min: 0.01              # s, per-segment lower bound
+    dt_max: 1.0               # s
+    max_xy_deviation: 0.030   # m, in-plane cart cap (loose)
+    max_z_deviation:  0.005   # m, out-of-plane cap (strict, safety-critical)
+    pin_endpoints: true
+
+  solver:
+    method: ipopt             # `trust-constr` is the fallback when cyipopt
+                              # isn't installed; otherwise IPOPT's restoration
+                              # phase handles this problem materially better.
+    max_iters: 100
+    xtol: 1.0e-6
+    gtol: 1.0e-6
+    verbose: 1

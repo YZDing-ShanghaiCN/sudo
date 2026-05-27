@@ -1,0 +1,144 @@
+# Boustrophedon surface-cover planner — waic config with attached-tool
+# and world-obstacle collision checking enabled. Same scene as
+# config_waic.yaml; the only differences are the two new
+# `robot.attached_tool` and `robot.world_obstacles` blocks below.
+
+mesh:
+  # Path is resolved relative to the config file's directory (or pass an absolute path).
+  mesh_path: objects/table.glb
+  flip_normals: false
+
+  # Rigid transform applied to the mesh BEFORE all geometry / raycast work.
+  transform:
+    translation: [0.4, 0.0, 0.75]
+    # rotation_mode: 'quat' | 'euler_xyz_deg' | 'matrix'
+    rotation_mode: euler_xyz_deg
+    quat: [1.0, 0.0, 0.0, 0.0]            # [w, x, y, z]; used when rotation_mode == 'quat'
+    euler_xyz_deg: [90, 0, 0]        # roll/pitch/yaw (deg); used when rotation_mode == 'euler_xyz_deg'
+    matrix:                                # used when rotation_mode == 'matrix'
+      - [1, 0, 0]
+      - [0, 1, 0]
+      - [0, 0, 1]
+    scale: 1.0
+
+region:
+  # Coplanar 3D points (>= 3) defining the polygon boundary, in WORLD frame
+  # (i.e. after mesh.transform has been applied). The plane is taken directly
+  # from polygon[0..2] — points are assumed coplanar (no SVD, no fit).
+  polygon:
+    - [0.62, -0.1, 0.76]
+    - [0.68, -0.1, 0.76]
+    - [0.68, 0.1, 0.76]
+    - [0.62, 0.1, 0.76]
+    # - [0.59, -0.01, 0.8]
+    # - [0.61, -0.01, 0.8]
+    # - [0.61, 0.01, 0.8]
+    # - [0.59, 0.01, 0.8]
+
+pattern:
+  step_over: 0.025            # distance between adjacent passes (m)
+  point_spacing: 0.05        # waypoint spacing along each pass (m)
+  sweep_axis: v              # 'u' or 'v' (in the plane's local 2D frame; u = first polygon edge)
+  start_corner: uv_min       # uv_min | uv_max | u_min_v_max | u_max_v_min
+  serpentine: true           # alternate direction each pass
+
+tcp:
+  rotation_mode: align_z_to_normal
+
+  yaw_deg: 0.0
+  yaw_reference_axis: [1.0, 0.0, 0.0]
+
+  fixed_quat: [1.0, 0.0, 0.0, 0.0]
+
+  standoff: 0.00
+
+  tool_offset:     
+    translation: [0.041, -0.067, 0.24]
+    rotation_mode: euler_xyz_deg
+    quat: [1.0, 0.0, 0.0, 0.0]
+    euler_xyz_deg: [20, 0, 0]
+    matrix:
+      - [1, 0, 0]
+      - [0, 1, 0]
+      - [0, 0, 1]
+
+output:
+  json_path: outputs/waic_collision
+
+robot:
+  enabled: true
+
+  arm: left_arm
+  hz: 30
+  ee_speed: 0.05
+  min_waypoints: 2
+  nb_redundant_search: 32
+  max_cartesian_deviation: 0.002
+  ignore_rotation: false
+  hbmp_arm_left: hb11_left
+  hbmp_arm_right: hb11_right
+  hbmp_torso: hb11_torso
+
+  wall:
+    x: [0.0, 1.5]
+    y: [-1.0, 1.0]
+    z: [0.6, 1.8]
+
+  # ===== NEW: attached-tool collision check =====
+  # Convex mesh held by the active arm's gripper. Pose tracks the TCP
+  # frame (`left_link_tactile_center` for arm=left_arm) composed with
+  # `local_offset` (4x4 in TCP frame). `ignore_links: null` auto-ignores
+  # the last 3 arm links (arm_5/6/7 + hand/tactile) of the active arm.
+  # Adjust `local_offset` to move the tube relative to the gripper.
+  attached_tool:
+    path: Downloads/tube.obj
+    local_offset:
+      translation: [0.0, 0, 0.0]
+      rotation_mode: quat
+      quat: [1.0, 0.0, 0.0, 0.0]
+    ignore_links: null
+
+  # ===== NEW: fixed world-frame convex obstacles =====
+  # Each entry is registered once at setup; pose is never updated.
+  # Adjust `translation` / `quat` to position the cage where the
+  # battery_cage actually sits in the cell.
+  world_obstacles:
+    - name: battery_cage
+      path: Downloads/my_cube_3.obj
+      translation: [0.68, 0.19, 0.75]
+      rotation_mode: quat
+      quat: [0.5, 0.5, -0.5, -0.5]
+
+  initial_q: [0.1, 0.3, 0.8, 0.64, 1.5, -1.65, -0.8, -0.8, 0.6,
+              0.8, 0.64, 1.5, -1.65, -0.8, -0.8, 0.6]
+
+  joint_vel_limits: null
+
+  yaw_search_offsets_deg: [0]
+  pitch_search_offsets_deg: [0]
+  roll_search_offsets_deg: [0, -10, -20]
+
+  densify:
+    method: topp_smooth
+    joint_accel_limits: 2.0
+    vel_headroom: 0.05
+    accel_headroom: 0.05
+    dt_min: 0.005
+
+  search:
+    search_method: kshortest_dp
+    max_iterations: 20000
+    heuristic_weight: 4
+    heuristic_base_cost: 0.1
+    jump_threshold: 1.5
+    accel_weight: 0.3
+    # joint_preference_filters:
+    #   3: [0, null]
+
+  save_all_ik_results: false
+
+  resample:
+    enabled: false
+    check_collision: false
+    max_expansion: 1000
+    joint_vel_limits: 0.1

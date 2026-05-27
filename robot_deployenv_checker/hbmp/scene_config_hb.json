@@ -1,0 +1,79 @@
+{
+    "objects": [
+        {
+            "name": "t2da2",
+            "asset_path": "./assets/hb11/urdf_c.urdf",
+            "task_path": null,
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "wxyz": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": 0.25,
+            "type": "robot"
+        },
+        {
+            "name": "left_tool0",
+            "asset_path": "./assets/gripper/meshes/visual/gripper.glb",
+            "collision_path": "./assets/gripper/meshes/convex/gripper.ply",
+            "task_path": null,
+            "position": [
+                0.707423202000947,
+                0.37030486860326864,
+                0.9211945019133098
+            ],
+            "wxyz": [
+                0.37168650562298966,
+                0.5733416260098282,
+                0.5123673177809441,
+                0.520200204817471
+            ],
+            "scale": 0.15,
+            "type": "object"
+        },
+        {
+            "name": "right_tool0",
+            "asset_path": "./assets/gripper/meshes/visual/gripper.glb",
+            "collision_path": "./assets/gripper/meshes/convex/gripper.ply",
+            "task_path": null,
+            "position": [
+                0.7024662951642542,
+                -0.35833993078796575,
+                0.9410498638387187
+            ],
+            "wxyz": [
+                0.3946913384096735,
+                0.6199829727332935,
+                0.5419549218444559,
+                0.4075840080201116
+            ],
+            "scale": 0.15,
+            "type": "object"
+        }
+    ],
+    "camera": {
+        "position": [
+            13.490914138274222,
+            -0.5785367630640187,
+            1.8576110068723632
+        ],
+        "wxyz": [
+            -0.476543375482027,
+            0.543744187703083,
+            0.5195405113581791,
+            -0.45533100781847935
+        ],
+        "fov": 0.1636246173744684,
+        "look_at": [
+            0.5390091854860704,
+            0.011420441455303285,
+            0.14225696004724225
+        ]
+    }
+}

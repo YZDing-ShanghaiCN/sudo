@@ -1,0 +1,195 @@
+# End-to-end: complete planner search + trajectory optimization.
+#
+# Pipeline:
+#   1) Boustrophedon raster + corner rounding  (mesh + region + pattern + tcp)
+#   2) Phase 1 — kshortest_dp IK search over per-waypoint pools
+#   3) Phase 2 — slerp densification with continuity-preferred IK
+#   4) (optional) Phase 3 — jerk-region refinement  (refine.enabled: true)
+#   5) Phase 5 — `optimize/` SCO: minimize time + jerk under hard cart /
+#                velocity / self-collision constraints (IPOPT default).
+#
+# Phase 4 (joint-velocity resampling) is intentionally OFF: the optimizer's
+# TOPP pre-retime + per-segment dt do a better job of velocity scheduling
+# than linear interpolation, and Phase 4's 10–100x trajectory expansion
+# would blow up the optimizer's per-iter FK cost.
+#
+# Run inside the SudoDeploy container:
+#   cd tools/surface_cover_planner
+#   pip install --force-reinstall --no-deps \
+#       optimize/ampl_motion-0.0.2-py3-none-any.whl    # once per container
+#   pip install cyipopt                                 # optional, recommended
+#   python plan.py --config configs/config_complete.yaml
+
+mesh:
+  mesh_path: objects/table.glb
+  flip_normals: false
+  transform:
+    translation: [0.4, 0.0, 0.75]
+    rotation_mode: euler_xyz_deg
+    quat: [1.0, 0.0, 0.0, 0.0]
+    euler_xyz_deg: [90, 0, 0]
+    matrix:
+      - [1, 0, 0]
+      - [0, 1, 0]
+      - [0, 0, 1]
+    scale: 1.0
+
+region:
+  # 0.65 m x 0.55 m rectangle on the tabletop (y = 0.75 post-transform).
+  polygon:
+    - [0.72, 0.2, 0.78]
+    - [0.96, 0.2, 0.78]
+    - [0.96, 0.7, 0.78]
+    - [0.72, 0.7, 0.78]
+
+pattern:
+  step_over: 0.05
+  point_spacing: 0.05
+  sweep_axis: u
+  start_corner: uv_min
+  serpentine: true
+
+tcp:
+  rotation_mode: align_z_to_normal
+  yaw_deg: 0.0
+  yaw_reference_axis: [1.0, 0.0, 0.0]
+  fixed_quat: [1.0, 0.0, 0.0, 0.0]
+  standoff: 0.00
+  tool_offset:
+    translation: [0.01657515, -0.02745427, 0.32567621]
+    rotation_mode: euler_xyz_deg
+    quat: [1.0, 0.0, 0.0, 0.0]
+    euler_xyz_deg: [68, 0, 0]
+    matrix:
+      - [1, 0, 0]
+      - [0, 1, 0]
+      - [0, 0, 1]
+
+output:
+  # Planner JSON lands at `<json_path>_<ts>.json`; the optimizer's JSON
+  # alongside it at `<json_path>_<ts>_optimized_<ts>.json`.
+  json_path: outputs/0520_complete
+  # Post-optimize densification onto a uniform control-rate grid. Drop or
+  # set to null to skip; otherwise writes a `*_dense.json` sidecar at the
+  # optimizer's output.
+  densify_dt: 0.05
+
+robot:
+  # ---- Planner feasibility check (Phases 1–4 of robot_check) ----
+  enabled: true
+  arm: left_arm
+  hz: 30
+  ee_speed: 0.05
+  min_waypoints: 2
+  nb_redundant_search: 128
+  max_cartesian_deviation: 0.002
+  ignore_rotation: false
+  hbmp_arm_left: hb11_left
+  hbmp_arm_right: hb11_right
+  hbmp_torso: hb11_torso
+
+  wall:
+    x: [0.0, 1.5]
+    y: [-1.0, 1.0]
+    z: [0.6, 1.8]
+
+  # 16-DOF starting state — [rail, waist, left_arm(7), right_arm(7)].
+  initial_q: [0.15, 0.306, 0.8, 0.64, 1.5, -1.65, -0.8, -0.8, 0.6,
+              0.8, 0.64, 1.5, -1.65, -0.8, -0.8, 0.6]
+
+  # 7-DOF arm velocity caps (rad/s). Also consumed by the optimizer as
+  # the `vel` LinearConstraint.
+  joint_vel_limits: 1.0
+
+  # Phase 1 IK pool seeding.
+  yaw_search_offsets_deg: [-0, -30, -60, -90, -120, -150, -180]
+  pitch_search_offsets_deg: [0, 5, 10, 15, 20, 30]
+  densify:
+    method: topp_smooth
+    # Required when method == topp_smooth. Scalar broadcasts to 7. 2.0 rad/s²
+    # gives a ~0.5s ramp from rest at v_max = 1 rad/s.
+    joint_accel_limits: 2.0
+    vel_headroom: 0.05
+    accel_headroom: 0.05
+    dt_min: 0.005
+
+
+  # Phase 1 strategy — iterative-mask DP. The full IK pools are re-tried
+  # until a clean path is found or `max_iterations` is hit.
+  search:
+    search_method: kshortest_dp
+    max_iterations: 20000
+    heuristic_weight: 4
+    heuristic_base_cost: 0.1
+    jump_threshold: 1.5
+
+  # Keep the full IK pools in the planner JSON sidecar — useful when the
+  # optimizer pushes against a feasibility boundary and you want to see
+  # what was on the table.
+  save_all_ik_results: false
+
+  # Phase 3 — disabled by default. Flip to true if Phase 2 leaves a
+  # high-jerk region that the optimizer's trust radius can't fix locally.
+  refine:
+    enabled: false
+    jump_threshold: 0.1
+    region_buffer: 2
+    yaw_offsets_deg: [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]
+    pitch_offsets_deg: [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]
+    xy_offsets_m: null
+    nb_redundant_search: 8
+
+  # Phase 4 — OFF for end-to-end. Phase 4 splices linearly-interpolated
+  # joint samples and inflates trajectory length 10–100x. The optimizer's
+  # TOPP pre-retime + per-segment `dt` decisions do a better job of
+  # velocity scheduling while keeping the trajectory short enough for
+  # tractable solve times (O(N) FK calls per IPOPT iter).
+  resample:
+    enabled: false
+    check_collision: false
+    max_expansion: 1000
+    joint_vel_limits: 0.1
+
+# ---- Phase 5 — trajectory optimizer (SCO) ----
+optimize:
+  enabled: true
+
+  # `track_pos` is high relative to `time` / `jerk` because the planner's
+  # densified q-path is the trajectory we want to refine — drift away from
+  # it usually means the surface-cover constraint has been violated. The
+  # autorun warm-start tuning is the starting point; revisit when changing
+  # the surface or step_over.
+  weights:
+    time: 1.0
+    jerk: 1.0
+    track_pos: 10000.0
+    track_quat: 0.1
+    collision: 0.0   # legacy soft-cost weight; collision is a hard constraint.
+
+  collision:
+    d_safe: 0.03               # m, sphere-BVH SDF hard floor (no auto-relax
+                               # — solver raises if the warm-start violates it)
+    d_warn: 0.050
+    top_k:  1
+
+  bounds:
+    # Tight trust radius because the planner's q-path is already feasible
+    # and we only want local smoothing — a wide radius lets the optimizer
+    # wander, which mostly means slower convergence on the same answer.
+    trust_radius: 0.002
+    dt_min: 0.01
+    dt_max: 1.0
+    max_xy_deviation: 0.030     # in-plane drift along the cover pattern
+    max_z_deviation:  0.005     # out-of-plane / surface accuracy (strict)
+    pin_endpoints: true
+
+  solver:
+    # IPOPT's restoration phase handles the "warm-start-feasible /
+    # cost-pulls-infeasible" pathology that stalls trust-constr. Falls
+    # back to scipy's `trust-constr` automatically when `cyipopt` isn't
+    # installed in the container.
+    method: ipopt
+    max_iters: 30
+    xtol: 1.0e-6
+    gtol: 1.0e-6
+    verbose: 2

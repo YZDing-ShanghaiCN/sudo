@@ -1,0 +1,89 @@
+# Optimizer-only autorun config: skips the boustrophedon planner and feeds
+# the optimizer subpackage an existing warm-start JSON. Run with:
+#   cd tools/surface_cover_planner
+#   python3 plan.py --config configs/config_autorun.yaml
+input:
+  # Path resolved relative to this config file's directory.
+  warmstart_json: ../outputs/edge_6_full_20260522_202615.json
+  decimate_stride: 120
+output:
+  densify_dt: 0.05
+  json_path: outputs/collision_test.json
+robot:
+  arm: left_arm
+  hbmp_arm_left: hb11_left
+  hbmp_arm_right: hb11_right
+  hbmp_torso: hb11_torso
+  initial_q: null
+  joint_vel_limits: 1.0
+  wall:
+    x: [0.0, 1.5]
+    y: [-1.0, 1.0]
+    z: [0.6, 1.8]
+optimize:
+  enabled: true
+  bounds:
+    dt_max: 1.0
+    dt_min: 0.01
+    max_xy_deviation: 0.03
+    max_z_deviation: 0.001
+    pin_endpoints: true
+    trust_radius: 0.002
+  collision:
+    d_safe: 0.0002
+    d_warn: 0.05
+    top_k: 1
+  solver:
+    gtol: 1.0e-06
+    max_iters: 50
+    # ipopt | trust-constr | local_dp
+    #   ipopt / trust-constr — sequential convex optimization over (q_arm, dt)
+    #   local_dp             — sparse-skeleton iterative-mask DP over a
+    #                          per-waypoint (x, y, yaw) grid, then re-densify
+    #                          with the Phase-2 TOPP smoother. See `local_dp:`
+    #                          block below for its knobs.
+    method: ipopt
+    verbose: 2
+    xtol: 1.0e-06
+  weights:
+    collision: 0.0
+    jerk: 1.0
+    time: 1.0
+    track_pos: 10000.0
+    track_quat: 0.1
+  # Knobs for solver.method == "local_dp" (ignored otherwise). Pool size per
+  # sparse layer = len(xy_offsets_m)² × len(yaw_offsets_deg) perturbed-pose
+  # IK calls, each yielding up to `nb_redundant_search` candidates; the
+  # deduped pool is then truncated to the `top_k` candidates closest (in
+  # weighted L2 with JOINT_DIST_WEIGHTS) to the warm trajectory's q_arm at
+  # that layer. The DP edge cost is picked by `cost_mode` (see comment
+  # below the knob); default `fastest` minimizes envelope time so the DP
+  # directly targets trajectory total time.
+  local_dp:
+    sample_stride: 4
+    # ±2 cm at 1 cm resolution along the surface plane's u and v axes.
+    xy_offsets_m: [-0.02, -0.01, 0.0, 0.01, 0.02]
+    # ±5° at 1° resolution around tool Z (= -surface normal in
+    # align_z_to_normal mode).
+    yaw_offsets_deg: [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]
+    top_k: 100
+    nb_redundant_search: 64
+    jump_threshold: 1.5
+    # DP edge-cost objective:
+    #   fastest  — minimize envelope time max(t_vel, t_accel) per edge,
+    #              where t_vel = max_j |Δq[j]|/v_max[j] and
+    #              t_accel = sqrt(max_j |Δq[j]|/a_max[j]). Approximates
+    #              Phase-2 TOPP's per-segment dt so the DP directly
+    #              targets trajectory time. `accel_weight` is ignored.
+    #   shortest — legacy weighted-L2 joint-distance cost (Phase-1 style)
+    #              with the `accel_weight` grandparent corner penalty.
+    cost_mode: fastest
+    # Only consulted in cost_mode: shortest.
+    accel_weight: 0.3
+    max_iterations: 20000
+    densify:
+      method: topp_smooth
+      joint_accel_limits: 2.0
+      vel_headroom: 0.05
+      accel_headroom: 0.05
+      dt_min: 0.005

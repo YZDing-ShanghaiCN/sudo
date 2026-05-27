@@ -1,0 +1,105 @@
+scene:
+  name: "Three-Robot Workspace Check"
+
+robots:
+  - name: "robot_a"
+    type: "t2da2"
+    urdf_visual: "../hbmp/assets/hb11/urdf_c.urdf"
+    urdf_collision: "../hbmp/assets/hb11/urdf_c.urdf"
+    position: [5, -0.5, 0.0]
+    wxyz: [0.7071068, 0.0, 0.0, 0.7071068]
+    scale: 0.25
+    initial_q: [0.15, 0.3, 0.8, 0.64, 1.5, -1.65, -0.8, -0.8, 0.6,
+                0.8, 0.64, 1.5, -1.65, -0.8, -0.8, 0.6]
+    end_effectors:
+      - name: "left_tool0"
+        frame: "FRAME_TACTILE_L"
+        mesh_path: "../hbmp/assets/gripper/meshes/visual/gripper.glb"
+        position: [0.707, 0.370, 0.921]
+        wxyz: [0.372, 0.573, 0.512, 0.520]
+        scale: 0.15
+      - name: "right_tool0"
+        frame: "FRAME_TACTILE_R"
+        mesh_path: "../hbmp/assets/gripper/meshes/visual/gripper.glb"
+        position: [0.702, -0.358, 0.941]
+        wxyz: [0.395, 0.620, 0.542, 0.408]
+        scale: 0.15
+    params:
+      wbc_config: "../hbmp/wbc_config_hb.yaml"
+      ndof: 16
+    cameras:
+      config_path: "../configs/camera_config.json"
+      show_frustums: true
+      frustum_scale: 0.1
+
+  - name: "robot_b"
+    type: "t2da2"
+    urdf_visual: "../hbmp/assets/hb11/urdf_c.urdf"
+    urdf_collision: "../hbmp/assets/hb11/urdf_c.urdf"
+    position: [2.5, -0.5, 0.0]
+    wxyz: [0.7071068, 0.0, 0.0, 0.7071068]  # 180 deg about Z — face -X
+    scale: 0.25
+    initial_q: [0.15, 0.3, 0.8, 0.64, 1.5, -1.65, -0.8, -0.8, 0.6,
+                0.8, 0.64, 1.5, -1.65, -0.8, -0.8, 0.6]
+    end_effectors:
+      - name: "left_tool0"
+        frame: "FRAME_TACTILE_L"
+        mesh_path: "../hbmp/assets/gripper/meshes/visual/gripper.glb"
+        position: [0.707, 0.370, 0.921]
+        wxyz: [0.372, 0.573, 0.512, 0.520]
+        scale: 0.15
+      - name: "right_tool0"
+        frame: "FRAME_TACTILE_R"
+        mesh_path: "../hbmp/assets/gripper/meshes/visual/gripper.glb"
+        position: [0.702, -0.358, 0.941]
+        wxyz: [0.395, 0.620, 0.542, 0.408]
+        scale: 0.15
+    params:
+      wbc_config: "../hbmp/wbc_config_hb.yaml"
+      ndof: 16
+    cameras:
+      config_path: "../configs/camera_config.json"
+      show_frustums: true
+      frustum_scale: 0.1
+
+  - name: "robot_c"
+    type: "t2da2"
+    urdf_visual: "../hbmp/assets/hb11/urdf_c.urdf"
+    urdf_collision: "../hbmp/assets/hb11/urdf_c.urdf"
+    position: [0.0, -0.5, 0.0]
+    wxyz: [0.7071068, 0.0, 0.0, 0.7071068]  # -90 deg about Z — face -Y
+    scale: 0.25
+    initial_q: [0.15, 0.3, 0.8, 0.64, 1.5, -1.65, -0.8, -0.8, 0.6,
+                0.8, 0.64, 1.5, -1.65, -0.8, -0.8, 0.6]
+    end_effectors:
+      - name: "left_tool0"
+        frame: "FRAME_TACTILE_L"
+        mesh_path: "../hbmp/assets/gripper/meshes/visual/gripper.glb"
+        position: [0.707, 0.370, 0.921]
+        wxyz: [0.372, 0.573, 0.512, 0.520]
+        scale: 0.15
+      - name: "right_tool0"
+        frame: "FRAME_TACTILE_R"
+        mesh_path: "../hbmp/assets/gripper/meshes/visual/gripper.glb"
+        position: [0.702, -0.358, 0.941]
+        wxyz: [0.395, 0.620, 0.542, 0.408]
+        scale: 0.15
+    params:
+      wbc_config: "../hbmp/wbc_config_hb.yaml"
+      ndof: 16
+    cameras:
+      config_path: "../configs/camera_config.json"
+      show_frustums: true
+      frustum_scale: 0.1
+
+objects:
+  - name: "zongzhuang"
+    mesh_path: "../objects/zongzhuang.glb"
+    position: [0.0, 0.0, 0.0]
+    wxyz: [0.7071068, 0.7071068, 0.0, 0.0]
+    axis_size: 1.0
+    draggable: false
+
+workspace:
+  bounds: [-2.0, 2.0, -2.0, 2.0, 0.0, 2.0]
+  show_bounds: false

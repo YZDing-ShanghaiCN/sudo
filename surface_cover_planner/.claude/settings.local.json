@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(.venv/bin/python *)",
+      "Bash(docker exec sudodeploy-sudodeploy_full_dev-run-5e7864eb7e09 *)",
+      "Bash(grep -nA 8 \"polygon:\" /home/yuzeren/sudo/ws/SudoDeploy/tools/surface_cover_planner/config_example.yaml)",
+      "Bash(python3 *)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git show *)",
+      "Bash(git remote *)",
+      "Bash(git rev-parse *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(git fetch *)",
+      "Bash(git pull *)",
+      "Bash(/home/yuzeren/sudo/ws/SudoDeploy/tools/surface_cover_planner/.venv/bin/python -c ' *)",
+      "Bash(awk '/^def _kshortest_dp_phase1/,/^# ====/' robot_check.py)",
+      "Bash(awk '/^def _kshortest_dp_phase1/,/^# ====/' /home/yuzeren/sudo/ws/SudoDeploy/tools/surface_cover_planner/robot_check.py)"
+    ]
+  }
+}
