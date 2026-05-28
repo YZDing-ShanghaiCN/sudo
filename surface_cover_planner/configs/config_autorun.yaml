@@ -4,7 +4,7 @@
 #   python3 plan.py --config configs/config_autorun.yaml
 input:
   # Path resolved relative to this config file's directory.
-  warmstart_json: ../outputs/edge_6_full_20260522_202615.json
+  warmstart_json: ../outputs/waic_collision_20260528_145334.json
   decimate_stride: 120
 output:
   densify_dt: 0.05
