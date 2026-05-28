@@ -104,7 +104,7 @@ robot:
   # battery_cage actually sits in the cell.
   world_obstacles:
     - name: battery_cage
-      path: Downloads/my_cube_3.obj
+      path: Downloads/0528_2.obj
       translation: [0.68, 0.19, 0.75]
       rotation_mode: quat
       quat: [0.5, 0.5, -0.5, -0.5]
