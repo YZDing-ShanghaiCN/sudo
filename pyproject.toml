@@ -1,0 +1,38 @@
+[project]
+name = "mask-labeler"
+version = "0.1.0"
+description = "Interactive SAM2 mask labeler + SAM2 video propagation. Extracted from RoboCamCalib."
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    "numpy>=2",
+    "opencv-python>=4.10",
+    "imageio>=2.34",
+    "tqdm>=4.66",
+    # cu128 wheels are required for Blackwell (sm_120, RTX 50-series).
+    # Earlier torch / cu121 wheels do not ship sm_120 kernels.
+    "torch>=2.7",
+    "torchvision>=0.22",
+    "hydra-core>=1.3",
+    "sam-2",
+]
+
+[project.scripts]
+mask-labeler = "mask_labeler.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["mask_labeler"]
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu128" }
+torchvision = { index = "pytorch-cu128" }
+sam-2 = { git = "https://github.com/facebookresearch/sam2.git" }
