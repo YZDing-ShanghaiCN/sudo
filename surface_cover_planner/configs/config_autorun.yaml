@@ -4,7 +4,7 @@
 #   python3 plan.py --config configs/config_autorun.yaml
 input:
   # Path resolved relative to this config file's directory.
-  warmstart_json: ../outputs/waic_collision_20260528_145334.json
+  warmstart_json: ../outputs/waic_collision_20260529_170225.json
   decimate_stride: 120
 output:
   densify_dt: 0.05
@@ -62,10 +62,10 @@ optimize:
   local_dp:
     sample_stride: 4
     # ±2 cm at 1 cm resolution along the surface plane's u and v axes.
-    xy_offsets_m: [-0.02, -0.01, 0.0, 0.01, 0.02]
+    xy_offsets_m: [-0.005, 0.0, 0.005]
     # ±5° at 1° resolution around tool Z (= -surface normal in
     # align_z_to_normal mode).
-    yaw_offsets_deg: [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]
+    # yaw_offsets_deg: [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]
     top_k: 100
     nb_redundant_search: 64
     jump_threshold: 1.5

@@ -43,8 +43,8 @@ robots:
 objects:
   - name: "battery_case"
     # mesh_path: "../../../../sandbox/zyu/data/objects/rigids/meshes/convex/battery_cage.obj"
-    mesh_path: "../../../../Downloads/0528_2.obj"
-    position: [0.68, 0.19, 0.75]
+    mesh_path: "../../../../Downloads/0529_02.obj"
+    position: [0.68, 0.15, 0.75]
     wxyz: [0.5, 0.5, -0.5, -0.5]
     axis_size: 0.3
 

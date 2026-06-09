@@ -26,10 +26,10 @@ region:
   # (i.e. after mesh.transform has been applied). The plane is taken directly
   # from polygon[0..2] — points are assumed coplanar (no SVD, no fit).
   polygon:
-    - [0.62, -0.15, 0.76]
-    - [0.68, -0.15, 0.76]
-    - [0.68, 0.15, 0.76]
-    - [0.62, 0.15, 0.76]
+    - [0.61, -0.17, 0.76]
+    - [0.65, -0.17, 0.76]
+    - [0.65, 0.13, 0.76]
+    - [0.61, 0.13, 0.76]
     # - [0.59, -0.01, 0.8]
     # - [0.61, -0.01, 0.8]
     # - [0.61, 0.01, 0.8]
@@ -104,8 +104,8 @@ robot:
   # battery_cage actually sits in the cell.
   world_obstacles:
     - name: battery_cage
-      path: Downloads/0528_2.obj
-      translation: [0.68, 0.19, 0.75]
+      path: Downloads/0529_02.obj
+      translation: [0.68, 0.16, 0.75]
       rotation_mode: quat
       quat: [0.5, 0.5, -0.5, -0.5]
 
@@ -115,8 +115,8 @@ robot:
   joint_vel_limits: null
 
   yaw_search_offsets_deg: [0]
-  pitch_search_offsets_deg: [0]
-  roll_search_offsets_deg: [0, -10, -20, -30, -40, 10, 5]
+  pitch_search_offsets_deg: [0, -10]
+  roll_search_offsets_deg: [10, 5, 0, -10, -20, -30, -40]
 
   densify:
     method: topp_smooth

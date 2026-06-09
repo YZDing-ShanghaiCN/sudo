@@ -109,7 +109,7 @@ def _weighted_arm_dist(q_a: np.ndarray, q_b: np.ndarray) -> float:
 # at the top of `check_trajectory` and consumed by `_is_self_colliding`
 # (the single replacement for `agent.update_col_self() +
 # agent.check_self_collision() != ColGroup.NONE`).
-_CHECK_MAGIC_DISTANCE = 0.02
+_CHECK_MAGIC_DISTANCE = 0.002
 _collision_checker: dict[str, Any] = {
     "kin": None,           # ampl.KinHB11 — kinematics (FK, IK, Jacobian).
                             # Used both for pushing poses into colcvx and
