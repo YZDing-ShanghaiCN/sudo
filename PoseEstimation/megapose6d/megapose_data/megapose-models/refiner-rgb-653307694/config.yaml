@@ -1,0 +1,120 @@
+resume_run_id: null
+run_postfix: '100424'
+config_id: refiner-gso_shapenet-4views-normals
+run_comment: ''
+run_id: refiner-gso_shapenet-4views-normals-653307694--
+debug: false
+debug_visualization: false
+overfit: false
+no_eval: true
+hardware:
+  n_cpus: 10
+  n_gpus: 32
+train_datasets:
+- ds_name: shapenet_1M-shapenet_10mb_20k-split=1_8.webdataset
+  obj_ds_name: shapenet_10mb_20k_split=1/8.pointcloud
+  panda3d_obj_ds_name: shapenet_10mb_20k_split=1/8.panda3d_bam
+  n_repeats: 1
+  n_frames: null
+  urdf_ds_name: null
+- ds_name: gso_1M-gso_940-split=1_8.webdataset
+  obj_ds_name: gso_940_split=1/8.pointcloud
+  panda3d_obj_ds_name: gso_940_split=1/8
+  n_frames: null
+  n_repeats: 1
+  urdf_ds_name: null
+input_resize:
+- 720
+- 540
+n_symmetries_batch: 1
+rgb_augmentation: true
+background_augmentation: true
+depth_augmentation: true
+depth_augmentation_level: 2
+min_area: null
+train_object_ratio: null
+gray_augmentation: false
+pytorch_version: 1.11.0
+resample_n_points: null
+hdf5_strategy: default
+finetune_config_id: null
+finetune_epochs: 100
+val_datasets: []
+val_epoch_interval: 10
+test_ds_names: []
+test_n_frames: null
+test_epoch_interval: 100
+test_only_last_epoch: false
+test_n_refiner_iterations: 5
+test_hypotheses_n_pose: 1
+test_coarse_run_id: null
+test_detector_run_id: null
+n_dataloader_workers: 10
+n_rendering_workers: 10
+backbone_str: vanilla_resnet34
+run_id_pretrain: null
+input_bbox: false
+predict_confidence: false
+n_views: 4
+views_inplane_rotations: false
+input_depth: false
+depth_normalization_type: tCR_scale_clamp_center
+renderer: panda3d
+renderer_torch_mp_queue: true
+train_refiner: true
+loss_disentangled: true
+n_points_loss: 2000
+add_iteration_epoch_interval: 100
+loss_alpha_pose: 1.0
+loss_alpha_confidence: 0.0
+n_iterations: 3
+incorrect_label_negative: false
+init_method: gt+noise
+init_euler_deg_std:
+- 15
+- 15
+- 15
+init_trans_std:
+- 0.01
+- 0.01
+- 0.05
+n_pose_dims: 9
+use_gt_init: false
+gt_init_pose_loss: false
+confidence_logits_temperature: 0.07
+confidence_views_logits_temperature: 1.0
+loss_alpha_views_confidence: 0.0
+random_reference_point: false
+multiview_type: front_3views
+render_normals: true
+render_depth: false
+random_ambient_light: true
+multiview_depth: false
+predict_views_confidence: false
+use_no_views_class: false
+random_permutation_views: false
+remove_TCO_rendering: false
+input_strategy: null
+optimizer: adam
+lr: 0.0003
+weight_decay: 0.0
+clip_grad_norm: 1000
+n_epochs_warmup: 50
+lr_epoch_decay: 500
+batch_size: 16
+epoch_size: 3600
+val_size: 31
+n_epochs: 700
+save_epoch_interval: 100
+sync_batchnorm: false
+cuda_timing: false
+do_visualization: false
+vis_epoch_interval: 100
+vis_batch_size: 64
+vis_save_only_last: false
+save_dir: /job_dir/data/node_r7i6n8/experiments/refiner-gso_shapenet-4views-normals-653307694--
+urdf_ds_name: null
+predict_pose_update: true
+reference_point_randomization: false
+label_verification: false
+global_batch_size: 512

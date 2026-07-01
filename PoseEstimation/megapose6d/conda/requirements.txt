@@ -1,0 +1,6 @@
+numpy=1.26.4
+opencv-python=4.8.1.78
+pandas=2.1.4
+scipy=1.11.4
+pinocchio=2.6.21
+eigenpy=3.1.0
