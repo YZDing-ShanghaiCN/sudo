@@ -8,6 +8,7 @@ Comprehensive robotics projects including AGV control, object pose estimation, a
 main/
 ├── agv-roboshoppro-control/    # AGV Robot Control System
 ├── main2/                       # Stereo Depth Inference Module
+├── orbbec/                     # Orbbec Femto Bolt Camera Tools
 ├── posemain/                    # Object Pose Estimation Module
 ├── robot_deployenv_checker-main/ # Deployment Environment Checker
 └── README.md
@@ -270,6 +271,12 @@ Module for stereo depth inference and depth map (EXR) processing.
 
 ---
 
+## 5. Orbbec Femto Bolt 相机采集工具 (`orbbec/`)
+
+该目录包含 Orbbec Femto Bolt 相机的 RGB 预览与录制、RGB-D 数据采集、相机参数读取和设备格式查询工具。安装、配置及使用方法请参阅 [Orbbec 子目录说明文档](orbbec/README.md)。
+
+---
+
 ## 📝 Notes
 
 - Each project has independent dependencies in respective `requirements.txt`
@@ -280,4 +287,4 @@ Module for stereo depth inference and depth map (EXR) processing.
 ---
 
 ## ✨ Last Updated
-2026年4月29日
+2026年7月1日
