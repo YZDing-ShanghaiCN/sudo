@@ -100,6 +100,34 @@ def _looks_like_path(arg: str) -> bool:
     return (os.sep in arg) or bool(Path(arg).suffix) or Path(arg).expanduser().exists()
 
 
+def _resolved_existing_file(arg: str) -> Path | None:
+    p = Path(arg).expanduser()
+    return p.resolve() if p.is_file() else None
+
+
+def _position_for_resolved_path(path: Path, order: list[Path]) -> int | None:
+    target = path.resolve()
+    for i, candidate in enumerate(order):
+        if candidate.resolve() == target:
+            return i
+    return None
+
+
+def _default_masks_dir(frames_dir: Path, frame_pattern: str) -> Path:
+    pattern_name = Path(frame_pattern).name
+    wildcard_positions = [
+        pos for pos in (pattern_name.find("*"), pattern_name.find("?"), pattern_name.find("["))
+        if pos >= 0
+    ]
+    if wildcard_positions:
+        prefix = pattern_name[:min(wildcard_positions)]
+    else:
+        prefix = Path(pattern_name).stem
+    prefix = prefix.rstrip("._- ")
+    dirname = f"{prefix}_masks" if prefix else "masks"
+    return Path(frames_dir) / dirname
+
+
 def cmd_video(args: argparse.Namespace) -> int:
     from .prompt_drawer import PromptDrawer
     from .video_propagate import (
@@ -198,8 +226,6 @@ def cmd_video_from_mask(args: argparse.Namespace) -> int:
         resolve_to_exclusive,
     )
 
-    out_dir = Path(args.out_dir)
-
     if args.frames_dir is not None:
         frames_dir = Path(args.frames_dir)
     elif _looks_like_path(args.seed_frame):
@@ -214,14 +240,40 @@ def cmd_video_from_mask(args: argparse.Namespace) -> int:
         if seed_suffix:
             frame_pattern = f"*{seed_suffix}"
 
+    out_dir = Path(args.out_dir) if args.out_dir is not None else _default_masks_dir(
+        frames_dir, frame_pattern
+    )
+
     try:
         order = _canonical_order(frames_dir, frame_pattern)
-        seed_pos = resolve_seed_position(args.seed_frame, order, frames_dir)
+        seed_path = _resolved_existing_file(args.seed_frame)
+        external_seed = False
+        if seed_path is not None:
+            seed_pos = _position_for_resolved_path(seed_path, order)
+            if seed_pos is None:
+                if seed_path.parent == frames_dir.expanduser().resolve():
+                    raise SystemExit(
+                        f"{args.seed_frame!r} exists but is not in {frames_dir} matching "
+                        f"the frame pattern; pass --frame-pattern to match it "
+                        f"(e.g. '*{seed_path.suffix}')"
+                    )
+                external_seed = True
+                order = [seed_path] + order
+                seed_pos = 0
+        else:
+            seed_pos = resolve_seed_position(args.seed_frame, order, frames_dir)
         to_pos = resolve_to_exclusive(args.to_frame, order, frames_dir, seed_pos)
     except SystemExit as e:
         print(f"error: {e}", file=sys.stderr)
         return 2
 
+    if external_seed and to_pos <= seed_pos:
+        print(
+            "error: external seed-frame can only propagate forward into --frames-dir; "
+            "use --to-frame end/last or a target frame",
+            file=sys.stderr,
+        )
+        return 2
     if seed_pos == to_pos:
         print("error: seed-frame == to-frame; nothing to propagate", file=sys.stderr)
         return 2
@@ -246,9 +298,15 @@ def cmd_video_from_mask(args: argparse.Namespace) -> int:
         return 1
 
     out_dir.mkdir(parents=True, exist_ok=True)
-    seed_mask_path = out_dir / f"{_frame_key(seed_img_path)}.mask.png"
+    seed_mask_path = (
+        out_dir / "seed.mask.png"
+        if external_seed
+        else out_dir / f"{_frame_key(seed_img_path)}.mask.png"
+    )
     imageio.imwrite(seed_mask_path, (seed_mask.astype(np.uint8)) * 255)
     print(f"[mask_labeler] seed mask -> {seed_mask_path}")
+    if external_seed:
+        print(f"[mask_labeler] prepended external seed frame -> {seed_img_path}")
 
     propagate_video(
         frames_dir=frames_dir,
@@ -264,6 +322,7 @@ def cmd_video_from_mask(args: argparse.Namespace) -> int:
         device=args.device,
         offload_video_to_cpu=not args.no_offload_video,
         offload_state_to_cpu=not args.no_offload_state,
+        skip_output_positions={seed_pos} if external_seed else None,
     )
     print(f"[mask_labeler] propagation from existing mask done -> {out_dir}")
     return 0
@@ -422,11 +481,12 @@ def main(argv: list[str] | None = None) -> int:
         help="propagate from an existing seed mask without opening the labeler",
     )
     p_video_from_mask.add_argument("--frames-dir", required=False, type=Path, default=None,
-                                   help="directory of frames; if omitted, derived from "
+                                   help="directory of target frames; if omitted, derived from "
                                         "--seed-frame's parent (seed-frame must then be a path)")
     p_video_from_mask.add_argument("--seed-frame", required=True,
                                    help="seed frame matching --seed-mask, as an integer index OR a "
-                                        "path/filename/stem")
+                                        "path/filename/stem; a path outside --frames-dir is "
+                                        "prepended as an external seed")
     p_video_from_mask.add_argument("--to-frame", required=True,
                                    help="end frame: a path/filename/stem is INCLUSIVE; a bare "
                                         "integer index is EXCLUSIVE (legacy); 'end'/'last' includes "
@@ -434,10 +494,14 @@ def main(argv: list[str] | None = None) -> int:
                                         "backward if it precedes the seed.")
     p_video_from_mask.add_argument("--seed-mask", required=True, type=Path,
                                    help="existing mask for --seed-frame; must match seed frame size")
-    p_video_from_mask.add_argument("--out-dir", required=True, type=Path)
+    p_video_from_mask.add_argument("--out-dir", required=False, type=Path, default=None,
+                                   help="output directory; defaults to <frames-dir>/<view>_masks "
+                                        "from --frame-pattern, e.g. chest_left_*.png -> "
+                                        "chest_left_masks")
     p_video_from_mask.add_argument("--frame-pattern", default=DEFAULT_FRAME_PATTERN,
                                    help="glob for frames; if left default and --seed-frame is a "
-                                        "path, the seed file's extension is used (e.g. '*.png')")
+                                        "path, the seed file's extension is used (e.g. '*.png'); "
+                                        "narrow this for folders with multiple views")
     p_video_from_mask.add_argument("--sam2-model", default="",
                                    help="Hugging Face SAM2 model id (e.g. "
                                         "facebook/sam2.1-hiera-large); if set, used for the VIDEO "

@@ -78,18 +78,26 @@ so you can re-run to tweak the seed without restarting.
 
 If the seed frame already has a mask and you do **not** want the interactive
 labeling window, use the separate `video-from-mask` command. The mask must
-match the seed frame size.
+match the seed frame size. `--seed-frame` may either be one frame inside
+`--frames-dir`, or an external seed image that should be prepended as the first
+conditioning frame.
 
 ```bash
 uv run mask-labeler video-from-mask \
-    --seed-frame '/media/yuzeren/My PSSD/20260604_200558/video/chest_left_camera/20260604_200559_111996.png' \
-    --to-frame   end \
-    --seed-mask  /path/to/existing_seed.mask.png \
-    --out-dir    /path/to/masks
+    --seed-frame    /home/user/Downloads/20260606_seed/chest_left_0000.png \
+    --seed-mask     /home/user/Downloads/20260606_seed/chest_left_0000_mask.png \
+    --frames-dir    /home/user/Downloads/20260608_154017 \
+    --frame-pattern 'chest_left_*.png' \
+    --to-frame      end
 ```
 
-Use `--frames-dir /path/to/rgb_frames --frame-pattern '*.png'` when
-`--seed-frame` is an integer, filename, or stem rather than a full path.
+When `--out-dir` is omitted, it is inferred from `--frames-dir` and
+`--frame-pattern`: `chest_left_*.png` writes to
+`<frames-dir>/chest_left_masks`, while `chest_right_*.png` writes to
+`<frames-dir>/chest_right_masks`. When the seed is external, the seed mask is
+saved as `<out-dir>/seed.mask.png` for reference, and target-frame outputs keep
+their normal names such as `<out-dir>/chest_left_0000.mask.png`. Use a narrower
+`--frame-pattern` when the target folder also contains other cameras/views.
 
 ### Multi-seed video propagation
 

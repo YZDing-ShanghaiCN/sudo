@@ -181,6 +181,7 @@ def propagate_video(
     device: str = "cuda",
     offload_video_to_cpu: bool = True,
     offload_state_to_cpu: bool = True,
+    skip_output_positions: Optional[set[int]] = None,
 ) -> None:
     """Propagate `seed_mask` (uint8/bool) from `order[seed_pos]` toward `to_pos` (exclusive).
 
@@ -190,6 +191,8 @@ def propagate_video(
     direction is inferred from their order.
     Writes <out_dir>/<frame_key>.mask.png (uint8 0/255) and <out_dir>/vis/<frame_key>.jpg
     overlays, where frame_key is the source stem (zero-padded for integer names).
+    Positions in ``skip_output_positions`` are used for conditioning/propagation
+    but are not written to the normal per-frame output names.
     """
     propagate_video_multi(
         frames_dir=frames_dir,
@@ -205,6 +208,7 @@ def propagate_video(
         device=device,
         offload_video_to_cpu=offload_video_to_cpu,
         offload_state_to_cpu=offload_state_to_cpu,
+        skip_output_positions=skip_output_positions,
     )
 
 
@@ -223,12 +227,15 @@ def propagate_video_multi(
     device: str = "cuda",
     offload_video_to_cpu: bool = True,
     offload_state_to_cpu: bool = True,
+    skip_output_positions: Optional[set[int]] = None,
 ) -> None:
     """Propagate masks from one or more manually-labeled frames.
 
     ``seed_masks`` is keyed by positions in the canonical sorted frame list
     (``order``). The selected propagation range still starts at ``seed_pos`` and
-    runs toward ``to_pos`` exactly like :func:`propagate_video`.
+    runs toward ``to_pos`` exactly like :func:`propagate_video`. Positions in
+    ``skip_output_positions`` are used for conditioning/propagation but are not
+    written to normal per-frame output names.
     """
     frames_dir = Path(frames_dir)
     out_dir = Path(out_dir)
@@ -237,6 +244,7 @@ def propagate_video_multi(
 
     if order is None:
         order = _canonical_order(frames_dir, frame_pattern)
+    skip_output_positions = set(skip_output_positions or ())
 
     step = 1 if to_pos > seed_pos else -1
     selected_positions = list(range(seed_pos, to_pos, step))
@@ -300,6 +308,8 @@ def propagate_video_multi(
     for local_idx, src in tqdm.tqdm(
         list(enumerate(local_to_src)), desc="saving"
     ):
+        if selected_positions[local_idx] in skip_output_positions:
+            continue
         m = pred_masks[local_idx]
         key = _frame_key(src)
         save = (m.astype(np.uint8)) * 255
