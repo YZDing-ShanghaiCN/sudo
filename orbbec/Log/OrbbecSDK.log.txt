@@ -1,0 +1,1166 @@
+[06/11 12:14:04.132978][warning][5][ObException.cpp:32] A unrecoverable_exception has occurred!
+ - where: UsbEnumeratorLibusb.cpp(337)
+ - msg: libusb_init failed
+ - type: PLATFORM
+ - status: 1
+[06/11 12:14:04.134599][warning][5][Platform.cpp:42] Execute failure! A libobsensor_exception has occurred!
+ - where: Platform.cpp(42):Platform
+ - msg: libusb_init failed
+ - type: N11libobsensor23unrecoverable_exceptionE
+ - status: 1
+[06/11 12:14:04.134624][warning][5][Platform.cpp:42] Failed to create usb pal!
+[06/11 12:16:32.754292][warning][1941475][UsbEnumeratorLibusb.cpp:398] Failed to open USB device: error=Access denied (insufficient permissions). Try again
+[06/11 12:16:32.804511][warning][1941475][UsbEnumeratorLibusb.cpp:407] Failed to open USB device (Access denied (insufficient permissions)), skipping, info.serial and infName may be empty
+[06/11 12:16:32.805010][info][1941475][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[06/11 12:16:32.805020][info][1941475][DeviceManager.cpp:25] Current found device(s): (1)
+[06/11 12:16:32.805022][info][1941475][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: , Connection: USB3.1
+[06/11 12:16:32.805024][info][1941475][DeviceManager.cpp:405] Enable net device enumeration: true
+[06/11 12:16:33.819983][info][1941475][DeviceManager.cpp:25] Current device(s) list: (1)
+[06/11 12:16:33.819999][info][1941475][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: , Connection: USB3.1
+[06/11 12:16:33.820118][warning][1941475][ObException.cpp:32] A unrecoverable_exception has occurred!
+ - where: UsbEnumeratorLibusb.cpp(537)
+ - msg: Open device failed: Access denied (insufficient permissions)
+ - type: DEVICE_UNAVAILABLE
+ - status: 113
+[06/11 12:16:33.820199][warning][1941475][UsbEnumeratorLibusb.cpp:462] Execute failure! A libobsensor_exception has occurred!
+ - where: UsbEnumeratorLibusb.cpp(462):openUsbDevice
+ - msg: Open device failed: Access denied (insufficient permissions)
+ - type: N11libobsensor23unrecoverable_exceptionE
+ - status: 113
+[06/11 12:16:33.820211][warning][1941475][ObException.cpp:32] A unrecoverable_exception has occurred!
+ - where: UsbEnumeratorLibusb.cpp(537)
+ - msg: Open device failed: Access denied (insufficient permissions)
+ - type: DEVICE_UNAVAILABLE
+ - status: 113
+[06/11 12:16:33.820220][warning][1941475][UsbEnumeratorLibusb.cpp:462] Execute failure! A libobsensor_exception has occurred!
+ - where: UsbEnumeratorLibusb.cpp(462):openUsbDevice
+ - msg: Open device failed: Access denied (insufficient permissions)
+ - type: N11libobsensor23unrecoverable_exceptionE
+ - status: 113
+[06/11 12:16:33.820225][warning][1941475][ObException.cpp:32] A unrecoverable_exception has occurred!
+ - where: LinuxUsbPal.cpp(317)
+ - msg: usbEnumerator openUsbDevice failed!
+ - type: DEVICE_UNAVAILABLE
+ - status: 113
+[06/11 12:16:33.820276][warning][1941475][ObException.cpp:32] A unrecoverable_exception has occurred!
+ - where: UsbEnumeratorLibusb.cpp(537)
+ - msg: Open device failed: Access denied (insufficient permissions)
+ - type: DEVICE_UNAVAILABLE
+ - status: 113
+[06/11 12:16:33.820286][warning][1941475][UsbEnumeratorLibusb.cpp:462] Execute failure! A libobsensor_exception has occurred!
+ - where: UsbEnumeratorLibusb.cpp(462):openUsbDevice
+ - msg: Open device failed: Access denied (insufficient permissions)
+ - type: N11libobsensor23unrecoverable_exceptionE
+ - status: 113
+[06/11 12:16:33.820294][warning][1941475][ObException.cpp:32] A unrecoverable_exception has occurred!
+ - where: UsbEnumeratorLibusb.cpp(537)
+ - msg: Open device failed: Access denied (insufficient permissions)
+ - type: DEVICE_UNAVAILABLE
+ - status: 113
+[06/11 12:16:33.820302][warning][1941475][UsbEnumeratorLibusb.cpp:462] Execute failure! A libobsensor_exception has occurred!
+ - where: UsbEnumeratorLibusb.cpp(462):openUsbDevice
+ - msg: Open device failed: Access denied (insufficient permissions)
+ - type: N11libobsensor23unrecoverable_exceptionE
+ - status: 113
+[06/11 12:16:33.820305][warning][1941475][ObException.cpp:32] A unrecoverable_exception has occurred!
+ - where: LinuxUsbPal.cpp(317)
+ - msg: usbEnumerator openUsbDevice failed!
+ - type: DEVICE_UNAVAILABLE
+ - status: 113
+[06/11 12:16:33.820329][warning][1941475][DeviceBase.cpp:357] Execute failure! A libobsensor_exception has occurred!
+ - where: DeviceBase.cpp(357):getComponent
+ - msg: usbEnumerator openUsbDevice failed!
+ - type: N11libobsensor23unrecoverable_exceptionE
+ - status: 113
+[06/11 12:27:32.180991][warning][2011066][UsbEnumeratorLibusb.cpp:398] Failed to open USB device: error=Access denied (insufficient permissions). Try again
+[06/11 12:27:32.231144][warning][2011066][UsbEnumeratorLibusb.cpp:407] Failed to open USB device (Access denied (insufficient permissions)), skipping, info.serial and infName may be empty
+[06/11 12:27:32.231719][info][2011066][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[06/11 12:27:32.231731][info][2011066][DeviceManager.cpp:25] Current found device(s): (1)
+[06/11 12:27:32.231733][info][2011066][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: , Connection: USB3.1
+[06/11 12:27:32.231736][info][2011066][DeviceManager.cpp:405] Enable net device enumeration: true
+[06/11 12:27:33.237854][info][2011066][DeviceManager.cpp:25] Current device(s) list: (1)
+[06/11 12:27:33.237866][info][2011066][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: , Connection: USB3.1
+[06/11 12:27:33.237963][warning][2011066][ObException.cpp:32] A unrecoverable_exception has occurred!
+ - where: UsbEnumeratorLibusb.cpp(537)
+ - msg: Open device failed: Access denied (insufficient permissions)
+ - type: DEVICE_UNAVAILABLE
+ - status: 113
+[06/11 12:27:33.238040][warning][2011066][UsbEnumeratorLibusb.cpp:462] Execute failure! A libobsensor_exception has occurred!
+ - where: UsbEnumeratorLibusb.cpp(462):openUsbDevice
+ - msg: Open device failed: Access denied (insufficient permissions)
+ - type: N11libobsensor23unrecoverable_exceptionE
+ - status: 113
+[06/11 12:27:33.238050][warning][2011066][ObException.cpp:32] A unrecoverable_exception has occurred!
+ - where: UsbEnumeratorLibusb.cpp(537)
+ - msg: Open device failed: Access denied (insufficient permissions)
+ - type: DEVICE_UNAVAILABLE
+ - status: 113
+[06/11 12:27:33.238057][warning][2011066][UsbEnumeratorLibusb.cpp:462] Execute failure! A libobsensor_exception has occurred!
+ - where: UsbEnumeratorLibusb.cpp(462):openUsbDevice
+ - msg: Open device failed: Access denied (insufficient permissions)
+ - type: N11libobsensor23unrecoverable_exceptionE
+ - status: 113
+[06/11 12:27:33.238061][warning][2011066][ObException.cpp:32] A unrecoverable_exception has occurred!
+ - where: LinuxUsbPal.cpp(317)
+ - msg: usbEnumerator openUsbDevice failed!
+ - type: DEVICE_UNAVAILABLE
+ - status: 113
+[06/11 12:27:33.238118][warning][2011066][ObException.cpp:32] A unrecoverable_exception has occurred!
+ - where: UsbEnumeratorLibusb.cpp(537)
+ - msg: Open device failed: Access denied (insufficient permissions)
+ - type: DEVICE_UNAVAILABLE
+ - status: 113
+[06/11 12:27:33.238125][warning][2011066][UsbEnumeratorLibusb.cpp:462] Execute failure! A libobsensor_exception has occurred!
+ - where: UsbEnumeratorLibusb.cpp(462):openUsbDevice
+ - msg: Open device failed: Access denied (insufficient permissions)
+ - type: N11libobsensor23unrecoverable_exceptionE
+ - status: 113
+[06/11 12:27:33.238134][warning][2011066][ObException.cpp:32] A unrecoverable_exception has occurred!
+ - where: UsbEnumeratorLibusb.cpp(537)
+ - msg: Open device failed: Access denied (insufficient permissions)
+ - type: DEVICE_UNAVAILABLE
+ - status: 113
+[06/11 12:27:33.238140][warning][2011066][UsbEnumeratorLibusb.cpp:462] Execute failure! A libobsensor_exception has occurred!
+ - where: UsbEnumeratorLibusb.cpp(462):openUsbDevice
+ - msg: Open device failed: Access denied (insufficient permissions)
+ - type: N11libobsensor23unrecoverable_exceptionE
+ - status: 113
+[06/11 12:27:33.238142][warning][2011066][ObException.cpp:32] A unrecoverable_exception has occurred!
+ - where: LinuxUsbPal.cpp(317)
+ - msg: usbEnumerator openUsbDevice failed!
+ - type: DEVICE_UNAVAILABLE
+ - status: 113
+[06/11 12:27:33.238154][warning][2011066][DeviceBase.cpp:357] Execute failure! A libobsensor_exception has occurred!
+ - where: DeviceBase.cpp(357):getComponent
+ - msg: usbEnumerator openUsbDevice failed!
+ - type: N11libobsensor23unrecoverable_exceptionE
+ - status: 113
+[06/11 12:27:53.809982][info][2013786][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[06/11 12:27:53.809998][info][2013786][DeviceManager.cpp:25] Current found device(s): (1)
+[06/11 12:27:53.809999][info][2013786][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 12:27:53.810001][info][2013786][DeviceManager.cpp:405] Enable net device enumeration: true
+[06/11 12:27:54.821473][info][2013786][DeviceManager.cpp:25] Current device(s) list: (1)
+[06/11 12:27:54.821489][info][2013786][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 12:27:55.176090][info][2013786][DeviceManager.cpp:199] Device created successfully! Name: Femto Bolt, PID: 0x066b, SN/ID: CL8326300LB FW: 1.1.3
+[06/11 12:27:55.176116][info][2013786][Pipeline.cpp:54] [CL8326300LB] Pipeline created with device: {name: Femto Bolt, sn: CL8326300LB}, @0x27DA60A0
+[06/11 12:27:55.177221][info][2013786][RawPhaseStreamer.cpp:482] Succeed to load depth engine plugin
+[06/11 12:27:55.191224][info][2014042][RawPhaseStreamer.cpp:512] initNvramData: metadataHeader.size: 484016, metadataHeader.width: 0, metadataHeader.height: 0
+[06/11 12:27:56.007358][info][2013786][Pipeline.cpp:228] [CL8326300LB] Check and set config done!
+[06/11 12:27:56.007370][info][2013786][Pipeline.cpp:266] [CL8326300LB] Try to start streams!
+[06/11 12:27:56.007374][info][2013786][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Depth, format: Y16, width: 640, height: 576, fps: 30}
+[06/11 12:27:56.007379][info][2013786][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Depth
+[06/11 12:27:56.007380][info][2013786][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Depth, format: Y16, width: 640, height: 576, fps: 30}
+[06/11 12:27:56.377982][info][2013786][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/11 12:27:56.377988][info][2013786][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Color
+[06/11 12:27:56.377991][info][2013786][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/11 12:27:56.396738][info][2013786][Pipeline.cpp:293] [CL8326300LB] Start streams done!
+[06/11 12:27:56.396743][info][2013786][Pipeline.cpp:250] [CL8326300LB] Pipeline start done!
+[06/11 12:27:56.647438][info][2014191][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Color
+[06/11 12:27:56.682423][info][2014132][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Depth
+[06/11 12:27:56.809212][info][2013786][Pipeline.cpp:367] [CL8326300LB] Try to stop pipeline!
+[06/11 12:27:56.809217][info][2013786][Pipeline.cpp:343] [CL8326300LB] Try to stop streams!
+[06/11 12:27:56.809231][info][2013786][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Color
+[06/11 12:27:57.190305][info][2013786][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Color
+[06/11 12:27:57.190441][info][2013786][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Color
+[06/11 12:27:57.190451][info][2013786][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Depth
+[06/11 12:27:57.882390][info][2013786][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Depth
+[06/11 12:27:57.882621][info][2013786][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Depth
+[06/11 12:27:57.882625][info][2013786][Pipeline.cpp:363] [CL8326300LB] Stop streams done!
+[06/11 12:27:57.882653][info][2013786][Pipeline.cpp:392] [CL8326300LB] Stop pipeline done!
+[06/11 12:27:57.882682][info][2013786][Pipeline.cpp:65] [CL8326300LB] Pipeline destroyed! @0x27DA60A0
+[06/11 12:27:57.882772][info][2013786][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 12:27:57.884770][info][2013786][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 12:27:57.884774][info][2013786][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 12:27:57.884794][info][2013786][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 12:27:57.924927][info][2013786][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 12:27:57.924932][info][2013786][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 12:33:29.352453][info][2048760][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[06/11 12:33:29.352468][info][2048760][DeviceManager.cpp:25] Current found device(s): (1)
+[06/11 12:33:29.352470][info][2048760][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 12:33:29.352472][info][2048760][DeviceManager.cpp:405] Enable net device enumeration: true
+[06/11 12:33:30.365222][info][2048760][DeviceManager.cpp:25] Current device(s) list: (1)
+[06/11 12:33:30.365234][info][2048760][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 12:33:30.711417][info][2048760][DeviceManager.cpp:199] Device created successfully! Name: Femto Bolt, PID: 0x066b, SN/ID: CL8326300LB FW: 1.1.3
+[06/11 12:33:30.711444][info][2048760][Pipeline.cpp:54] [CL8326300LB] Pipeline created with device: {name: Femto Bolt, sn: CL8326300LB}, @0x36F8CB10
+[06/11 12:33:30.712428][info][2048760][RawPhaseStreamer.cpp:482] Succeed to load depth engine plugin
+[06/11 12:33:30.735409][info][2048996][RawPhaseStreamer.cpp:512] initNvramData: metadataHeader.size: 484016, metadataHeader.width: 0, metadataHeader.height: 0
+[06/11 12:33:31.181485][info][2048760][Pipeline.cpp:228] [CL8326300LB] Check and set config done!
+[06/11 12:33:31.181504][info][2048760][Pipeline.cpp:266] [CL8326300LB] Try to start streams!
+[06/11 12:33:31.181514][info][2048760][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Depth, format: Y16, width: 640, height: 576, fps: 30}
+[06/11 12:33:31.181523][info][2048760][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Depth
+[06/11 12:33:31.181527][info][2048760][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Depth, format: Y16, width: 640, height: 576, fps: 30}
+[06/11 12:33:31.356262][info][2048760][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/11 12:33:31.356269][info][2048760][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Color
+[06/11 12:33:31.356272][info][2048760][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/11 12:33:31.374526][info][2048760][Pipeline.cpp:293] [CL8326300LB] Start streams done!
+[06/11 12:33:31.374530][info][2048760][Pipeline.cpp:250] [CL8326300LB] Pipeline start done!
+[06/11 12:33:31.592292][info][2049077][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Color
+[06/11 12:33:31.675409][info][2049046][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Depth
+[06/11 12:33:31.783208][info][2048760][Pipeline.cpp:367] [CL8326300LB] Try to stop pipeline!
+[06/11 12:33:31.783213][info][2048760][Pipeline.cpp:343] [CL8326300LB] Try to stop streams!
+[06/11 12:33:31.783231][info][2048760][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Color
+[06/11 12:33:32.168462][info][2048760][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Color
+[06/11 12:33:32.168595][info][2048760][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Color
+[06/11 12:33:32.168610][info][2048760][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Depth
+[06/11 12:33:32.867433][info][2048760][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Depth
+[06/11 12:33:32.867596][info][2048760][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Depth
+[06/11 12:33:32.867600][info][2048760][Pipeline.cpp:363] [CL8326300LB] Stop streams done!
+[06/11 12:33:32.867627][info][2048760][Pipeline.cpp:392] [CL8326300LB] Stop pipeline done!
+[06/11 12:33:32.867657][info][2048760][Pipeline.cpp:65] [CL8326300LB] Pipeline destroyed! @0x36F8CB10
+[06/11 12:33:32.867751][info][2048760][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 12:33:32.869511][info][2048760][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 12:33:32.869514][info][2048760][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 12:33:32.869531][info][2048760][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 12:33:32.907282][info][2048760][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 12:33:32.907287][info][2048760][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 12:34:11.413403][info][2053292][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[06/11 12:34:11.413418][info][2053292][DeviceManager.cpp:25] Current found device(s): (1)
+[06/11 12:34:11.413420][info][2053292][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 12:34:11.413422][info][2053292][DeviceManager.cpp:405] Enable net device enumeration: true
+[06/11 12:34:12.431374][info][2053292][DeviceManager.cpp:25] Current device(s) list: (1)
+[06/11 12:34:12.431391][info][2053292][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 12:34:12.778754][info][2053292][DeviceManager.cpp:199] Device created successfully! Name: Femto Bolt, PID: 0x066b, SN/ID: CL8326300LB FW: 1.1.3
+[06/11 12:34:12.778774][info][2053292][Pipeline.cpp:54] [CL8326300LB] Pipeline created with device: {name: Femto Bolt, sn: CL8326300LB}, @0x33D820F0
+[06/11 12:34:12.779794][info][2053292][RawPhaseStreamer.cpp:482] Succeed to load depth engine plugin
+[06/11 12:34:12.802575][info][2053526][RawPhaseStreamer.cpp:512] initNvramData: metadataHeader.size: 484016, metadataHeader.width: 0, metadataHeader.height: 0
+[06/11 12:34:13.246640][info][2053292][Pipeline.cpp:228] [CL8326300LB] Check and set config done!
+[06/11 12:34:13.246653][info][2053292][Pipeline.cpp:266] [CL8326300LB] Try to start streams!
+[06/11 12:34:13.246657][info][2053292][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Depth, format: Y16, width: 640, height: 576, fps: 30}
+[06/11 12:34:13.246661][info][2053292][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Depth
+[06/11 12:34:13.246663][info][2053292][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Depth, format: Y16, width: 640, height: 576, fps: 30}
+[06/11 12:34:13.418719][info][2053292][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/11 12:34:13.418728][info][2053292][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Color
+[06/11 12:34:13.418733][info][2053292][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/11 12:34:13.435293][info][2053292][Pipeline.cpp:293] [CL8326300LB] Start streams done!
+[06/11 12:34:13.435298][info][2053292][Pipeline.cpp:250] [CL8326300LB] Pipeline start done!
+[06/11 12:34:13.620786][info][2053610][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Color
+[06/11 12:34:13.832086][info][2053578][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Depth
+[06/11 12:34:13.855819][info][2053292][Pipeline.cpp:367] [CL8326300LB] Try to stop pipeline!
+[06/11 12:34:13.855823][info][2053292][Pipeline.cpp:343] [CL8326300LB] Try to stop streams!
+[06/11 12:34:13.855836][info][2053292][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Color
+[06/11 12:34:14.228359][info][2053292][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Color
+[06/11 12:34:14.228439][info][2053292][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Color
+[06/11 12:34:14.228454][info][2053292][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Depth
+[06/11 12:34:14.941301][info][2053292][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Depth
+[06/11 12:34:14.941454][info][2053292][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Depth
+[06/11 12:34:14.941458][info][2053292][Pipeline.cpp:363] [CL8326300LB] Stop streams done!
+[06/11 12:34:14.941485][info][2053292][Pipeline.cpp:392] [CL8326300LB] Stop pipeline done!
+[06/11 12:34:14.941521][info][2053292][Pipeline.cpp:65] [CL8326300LB] Pipeline destroyed! @0x33D820F0
+[06/11 12:34:14.941610][info][2053292][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 12:34:14.943605][info][2053292][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 12:34:14.943608][info][2053292][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 12:34:14.943627][info][2053292][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 12:34:14.983231][info][2053292][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 12:34:14.983236][info][2053292][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 12:41:31.123616][info][2099512][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[06/11 12:41:31.123634][info][2099512][DeviceManager.cpp:25] Current found device(s): (1)
+[06/11 12:41:31.123636][info][2099512][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 12:41:31.123638][info][2099512][DeviceManager.cpp:405] Enable net device enumeration: true
+[06/11 12:41:32.128864][info][2099512][DeviceManager.cpp:25] Current device(s) list: (1)
+[06/11 12:41:32.128882][info][2099512][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 12:41:32.476180][info][2099512][DeviceManager.cpp:199] Device created successfully! Name: Femto Bolt, PID: 0x066b, SN/ID: CL8326300LB FW: 1.1.3
+[06/11 12:41:32.476197][info][2099512][Pipeline.cpp:54] [CL8326300LB] Pipeline created with device: {name: Femto Bolt, sn: CL8326300LB}, @0x7532910
+[06/11 12:41:32.477209][info][2099512][RawPhaseStreamer.cpp:482] Succeed to load depth engine plugin
+[06/11 12:41:32.500392][info][2099779][RawPhaseStreamer.cpp:512] initNvramData: metadataHeader.size: 484016, metadataHeader.width: 0, metadataHeader.height: 0
+[06/11 12:41:32.942722][info][2099512][Pipeline.cpp:228] [CL8326300LB] Check and set config done!
+[06/11 12:41:32.942730][info][2099512][Pipeline.cpp:266] [CL8326300LB] Try to start streams!
+[06/11 12:41:32.942734][info][2099512][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Depth, format: Y16, width: 640, height: 576, fps: 30}
+[06/11 12:41:32.942737][info][2099512][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Depth
+[06/11 12:41:32.942739][info][2099512][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Depth, format: Y16, width: 640, height: 576, fps: 30}
+[06/11 12:41:33.130755][info][2099512][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/11 12:41:33.130765][info][2099512][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Color
+[06/11 12:41:33.130768][info][2099512][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/11 12:41:33.150562][info][2099512][Pipeline.cpp:293] [CL8326300LB] Start streams done!
+[06/11 12:41:33.150568][info][2099512][Pipeline.cpp:250] [CL8326300LB] Pipeline start done!
+[06/11 12:41:33.333395][info][2099865][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Color
+[06/11 12:41:33.545598][info][2099830][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Depth
+[06/11 12:41:33.566352][info][2099512][Pipeline.cpp:367] [CL8326300LB] Try to stop pipeline!
+[06/11 12:41:33.566357][info][2099512][Pipeline.cpp:343] [CL8326300LB] Try to stop streams!
+[06/11 12:41:33.566371][info][2099512][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Color
+[06/11 12:41:33.940704][info][2099512][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Color
+[06/11 12:41:33.940768][info][2099512][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Color
+[06/11 12:41:33.940777][info][2099512][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Depth
+[06/11 12:41:34.527629][info][2099512][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Depth
+[06/11 12:41:34.527866][info][2099512][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Depth
+[06/11 12:41:34.527876][info][2099512][Pipeline.cpp:363] [CL8326300LB] Stop streams done!
+[06/11 12:41:34.527902][info][2099512][Pipeline.cpp:392] [CL8326300LB] Stop pipeline done!
+[06/11 12:41:34.527936][info][2099512][Pipeline.cpp:65] [CL8326300LB] Pipeline destroyed! @0x7532910
+[06/11 12:41:34.528026][info][2099512][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 12:41:34.529756][info][2099512][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 12:41:34.529760][info][2099512][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 12:41:34.529776][info][2099512][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 12:41:34.564995][info][2099512][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 12:41:34.564999][info][2099512][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 12:45:26.714986][info][2125484][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[06/11 12:45:26.715003][info][2125484][DeviceManager.cpp:25] Current found device(s): (1)
+[06/11 12:45:26.715005][info][2125484][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 12:45:26.715007][info][2125484][DeviceManager.cpp:405] Enable net device enumeration: true
+[06/11 12:45:27.722122][info][2125484][DeviceManager.cpp:25] Current device(s) list: (1)
+[06/11 12:45:27.722138][info][2125484][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 12:45:28.070047][info][2125484][DeviceManager.cpp:199] Device created successfully! Name: Femto Bolt, PID: 0x066b, SN/ID: CL8326300LB FW: 1.1.3
+[06/11 12:45:28.070082][info][2125484][Pipeline.cpp:54] [CL8326300LB] Pipeline created with device: {name: Femto Bolt, sn: CL8326300LB}, @0x387F89D0
+[06/11 12:45:28.071314][info][2125484][RawPhaseStreamer.cpp:482] Succeed to load depth engine plugin
+[06/11 12:45:28.094119][info][2125722][RawPhaseStreamer.cpp:512] initNvramData: metadataHeader.size: 484016, metadataHeader.width: 0, metadataHeader.height: 0
+[06/11 12:45:28.540689][info][2125484][Pipeline.cpp:228] [CL8326300LB] Check and set config done!
+[06/11 12:45:28.540700][info][2125484][Pipeline.cpp:266] [CL8326300LB] Try to start streams!
+[06/11 12:45:28.540706][info][2125484][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Depth, format: Y16, width: 640, height: 576, fps: 30}
+[06/11 12:45:28.540711][info][2125484][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Depth
+[06/11 12:45:28.540714][info][2125484][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Depth, format: Y16, width: 640, height: 576, fps: 30}
+[06/11 12:45:28.700623][info][2125484][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/11 12:45:28.700630][info][2125484][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Color
+[06/11 12:45:28.700633][info][2125484][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/11 12:45:28.720391][info][2125484][Pipeline.cpp:293] [CL8326300LB] Start streams done!
+[06/11 12:45:28.720396][info][2125484][Pipeline.cpp:250] [CL8326300LB] Pipeline start done!
+[06/11 12:45:28.903571][info][2125800][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Color
+[06/11 12:45:29.119603][info][2125774][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Depth
+[06/11 12:45:29.140996][info][2125484][Pipeline.cpp:367] [CL8326300LB] Try to stop pipeline!
+[06/11 12:45:29.141000][info][2125484][Pipeline.cpp:343] [CL8326300LB] Try to stop streams!
+[06/11 12:45:29.141017][info][2125484][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Color
+[06/11 12:45:29.512390][info][2125484][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Color
+[06/11 12:45:29.512478][info][2125484][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Color
+[06/11 12:45:29.512488][info][2125484][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Depth
+[06/11 12:45:30.214024][info][2125484][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Depth
+[06/11 12:45:30.214254][info][2125484][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Depth
+[06/11 12:45:30.214257][info][2125484][Pipeline.cpp:363] [CL8326300LB] Stop streams done!
+[06/11 12:45:30.214272][info][2125484][Pipeline.cpp:392] [CL8326300LB] Stop pipeline done!
+[06/11 12:45:30.214294][info][2125484][Pipeline.cpp:65] [CL8326300LB] Pipeline destroyed! @0x387F89D0
+[06/11 12:45:30.214340][info][2125484][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 12:45:30.216635][info][2125484][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 12:45:30.216638][info][2125484][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 12:45:30.216662][info][2125484][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 12:45:30.261960][info][2125484][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 12:45:30.261965][info][2125484][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 13:33:10.584872][info][2434254][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[06/11 13:33:10.584891][info][2434254][DeviceManager.cpp:25] Current found device(s): (1)
+[06/11 13:33:10.584893][info][2434254][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 13:33:10.584895][info][2434254][DeviceManager.cpp:405] Enable net device enumeration: true
+[06/11 13:33:11.604796][info][2434254][DeviceManager.cpp:25] Current device(s) list: (1)
+[06/11 13:33:11.604817][info][2434254][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 13:33:41.329148][info][2438109][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[06/11 13:33:41.329171][info][2438109][DeviceManager.cpp:25] Current found device(s): (1)
+[06/11 13:33:41.329174][info][2438109][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 13:33:41.329176][info][2438109][DeviceManager.cpp:405] Enable net device enumeration: true
+[06/11 13:33:42.354229][info][2438109][DeviceManager.cpp:25] Current device(s) list: (1)
+[06/11 13:33:42.354248][info][2438109][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 14:10:51.378895][info][2684754][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[06/11 14:10:51.378918][info][2684754][DeviceManager.cpp:25] Current found device(s): (1)
+[06/11 14:10:51.378920][info][2684754][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 14:10:51.378923][info][2684754][DeviceManager.cpp:405] Enable net device enumeration: true
+[06/11 14:10:52.392044][info][2684754][DeviceManager.cpp:25] Current device(s) list: (1)
+[06/11 14:10:52.392061][info][2684754][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 14:10:52.739665][info][2684754][DeviceManager.cpp:199] Device created successfully! Name: Femto Bolt, PID: 0x066b, SN/ID: CL8326300LB FW: 1.1.3
+[06/11 14:10:52.739689][info][2684754][Pipeline.cpp:54] [CL8326300LB] Pipeline created with device: {name: Femto Bolt, sn: CL8326300LB}, @0xF6E3470
+[06/11 14:10:52.740463][info][2684754][RawPhaseStreamer.cpp:482] Succeed to load depth engine plugin
+[06/11 14:10:52.763095][info][2684990][RawPhaseStreamer.cpp:512] initNvramData: metadataHeader.size: 484016, metadataHeader.width: 0, metadataHeader.height: 0
+[06/11 14:10:53.207159][info][2684754][Pipeline.cpp:228] [CL8326300LB] Check and set config done!
+[06/11 14:10:53.207173][info][2684754][Pipeline.cpp:266] [CL8326300LB] Try to start streams!
+[06/11 14:10:53.207180][info][2684754][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Depth, format: Y16, width: 640, height: 576, fps: 30}
+[06/11 14:10:53.207186][info][2684754][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Depth
+[06/11 14:10:53.207189][info][2684754][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Depth, format: Y16, width: 640, height: 576, fps: 30}
+[06/11 14:10:53.359840][info][2684754][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/11 14:10:53.359849][info][2684754][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Color
+[06/11 14:10:53.359854][info][2684754][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/11 14:10:53.378054][info][2684754][Pipeline.cpp:293] [CL8326300LB] Start streams done!
+[06/11 14:10:53.378060][info][2684754][Pipeline.cpp:250] [CL8326300LB] Pipeline start done!
+[06/11 14:10:53.561040][info][2685067][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Color
+[06/11 14:10:53.763800][info][2685037][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Depth
+[06/11 14:10:53.785766][info][2684754][Pipeline.cpp:367] [CL8326300LB] Try to stop pipeline!
+[06/11 14:10:53.785771][info][2684754][Pipeline.cpp:343] [CL8326300LB] Try to stop streams!
+[06/11 14:10:53.785786][info][2684754][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Color
+[06/11 14:10:54.170263][info][2684754][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Color
+[06/11 14:10:54.170351][info][2684754][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Color
+[06/11 14:10:54.170361][info][2684754][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Depth
+[06/11 14:10:54.872050][info][2684754][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Depth
+[06/11 14:10:54.872175][info][2684754][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Depth
+[06/11 14:10:54.872178][info][2684754][Pipeline.cpp:363] [CL8326300LB] Stop streams done!
+[06/11 14:10:54.872201][info][2684754][Pipeline.cpp:392] [CL8326300LB] Stop pipeline done!
+[06/11 14:10:54.872235][info][2684754][Pipeline.cpp:65] [CL8326300LB] Pipeline destroyed! @0xF6E3470
+[06/11 14:10:54.872315][info][2684754][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 14:10:54.874169][info][2684754][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 14:10:54.874172][info][2684754][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 14:10:54.874188][info][2684754][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 14:10:54.910782][info][2684754][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 14:10:54.910787][info][2684754][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 14:24:08.328488][info][2771210][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[06/11 14:24:08.328508][info][2771210][DeviceManager.cpp:25] Current found device(s): (1)
+[06/11 14:24:08.328510][info][2771210][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 14:24:08.328513][info][2771210][DeviceManager.cpp:405] Enable net device enumeration: true
+[06/11 14:24:09.345857][info][2771210][DeviceManager.cpp:25] Current device(s) list: (1)
+[06/11 14:24:09.345874][info][2771210][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 14:24:09.692409][info][2771210][DeviceManager.cpp:199] Device created successfully! Name: Femto Bolt, PID: 0x066b, SN/ID: CL8326300LB FW: 1.1.3
+[06/11 14:24:09.692432][info][2771210][Pipeline.cpp:54] [CL8326300LB] Pipeline created with device: {name: Femto Bolt, sn: CL8326300LB}, @0x2AC70160
+[06/11 14:24:09.693087][info][2771210][RawPhaseStreamer.cpp:482] Succeed to load depth engine plugin
+[06/11 14:24:09.715447][info][2771477][RawPhaseStreamer.cpp:512] initNvramData: metadataHeader.size: 484016, metadataHeader.width: 0, metadataHeader.height: 0
+[06/11 14:24:10.158810][info][2771210][Pipeline.cpp:228] [CL8326300LB] Check and set config done!
+[06/11 14:24:10.158823][info][2771210][Pipeline.cpp:266] [CL8326300LB] Try to start streams!
+[06/11 14:24:10.158827][info][2771210][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Depth, format: Y16, width: 640, height: 576, fps: 30}
+[06/11 14:24:10.158831][info][2771210][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Depth
+[06/11 14:24:10.158833][info][2771210][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Depth, format: Y16, width: 640, height: 576, fps: 30}
+[06/11 14:24:10.306223][info][2771210][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/11 14:24:10.306231][info][2771210][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Color
+[06/11 14:24:10.306234][info][2771210][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/11 14:24:10.324910][info][2771210][Pipeline.cpp:293] [CL8326300LB] Start streams done!
+[06/11 14:24:10.324916][info][2771210][Pipeline.cpp:250] [CL8326300LB] Pipeline start done!
+[06/11 14:24:10.509382][info][2771545][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Color
+[06/11 14:24:10.727837][info][2771520][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Depth
+[06/11 14:24:10.747129][info][2771210][Pipeline.cpp:367] [CL8326300LB] Try to stop pipeline!
+[06/11 14:24:10.747134][info][2771210][Pipeline.cpp:343] [CL8326300LB] Try to stop streams!
+[06/11 14:24:10.747155][info][2771210][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Color
+[06/11 14:24:11.118685][info][2771210][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Color
+[06/11 14:24:11.118845][info][2771210][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Color
+[06/11 14:24:11.118856][info][2771210][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Depth
+[06/11 14:24:11.690995][info][2771210][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Depth
+[06/11 14:24:11.691076][info][2771210][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Depth
+[06/11 14:24:11.691078][info][2771210][Pipeline.cpp:363] [CL8326300LB] Stop streams done!
+[06/11 14:24:11.691095][info][2771210][Pipeline.cpp:392] [CL8326300LB] Stop pipeline done!
+[06/11 14:24:11.691121][info][2771210][Pipeline.cpp:65] [CL8326300LB] Pipeline destroyed! @0x2AC70160
+[06/11 14:24:11.691193][info][2771210][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 14:24:11.692855][info][2771210][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 14:24:11.692859][info][2771210][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 14:24:11.692874][info][2771210][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 14:24:11.733700][info][2771210][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 14:24:11.733706][info][2771210][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 17:27:26.584143][info][3967525][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[06/11 17:27:26.584167][info][3967525][DeviceManager.cpp:25] Current found device(s): (1)
+[06/11 17:27:26.584170][info][3967525][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 17:27:26.584172][info][3967525][DeviceManager.cpp:405] Enable net device enumeration: true
+[06/11 17:27:27.586317][info][3967525][DeviceManager.cpp:25] Current device(s) list: (1)
+[06/11 17:27:27.586337][info][3967525][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 17:27:27.938897][info][3967525][DeviceManager.cpp:199] Device created successfully! Name: Femto Bolt, PID: 0x066b, SN/ID: CL8326300LB FW: 1.1.3
+[06/11 17:27:27.938918][info][3967525][Pipeline.cpp:54] [CL8326300LB] Pipeline created with device: {name: Femto Bolt, sn: CL8326300LB}, @0x3AB02E70
+[06/11 17:27:27.940111][info][3967525][RawPhaseStreamer.cpp:482] Succeed to load depth engine plugin
+[06/11 17:27:27.955711][info][3967767][RawPhaseStreamer.cpp:512] initNvramData: metadataHeader.size: 484016, metadataHeader.width: 0, metadataHeader.height: 0
+[06/11 17:27:28.778738][info][3967525][Pipeline.cpp:228] [CL8326300LB] Check and set config done!
+[06/11 17:27:28.778759][info][3967525][Pipeline.cpp:266] [CL8326300LB] Try to start streams!
+[06/11 17:27:28.778766][info][3967525][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Depth, format: Y16, width: 1024, height: 1024, fps: 15}
+[06/11 17:27:28.778774][info][3967525][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Depth
+[06/11 17:27:28.778777][info][3967525][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Depth, format: Y16, width: 1024, height: 1024, fps: 15}
+[06/11 17:27:29.168762][info][3967525][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/11 17:27:29.168773][info][3967525][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Color
+[06/11 17:27:29.168776][info][3967525][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/11 17:27:29.187031][info][3967525][Pipeline.cpp:293] [CL8326300LB] Start streams done!
+[06/11 17:27:29.187036][info][3967525][Pipeline.cpp:250] [CL8326300LB] Pipeline start done!
+[06/11 17:27:29.478159][info][3967925][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Color
+[06/11 17:27:29.538283][info][3967857][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Depth
+[06/11 17:27:29.672632][info][3967525][Pipeline.cpp:367] [CL8326300LB] Try to stop pipeline!
+[06/11 17:27:29.672638][info][3967525][Pipeline.cpp:343] [CL8326300LB] Try to stop streams!
+[06/11 17:27:29.672651][info][3967525][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Color
+[06/11 17:27:30.033441][info][3967525][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Color
+[06/11 17:27:30.033496][info][3967525][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Color
+[06/11 17:27:30.033505][info][3967525][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Depth
+[06/11 17:27:30.679510][info][3967525][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Depth
+[06/11 17:27:30.679725][info][3967525][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Depth
+[06/11 17:27:30.679734][info][3967525][Pipeline.cpp:363] [CL8326300LB] Stop streams done!
+[06/11 17:27:30.679759][info][3967525][Pipeline.cpp:392] [CL8326300LB] Stop pipeline done!
+[06/11 17:27:30.679797][info][3967525][Pipeline.cpp:65] [CL8326300LB] Pipeline destroyed! @0x3AB02E70
+[06/11 17:27:30.679886][info][3967525][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 17:27:30.681854][info][3967525][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 17:27:30.681859][info][3967525][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 17:27:30.681881][info][3967525][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 17:27:30.720980][info][3967525][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 17:27:30.720984][info][3967525][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 17:29:01.269504][info][3977798][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[06/11 17:29:01.269527][info][3977798][DeviceManager.cpp:25] Current found device(s): (1)
+[06/11 17:29:01.269529][info][3977798][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 17:29:01.269531][info][3977798][DeviceManager.cpp:405] Enable net device enumeration: true
+[06/11 17:29:02.289641][info][3977798][DeviceManager.cpp:25] Current device(s) list: (1)
+[06/11 17:29:02.289654][info][3977798][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 17:29:02.635498][info][3977798][DeviceManager.cpp:199] Device created successfully! Name: Femto Bolt, PID: 0x066b, SN/ID: CL8326300LB FW: 1.1.3
+[06/11 17:29:02.635519][info][3977798][Pipeline.cpp:54] [CL8326300LB] Pipeline created with device: {name: Femto Bolt, sn: CL8326300LB}, @0x3AA30640
+[06/11 17:29:02.636687][info][3977798][RawPhaseStreamer.cpp:482] Succeed to load depth engine plugin
+[06/11 17:29:02.659999][info][3978048][RawPhaseStreamer.cpp:512] initNvramData: metadataHeader.size: 484016, metadataHeader.width: 0, metadataHeader.height: 0
+[06/11 17:29:03.107728][info][3977798][Pipeline.cpp:228] [CL8326300LB] Check and set config done!
+[06/11 17:29:03.107747][info][3977798][Pipeline.cpp:266] [CL8326300LB] Try to start streams!
+[06/11 17:29:03.107754][info][3977798][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Depth, format: Y16, width: 1024, height: 1024, fps: 15}
+[06/11 17:29:03.107761][info][3977798][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Depth
+[06/11 17:29:03.107764][info][3977798][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Depth, format: Y16, width: 1024, height: 1024, fps: 15}
+[06/11 17:29:03.438196][info][3977798][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/11 17:29:03.438204][info][3977798][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Color
+[06/11 17:29:03.438210][info][3977798][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/11 17:29:03.454588][info][3977798][Pipeline.cpp:293] [CL8326300LB] Start streams done!
+[06/11 17:29:03.454592][info][3977798][Pipeline.cpp:250] [CL8326300LB] Pipeline start done!
+[06/11 17:29:03.625423][info][3978157][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Color
+[06/11 17:29:03.863983][info][3978101][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Depth
+[06/11 17:29:03.904130][info][3977798][Pipeline.cpp:367] [CL8326300LB] Try to stop pipeline!
+[06/11 17:29:03.904135][info][3977798][Pipeline.cpp:343] [CL8326300LB] Try to stop streams!
+[06/11 17:29:03.904218][info][3977798][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Color
+[06/11 17:29:04.267102][info][3977798][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Color
+[06/11 17:29:04.267166][info][3977798][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Color
+[06/11 17:29:04.267180][info][3977798][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Depth
+[06/11 17:29:04.838708][info][3977798][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Depth
+[06/11 17:29:04.838745][info][3977798][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Depth
+[06/11 17:29:04.838747][info][3977798][Pipeline.cpp:363] [CL8326300LB] Stop streams done!
+[06/11 17:29:04.838763][info][3977798][Pipeline.cpp:392] [CL8326300LB] Stop pipeline done!
+[06/11 17:29:04.838790][info][3977798][Pipeline.cpp:65] [CL8326300LB] Pipeline destroyed! @0x3AA30640
+[06/11 17:29:04.838851][info][3977798][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 17:29:04.840500][info][3977798][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 17:29:04.840502][info][3977798][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 17:29:04.840512][info][3977798][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 17:29:04.878654][info][3977798][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 17:29:04.878659][info][3977798][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 17:42:28.822588][info][4057068][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[06/11 17:42:28.822608][info][4057068][DeviceManager.cpp:25] Current found device(s): (1)
+[06/11 17:42:28.822610][info][4057068][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 17:42:28.822613][info][4057068][DeviceManager.cpp:405] Enable net device enumeration: true
+[06/11 17:42:29.828329][info][4057068][DeviceManager.cpp:25] Current device(s) list: (1)
+[06/11 17:42:29.828347][info][4057068][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 17:42:30.175684][info][4057068][DeviceManager.cpp:199] Device created successfully! Name: Femto Bolt, PID: 0x066b, SN/ID: CL8326300LB FW: 1.1.3
+[06/11 17:42:30.175711][info][4057068][Pipeline.cpp:54] [CL8326300LB] Pipeline created with device: {name: Femto Bolt, sn: CL8326300LB}, @0x33349CD0
+[06/11 17:42:30.176820][info][4057068][RawPhaseStreamer.cpp:482] Succeed to load depth engine plugin
+[06/11 17:42:30.199561][info][4057284][RawPhaseStreamer.cpp:512] initNvramData: metadataHeader.size: 484016, metadataHeader.width: 0, metadataHeader.height: 0
+[06/11 17:42:30.645708][info][4057068][Pipeline.cpp:228] [CL8326300LB] Check and set config done!
+[06/11 17:42:30.645720][info][4057068][Pipeline.cpp:266] [CL8326300LB] Try to start streams!
+[06/11 17:42:30.645727][info][4057068][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Depth, format: Y16, width: 1024, height: 1024, fps: 15}
+[06/11 17:42:30.645734][info][4057068][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Depth
+[06/11 17:42:30.645737][info][4057068][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Depth, format: Y16, width: 1024, height: 1024, fps: 15}
+[06/11 17:42:30.962842][info][4057068][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/11 17:42:30.962850][info][4057068][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Color
+[06/11 17:42:30.962853][info][4057068][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/11 17:42:30.981736][info][4057068][Pipeline.cpp:293] [CL8326300LB] Start streams done!
+[06/11 17:42:30.981742][info][4057068][Pipeline.cpp:250] [CL8326300LB] Pipeline start done!
+[06/11 17:42:31.184568][info][4057382][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Color
+[06/11 17:42:31.425536][info][4057327][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Depth
+[06/11 17:42:31.462637][info][4057068][Pipeline.cpp:367] [CL8326300LB] Try to stop pipeline!
+[06/11 17:42:31.462641][info][4057068][Pipeline.cpp:343] [CL8326300LB] Try to stop streams!
+[06/11 17:42:31.462654][info][4057068][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Color
+[06/11 17:42:31.829358][info][4057068][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Color
+[06/11 17:42:31.829464][info][4057068][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Color
+[06/11 17:42:31.829476][info][4057068][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Depth
+[06/11 17:42:32.590695][info][4057068][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Depth
+[06/11 17:42:32.590904][info][4057068][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Depth
+[06/11 17:42:32.590908][info][4057068][Pipeline.cpp:363] [CL8326300LB] Stop streams done!
+[06/11 17:42:32.590933][info][4057068][Pipeline.cpp:392] [CL8326300LB] Stop pipeline done!
+[06/11 17:42:32.590971][info][4057068][Pipeline.cpp:65] [CL8326300LB] Pipeline destroyed! @0x33349CD0
+[06/11 17:42:32.591064][info][4057068][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 17:42:32.593106][info][4057068][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 17:42:32.593114][info][4057068][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 17:42:32.593144][info][4057068][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 17:42:32.637775][info][4057068][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 17:42:32.637781][info][4057068][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 17:42:36.865557][info][4057978][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[06/11 17:42:36.865578][info][4057978][DeviceManager.cpp:25] Current found device(s): (1)
+[06/11 17:42:36.865581][info][4057978][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 17:42:36.865583][info][4057978][DeviceManager.cpp:405] Enable net device enumeration: true
+[06/11 17:42:37.884395][info][4057978][DeviceManager.cpp:25] Current device(s) list: (1)
+[06/11 17:42:37.884412][info][4057978][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 17:42:38.230517][info][4057978][DeviceManager.cpp:199] Device created successfully! Name: Femto Bolt, PID: 0x066b, SN/ID: CL8326300LB FW: 1.1.3
+[06/11 17:42:38.230549][info][4057978][Pipeline.cpp:54] [CL8326300LB] Pipeline created with device: {name: Femto Bolt, sn: CL8326300LB}, @0x14923640
+[06/11 17:42:38.231446][info][4057978][RawPhaseStreamer.cpp:482] Succeed to load depth engine plugin
+[06/11 17:42:38.254691][info][4058216][RawPhaseStreamer.cpp:512] initNvramData: metadataHeader.size: 484016, metadataHeader.width: 0, metadataHeader.height: 0
+[06/11 17:42:38.700807][info][4057978][Pipeline.cpp:228] [CL8326300LB] Check and set config done!
+[06/11 17:42:38.700820][info][4057978][Pipeline.cpp:266] [CL8326300LB] Try to start streams!
+[06/11 17:42:38.700827][info][4057978][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Depth, format: Y16, width: 1024, height: 1024, fps: 15}
+[06/11 17:42:38.700835][info][4057978][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Depth
+[06/11 17:42:38.700838][info][4057978][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Depth, format: Y16, width: 1024, height: 1024, fps: 15}
+[06/11 17:42:39.007548][info][4057978][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/11 17:42:39.007559][info][4057978][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Color
+[06/11 17:42:39.007563][info][4057978][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/11 17:42:39.025784][info][4057978][Pipeline.cpp:293] [CL8326300LB] Start streams done!
+[06/11 17:42:39.025787][info][4057978][Pipeline.cpp:250] [CL8326300LB] Pipeline start done!
+[06/11 17:42:39.228927][info][4058313][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Color
+[06/11 17:42:39.459831][info][4058262][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Depth
+[06/11 17:42:39.494336][info][4057978][Pipeline.cpp:367] [CL8326300LB] Try to stop pipeline!
+[06/11 17:42:39.494341][info][4057978][Pipeline.cpp:343] [CL8326300LB] Try to stop streams!
+[06/11 17:42:39.494355][info][4057978][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Color
+[06/11 17:42:39.874421][info][4057978][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Color
+[06/11 17:42:39.874522][info][4057978][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Color
+[06/11 17:42:39.874533][info][4057978][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Depth
+[06/11 17:42:40.528000][info][4057978][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Depth
+[06/11 17:42:40.528111][info][4057978][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Depth
+[06/11 17:42:40.528115][info][4057978][Pipeline.cpp:363] [CL8326300LB] Stop streams done!
+[06/11 17:42:40.528134][info][4057978][Pipeline.cpp:392] [CL8326300LB] Stop pipeline done!
+[06/11 17:42:40.528168][info][4057978][Pipeline.cpp:65] [CL8326300LB] Pipeline destroyed! @0x14923640
+[06/11 17:42:40.528250][info][4057978][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 17:42:40.530339][info][4057978][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 17:42:40.530342][info][4057978][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 17:42:40.530360][info][4057978][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 17:42:40.569602][info][4057978][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 17:42:40.569607][info][4057978][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 17:58:50.754327][info][4157671][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[06/11 17:58:50.754349][info][4157671][DeviceManager.cpp:25] Current found device(s): (1)
+[06/11 17:58:50.754352][info][4157671][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 17:58:50.754354][info][4157671][DeviceManager.cpp:405] Enable net device enumeration: true
+[06/11 17:58:51.762036][info][4157671][DeviceManager.cpp:25] Current device(s) list: (1)
+[06/11 17:58:51.762050][info][4157671][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 17:58:52.107347][info][4157671][DeviceManager.cpp:199] Device created successfully! Name: Femto Bolt, PID: 0x066b, SN/ID: CL8326300LB FW: 1.1.3
+[06/11 17:58:52.107373][info][4157671][Pipeline.cpp:54] [CL8326300LB] Pipeline created with device: {name: Femto Bolt, sn: CL8326300LB}, @0x3CD08EC0
+[06/11 17:58:52.108206][info][4157671][RawPhaseStreamer.cpp:482] Succeed to load depth engine plugin
+[06/11 17:58:52.131303][info][4157915][RawPhaseStreamer.cpp:512] initNvramData: metadataHeader.size: 484016, metadataHeader.width: 0, metadataHeader.height: 0
+[06/11 17:58:52.577186][info][4157671][Pipeline.cpp:228] [CL8326300LB] Check and set config done!
+[06/11 17:58:52.577199][info][4157671][Pipeline.cpp:266] [CL8326300LB] Try to start streams!
+[06/11 17:58:52.577204][info][4157671][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Depth, format: Y16, width: 1024, height: 1024, fps: 15}
+[06/11 17:58:52.577211][info][4157671][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Depth
+[06/11 17:58:52.577214][info][4157671][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Depth, format: Y16, width: 1024, height: 1024, fps: 15}
+[06/11 17:58:52.905814][info][4157671][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/11 17:58:52.905821][info][4157671][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Color
+[06/11 17:58:52.905824][info][4157671][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/11 17:58:52.923922][info][4157671][Pipeline.cpp:293] [CL8326300LB] Start streams done!
+[06/11 17:58:52.923927][info][4157671][Pipeline.cpp:250] [CL8326300LB] Pipeline start done!
+[06/11 17:58:53.094328][info][4158030][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Color
+[06/11 17:58:53.320156][info][4157974][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Depth
+[06/11 17:58:53.380637][info][4157671][Pipeline.cpp:367] [CL8326300LB] Try to stop pipeline!
+[06/11 17:58:53.380642][info][4157671][Pipeline.cpp:343] [CL8326300LB] Try to stop streams!
+[06/11 17:58:53.380653][info][4157671][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Color
+[06/11 17:58:53.744052][info][4157671][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Color
+[06/11 17:58:53.744156][info][4157671][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Color
+[06/11 17:58:53.744167][info][4157671][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Depth
+[06/11 17:58:54.419810][info][4157671][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Depth
+[06/11 17:58:54.419943][info][4157671][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Depth
+[06/11 17:58:54.419945][info][4157671][Pipeline.cpp:363] [CL8326300LB] Stop streams done!
+[06/11 17:58:54.419965][info][4157671][Pipeline.cpp:392] [CL8326300LB] Stop pipeline done!
+[06/11 17:58:54.419996][info][4157671][Pipeline.cpp:65] [CL8326300LB] Pipeline destroyed! @0x3CD08EC0
+[06/11 17:58:54.420066][info][4157671][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 17:58:54.422579][info][4157671][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 17:58:54.422584][info][4157671][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 17:58:54.422606][info][4157671][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 17:58:54.461458][info][4157671][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 17:58:54.461463][info][4157671][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 18:02:18.820506][info][4179235][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[06/11 18:02:18.820526][info][4179235][DeviceManager.cpp:25] Current found device(s): (1)
+[06/11 18:02:18.820529][info][4179235][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 18:02:18.820531][info][4179235][DeviceManager.cpp:405] Enable net device enumeration: true
+[06/11 18:02:19.822476][info][4179235][DeviceManager.cpp:25] Current device(s) list: (1)
+[06/11 18:02:19.822492][info][4179235][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 18:02:20.170649][info][4179235][DeviceManager.cpp:199] Device created successfully! Name: Femto Bolt, PID: 0x066b, SN/ID: CL8326300LB FW: 1.1.3
+[06/11 18:02:20.170678][info][4179235][Pipeline.cpp:54] [CL8326300LB] Pipeline created with device: {name: Femto Bolt, sn: CL8326300LB}, @0x3E297C20
+[06/11 18:02:20.171879][info][4179235][RawPhaseStreamer.cpp:482] Succeed to load depth engine plugin
+[06/11 18:02:20.195324][info][4179472][RawPhaseStreamer.cpp:512] initNvramData: metadataHeader.size: 484016, metadataHeader.width: 0, metadataHeader.height: 0
+[06/11 18:02:20.638238][info][4179235][Pipeline.cpp:228] [CL8326300LB] Check and set config done!
+[06/11 18:02:20.638248][info][4179235][Pipeline.cpp:266] [CL8326300LB] Try to start streams!
+[06/11 18:02:20.638254][info][4179235][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Depth, format: Y16, width: 1024, height: 1024, fps: 15}
+[06/11 18:02:20.638260][info][4179235][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Depth
+[06/11 18:02:20.638263][info][4179235][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Depth, format: Y16, width: 1024, height: 1024, fps: 15}
+[06/11 18:02:20.967700][info][4179235][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/11 18:02:20.967707][info][4179235][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Color
+[06/11 18:02:20.967710][info][4179235][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/11 18:02:20.984424][info][4179235][Pipeline.cpp:293] [CL8326300LB] Start streams done!
+[06/11 18:02:20.984429][info][4179235][Pipeline.cpp:250] [CL8326300LB] Pipeline start done!
+[06/11 18:02:21.256819][info][4179577][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Color
+[06/11 18:02:21.329857][info][4179522][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Depth
+[06/11 18:02:21.511011][info][4179235][Pipeline.cpp:367] [CL8326300LB] Try to stop pipeline!
+[06/11 18:02:21.511016][info][4179235][Pipeline.cpp:343] [CL8326300LB] Try to stop streams!
+[06/11 18:02:21.511030][info][4179235][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Color
+[06/11 18:02:21.862477][info][4179235][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Color
+[06/11 18:02:21.862602][info][4179235][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Color
+[06/11 18:02:21.862613][info][4179235][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Depth
+[06/11 18:02:22.485729][info][4179235][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Depth
+[06/11 18:02:22.485845][info][4179235][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Depth
+[06/11 18:02:22.485848][info][4179235][Pipeline.cpp:363] [CL8326300LB] Stop streams done!
+[06/11 18:02:22.485869][info][4179235][Pipeline.cpp:392] [CL8326300LB] Stop pipeline done!
+[06/11 18:02:22.485900][info][4179235][Pipeline.cpp:65] [CL8326300LB] Pipeline destroyed! @0x3E297C20
+[06/11 18:02:22.485968][info][4179235][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 18:02:22.487663][info][4179235][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 18:02:22.487666][info][4179235][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 18:02:22.487680][info][4179235][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 18:02:22.528888][info][4179235][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 18:02:22.528892][info][4179235][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 18:03:21.888540][info][4185793][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[06/11 18:03:21.888559][info][4185793][DeviceManager.cpp:25] Current found device(s): (1)
+[06/11 18:03:21.888562][info][4185793][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 18:03:21.888564][info][4185793][DeviceManager.cpp:405] Enable net device enumeration: true
+[06/11 18:03:22.897026][info][4185793][DeviceManager.cpp:25] Current device(s) list: (1)
+[06/11 18:03:22.897044][info][4185793][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 18:03:23.244353][info][4185793][DeviceManager.cpp:199] Device created successfully! Name: Femto Bolt, PID: 0x066b, SN/ID: CL8326300LB FW: 1.1.3
+[06/11 18:03:23.244377][info][4185793][Pipeline.cpp:54] [CL8326300LB] Pipeline created with device: {name: Femto Bolt, sn: CL8326300LB}, @0x2DB1C20
+[06/11 18:03:23.245334][info][4185793][RawPhaseStreamer.cpp:482] Succeed to load depth engine plugin
+[06/11 18:03:23.268783][info][4186037][RawPhaseStreamer.cpp:512] initNvramData: metadataHeader.size: 484016, metadataHeader.width: 0, metadataHeader.height: 0
+[06/11 18:03:23.710964][info][4185793][Pipeline.cpp:228] [CL8326300LB] Check and set config done!
+[06/11 18:03:23.710972][info][4185793][Pipeline.cpp:266] [CL8326300LB] Try to start streams!
+[06/11 18:03:23.710975][info][4185793][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Depth, format: Y16, width: 1024, height: 1024, fps: 15}
+[06/11 18:03:23.710979][info][4185793][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Depth
+[06/11 18:03:23.710981][info][4185793][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Depth, format: Y16, width: 1024, height: 1024, fps: 15}
+[06/11 18:03:24.031959][info][4185793][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/11 18:03:24.031970][info][4185793][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Color
+[06/11 18:03:24.031973][info][4185793][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/11 18:03:24.050612][info][4185793][Pipeline.cpp:293] [CL8326300LB] Start streams done!
+[06/11 18:03:24.050617][info][4185793][Pipeline.cpp:250] [CL8326300LB] Pipeline start done!
+[06/11 18:03:24.286678][info][4186145][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Color
+[06/11 18:03:24.384623][info][4186090][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Depth
+[06/11 18:03:24.561652][info][4185793][Pipeline.cpp:367] [CL8326300LB] Try to stop pipeline!
+[06/11 18:03:24.561656][info][4185793][Pipeline.cpp:343] [CL8326300LB] Try to stop streams!
+[06/11 18:03:24.561665][info][4185793][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Color
+[06/11 18:03:24.928462][info][4185793][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Color
+[06/11 18:03:24.928566][info][4185793][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Color
+[06/11 18:03:24.928580][info][4185793][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Depth
+[06/11 18:03:25.651642][info][4185793][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Depth
+[06/11 18:03:25.651767][info][4185793][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Depth
+[06/11 18:03:25.651770][info][4185793][Pipeline.cpp:363] [CL8326300LB] Stop streams done!
+[06/11 18:03:25.651788][info][4185793][Pipeline.cpp:392] [CL8326300LB] Stop pipeline done!
+[06/11 18:03:25.651816][info][4185793][Pipeline.cpp:65] [CL8326300LB] Pipeline destroyed! @0x2DB1C20
+[06/11 18:03:25.651880][info][4185793][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 18:03:25.653713][info][4185793][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 18:03:25.653715][info][4185793][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 18:03:25.653729][info][4185793][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 18:03:25.690968][info][4185793][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 18:03:25.690973][info][4185793][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 18:13:31.995631][info][53334][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[06/11 18:13:31.995652][info][53334][DeviceManager.cpp:25] Current found device(s): (1)
+[06/11 18:13:31.995655][info][53334][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 18:13:31.995657][info][53334][DeviceManager.cpp:405] Enable net device enumeration: true
+[06/11 18:13:33.004351][info][53334][DeviceManager.cpp:25] Current device(s) list: (1)
+[06/11 18:13:33.004364][info][53334][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 18:13:33.349087][info][53334][DeviceManager.cpp:199] Device created successfully! Name: Femto Bolt, PID: 0x066b, SN/ID: CL8326300LB FW: 1.1.3
+[06/11 18:13:33.349102][info][53334][Pipeline.cpp:54] [CL8326300LB] Pipeline created with device: {name: Femto Bolt, sn: CL8326300LB}, @0x1682FC20
+[06/11 18:13:33.349834][info][53334][RawPhaseStreamer.cpp:482] Succeed to load depth engine plugin
+[06/11 18:13:33.372792][info][53559][RawPhaseStreamer.cpp:512] initNvramData: metadataHeader.size: 484016, metadataHeader.width: 0, metadataHeader.height: 0
+[06/11 18:13:33.819072][info][53334][Pipeline.cpp:228] [CL8326300LB] Check and set config done!
+[06/11 18:13:33.819085][info][53334][Pipeline.cpp:266] [CL8326300LB] Try to start streams!
+[06/11 18:13:33.819092][info][53334][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Depth, format: Y16, width: 1024, height: 1024, fps: 15}
+[06/11 18:13:33.819099][info][53334][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Depth
+[06/11 18:13:33.819102][info][53334][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Depth, format: Y16, width: 1024, height: 1024, fps: 15}
+[06/11 18:13:34.142249][info][53334][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/11 18:13:34.142261][info][53334][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Color
+[06/11 18:13:34.142265][info][53334][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/11 18:13:34.160463][info][53334][Pipeline.cpp:293] [CL8326300LB] Start streams done!
+[06/11 18:13:34.160467][info][53334][Pipeline.cpp:250] [CL8326300LB] Pipeline start done!
+[06/11 18:13:34.396848][info][53686][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Color
+[06/11 18:13:34.496827][info][53609][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Depth
+[06/11 18:13:34.679287][info][53334][Pipeline.cpp:367] [CL8326300LB] Try to stop pipeline!
+[06/11 18:13:34.679291][info][53334][Pipeline.cpp:343] [CL8326300LB] Try to stop streams!
+[06/11 18:13:34.679315][info][53334][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Color
+[06/11 18:13:35.039196][info][53334][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Color
+[06/11 18:13:35.039313][info][53334][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Color
+[06/11 18:13:35.039327][info][53334][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Depth
+[06/11 18:13:35.770917][info][53334][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Depth
+[06/11 18:13:35.771004][info][53334][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Depth
+[06/11 18:13:35.771007][info][53334][Pipeline.cpp:363] [CL8326300LB] Stop streams done!
+[06/11 18:13:35.771030][info][53334][Pipeline.cpp:392] [CL8326300LB] Stop pipeline done!
+[06/11 18:13:35.771067][info][53334][Pipeline.cpp:65] [CL8326300LB] Pipeline destroyed! @0x1682FC20
+[06/11 18:13:35.771156][info][53334][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 18:13:35.773339][info][53334][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 18:13:35.773343][info][53334][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 18:13:35.773360][info][53334][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 18:13:35.811067][info][53334][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 18:13:35.811072][info][53334][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 19:40:19.072061][warning][6][ObException.cpp:32] A unrecoverable_exception has occurred!
+ - where: UsbEnumeratorLibusb.cpp(337)
+ - msg: libusb_init failed
+ - type: PLATFORM
+ - status: 1
+[06/11 19:40:19.073535][warning][6][Platform.cpp:42] Execute failure! A libobsensor_exception has occurred!
+ - where: Platform.cpp(42):Platform
+ - msg: libusb_init failed
+ - type: N11libobsensor23unrecoverable_exceptionE
+ - status: 1
+[06/11 19:40:19.073542][warning][6][Platform.cpp:42] Failed to create usb pal!
+[06/11 19:43:13.380293][info][619016][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[06/11 19:43:13.380313][info][619016][DeviceManager.cpp:25] Current found device(s): (1)
+[06/11 19:43:13.380315][info][619016][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 19:43:13.380317][info][619016][DeviceManager.cpp:405] Enable net device enumeration: true
+[06/11 19:43:14.381837][info][619016][DeviceManager.cpp:25] Current device(s) list: (1)
+[06/11 19:43:14.381850][info][619016][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 19:43:14.727260][info][619016][DeviceManager.cpp:199] Device created successfully! Name: Femto Bolt, PID: 0x066b, SN/ID: CL8326300LB FW: 1.1.3
+[06/11 19:43:14.727287][info][619016][Pipeline.cpp:54] [CL8326300LB] Pipeline created with device: {name: Femto Bolt, sn: CL8326300LB}, @0x16B00B00
+[06/11 19:43:14.728657][info][619016][RawPhaseStreamer.cpp:482] Succeed to load depth engine plugin
+[06/11 19:43:14.751303][info][619186][RawPhaseStreamer.cpp:512] initNvramData: metadataHeader.size: 484016, metadataHeader.width: 0, metadataHeader.height: 0
+[06/11 19:43:15.199429][info][619016][Pipeline.cpp:228] [CL8326300LB] Check and set config done!
+[06/11 19:43:15.199449][info][619016][Pipeline.cpp:266] [CL8326300LB] Try to start streams!
+[06/11 19:43:15.199456][info][619016][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Depth, format: Y16, width: 1024, height: 1024, fps: 15}
+[06/11 19:43:15.199462][info][619016][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Depth
+[06/11 19:43:15.199465][info][619016][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Depth, format: Y16, width: 1024, height: 1024, fps: 15}
+[06/11 19:43:15.538614][info][619016][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/11 19:43:15.538622][info][619016][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Color
+[06/11 19:43:15.538626][info][619016][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/11 19:43:15.556379][info][619016][Pipeline.cpp:293] [CL8326300LB] Start streams done!
+[06/11 19:43:15.556383][info][619016][Pipeline.cpp:250] [CL8326300LB] Pipeline start done!
+[06/11 19:43:15.758823][info][619271][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Color
+[06/11 19:43:16.002035][info][619222][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Depth
+[06/11 19:43:16.073103][info][619016][Pipeline.cpp:367] [CL8326300LB] Try to stop pipeline!
+[06/11 19:43:16.073108][info][619016][Pipeline.cpp:343] [CL8326300LB] Try to stop streams!
+[06/11 19:43:16.073125][info][619016][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Color
+[06/11 19:43:16.443877][info][619016][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Color
+[06/11 19:43:16.443911][info][619016][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Color
+[06/11 19:43:16.443920][info][619016][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Depth
+[06/11 19:43:17.188135][info][619016][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Depth
+[06/11 19:43:17.188354][info][619016][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Depth
+[06/11 19:43:17.188359][info][619016][Pipeline.cpp:363] [CL8326300LB] Stop streams done!
+[06/11 19:43:17.188389][info][619016][Pipeline.cpp:392] [CL8326300LB] Stop pipeline done!
+[06/11 19:43:17.189566][info][619016][Pipeline.cpp:65] [CL8326300LB] Pipeline destroyed! @0x16B00B00
+[06/11 19:43:17.189685][info][619016][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 19:43:17.191658][info][619016][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 19:43:17.191662][info][619016][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 19:43:17.191681][info][619016][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 19:43:17.241304][info][619016][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 19:43:17.241311][info][619016][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 19:43:58.915647][warning][6][ObException.cpp:32] A unrecoverable_exception has occurred!
+ - where: UsbEnumeratorLibusb.cpp(337)
+ - msg: libusb_init failed
+ - type: PLATFORM
+ - status: 1
+[06/11 19:43:58.915703][warning][6][Platform.cpp:42] Execute failure! A libobsensor_exception has occurred!
+ - where: Platform.cpp(42):Platform
+ - msg: libusb_init failed
+ - type: N11libobsensor23unrecoverable_exceptionE
+ - status: 1
+[06/11 19:43:58.915707][warning][6][Platform.cpp:42] Failed to create usb pal!
+[06/11 19:44:51.167121][info][628466][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[06/11 19:44:51.167154][info][628466][DeviceManager.cpp:25] Current found device(s): (1)
+[06/11 19:44:51.167158][info][628466][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 19:44:51.167162][info][628466][DeviceManager.cpp:405] Enable net device enumeration: true
+[06/11 19:44:52.169464][info][628466][DeviceManager.cpp:25] Current device(s) list: (1)
+[06/11 19:44:52.169478][info][628466][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 19:44:52.515713][info][628466][DeviceManager.cpp:199] Device created successfully! Name: Femto Bolt, PID: 0x066b, SN/ID: CL8326300LB FW: 1.1.3
+[06/11 19:44:52.515738][info][628466][Pipeline.cpp:54] [CL8326300LB] Pipeline created with device: {name: Femto Bolt, sn: CL8326300LB}, @0x39324CB0
+[06/11 19:44:52.517146][info][628466][RawPhaseStreamer.cpp:482] Succeed to load depth engine plugin
+[06/11 19:44:52.541251][info][628638][RawPhaseStreamer.cpp:512] initNvramData: metadataHeader.size: 484016, metadataHeader.width: 0, metadataHeader.height: 0
+[06/11 19:44:52.985261][info][628466][Pipeline.cpp:228] [CL8326300LB] Check and set config done!
+[06/11 19:44:52.985272][info][628466][Pipeline.cpp:266] [CL8326300LB] Try to start streams!
+[06/11 19:44:52.985280][info][628466][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Depth, format: Y16, width: 1024, height: 1024, fps: 15}
+[06/11 19:44:52.985287][info][628466][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Depth
+[06/11 19:44:52.985290][info][628466][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Depth, format: Y16, width: 1024, height: 1024, fps: 15}
+[06/11 19:44:53.316649][info][628466][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/11 19:44:53.316663][info][628466][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Color
+[06/11 19:44:53.316668][info][628466][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/11 19:44:53.334251][info][628466][Pipeline.cpp:293] [CL8326300LB] Start streams done!
+[06/11 19:44:53.334256][info][628466][Pipeline.cpp:250] [CL8326300LB] Pipeline start done!
+[06/11 19:44:53.535182][info][628731][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Color
+[06/11 19:44:53.766999][info][628683][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Depth
+[06/11 19:44:53.837565][info][628466][Pipeline.cpp:367] [CL8326300LB] Try to stop pipeline!
+[06/11 19:44:53.837572][info][628466][Pipeline.cpp:343] [CL8326300LB] Try to stop streams!
+[06/11 19:44:53.837589][info][628466][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Color
+[06/11 19:44:54.208864][info][628466][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Color
+[06/11 19:44:54.208972][info][628466][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Color
+[06/11 19:44:54.208986][info][628466][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Depth
+[06/11 19:44:54.824574][info][628466][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Depth
+[06/11 19:44:54.824703][info][628466][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Depth
+[06/11 19:44:54.824707][info][628466][Pipeline.cpp:363] [CL8326300LB] Stop streams done!
+[06/11 19:44:54.824731][info][628466][Pipeline.cpp:392] [CL8326300LB] Stop pipeline done!
+[06/11 19:44:54.828074][info][628466][Pipeline.cpp:65] [CL8326300LB] Pipeline destroyed! @0x39324CB0
+[06/11 19:44:54.828193][info][628466][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 19:44:54.830356][info][628466][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 19:44:54.830361][info][628466][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 19:44:54.830384][info][628466][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 19:44:54.884014][info][628466][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 19:44:54.884019][info][628466][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 19:51:53.710458][info][670335][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[06/11 19:51:53.710486][info][670335][DeviceManager.cpp:25] Current found device(s): (1)
+[06/11 19:51:53.710489][info][670335][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 19:51:53.710491][info][670335][DeviceManager.cpp:405] Enable net device enumeration: true
+[06/11 19:51:54.724357][info][670335][DeviceManager.cpp:25] Current device(s) list: (1)
+[06/11 19:51:54.724371][info][670335][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 19:51:55.069168][info][670335][DeviceManager.cpp:199] Device created successfully! Name: Femto Bolt, PID: 0x066b, SN/ID: CL8326300LB FW: 1.1.3
+[06/11 19:51:55.069186][info][670335][Pipeline.cpp:54] [CL8326300LB] Pipeline created with device: {name: Femto Bolt, sn: CL8326300LB}, @0xB14D650
+[06/11 19:51:55.070198][info][670335][RawPhaseStreamer.cpp:482] Succeed to load depth engine plugin
+[06/11 19:51:55.092280][info][670531][RawPhaseStreamer.cpp:512] initNvramData: metadataHeader.size: 484016, metadataHeader.width: 0, metadataHeader.height: 0
+[06/11 19:51:55.545823][info][670335][Pipeline.cpp:65] [CL8326300LB] Pipeline destroyed! @0xB14D650
+[06/11 19:51:55.545871][info][670335][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 19:51:55.548979][info][670335][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 19:51:55.548983][info][670335][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 19:51:55.548996][info][670335][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 19:51:55.549543][info][670335][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 19:51:55.549544][info][670335][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 19:53:59.276566][info][682345][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[06/11 19:53:59.276588][info][682345][DeviceManager.cpp:25] Current found device(s): (1)
+[06/11 19:53:59.276590][info][682345][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 19:53:59.276593][info][682345][DeviceManager.cpp:405] Enable net device enumeration: true
+[06/11 19:54:00.298795][info][682345][DeviceManager.cpp:25] Current device(s) list: (1)
+[06/11 19:54:00.298815][info][682345][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 19:54:00.646013][info][682345][DeviceManager.cpp:199] Device created successfully! Name: Femto Bolt, PID: 0x066b, SN/ID: CL8326300LB FW: 1.1.3
+[06/11 19:54:00.646037][info][682345][Pipeline.cpp:54] [CL8326300LB] Pipeline created with device: {name: Femto Bolt, sn: CL8326300LB}, @0x72C2940
+[06/11 19:54:00.647701][info][682345][RawPhaseStreamer.cpp:482] Succeed to load depth engine plugin
+[06/11 19:54:00.671196][info][682499][RawPhaseStreamer.cpp:512] initNvramData: metadataHeader.size: 484016, metadataHeader.width: 0, metadataHeader.height: 0
+[06/11 19:54:01.116917][info][682345][Pipeline.cpp:65] [CL8326300LB] Pipeline destroyed! @0x72C2940
+[06/11 19:54:01.116972][info][682345][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 19:54:01.120155][info][682345][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 19:54:01.120159][info][682345][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 19:54:01.120177][info][682345][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 19:54:01.120655][info][682345][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 19:54:01.120657][info][682345][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 19:56:04.780332][info][694019][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[06/11 19:56:04.780352][info][694019][DeviceManager.cpp:25] Current found device(s): (1)
+[06/11 19:56:04.780354][info][694019][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 19:56:04.780357][info][694019][DeviceManager.cpp:405] Enable net device enumeration: true
+[06/11 19:56:05.800326][info][694019][DeviceManager.cpp:25] Current device(s) list: (1)
+[06/11 19:56:05.800341][info][694019][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/11 19:56:06.147160][info][694019][DeviceManager.cpp:199] Device created successfully! Name: Femto Bolt, PID: 0x066b, SN/ID: CL8326300LB FW: 1.1.3
+[06/11 19:56:06.147206][info][694019][Pipeline.cpp:54] [CL8326300LB] Pipeline created with device: {name: Femto Bolt, sn: CL8326300LB}, @0x3BF28F60
+[06/11 19:56:06.148759][info][694019][RawPhaseStreamer.cpp:482] Succeed to load depth engine plugin
+[06/11 19:56:06.172272][info][694181][RawPhaseStreamer.cpp:512] initNvramData: metadataHeader.size: 484016, metadataHeader.width: 0, metadataHeader.height: 0
+[06/11 19:56:06.622564][info][694019][Pipeline.cpp:65] [CL8326300LB] Pipeline destroyed! @0x3BF28F60
+[06/11 19:56:06.622624][info][694019][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 19:56:06.626333][info][694019][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 19:56:06.626338][info][694019][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/11 19:56:06.626359][info][694019][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/11 19:56:06.626920][info][694019][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/11 19:56:06.626922][info][694019][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/12 14:34:54.173322][info][1099057][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[06/12 14:34:54.173339][info][1099057][DeviceManager.cpp:25] Current found device(s): (1)
+[06/12 14:34:54.173342][info][1099057][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/12 14:34:54.173344][info][1099057][DeviceManager.cpp:405] Enable net device enumeration: true
+[06/12 14:34:55.196798][info][1099057][DeviceManager.cpp:25] Current device(s) list: (1)
+[06/12 14:34:55.196819][info][1099057][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/12 14:34:55.545344][info][1099057][DeviceManager.cpp:199] Device created successfully! Name: Femto Bolt, PID: 0x066b, SN/ID: CL8326300LB FW: 1.1.3
+[06/12 14:34:55.545357][info][1099057][Pipeline.cpp:54] [CL8326300LB] Pipeline created with device: {name: Femto Bolt, sn: CL8326300LB}, @0x153F1360
+[06/12 14:34:55.547852][info][1099057][RawPhaseStreamer.cpp:482] Succeed to load depth engine plugin
+[06/12 14:34:55.570823][info][1099154][RawPhaseStreamer.cpp:512] initNvramData: metadataHeader.size: 484016, metadataHeader.width: 0, metadataHeader.height: 0
+[06/12 14:34:56.018086][info][1099057][Pipeline.cpp:228] [CL8326300LB] Check and set config done!
+[06/12 14:34:56.018119][warning][1099057][ObException.cpp:26] A recoverable_exception has occurred!
+ - where: FrameProcessor.cpp(230)
+ - msg: Current stream profile is not support hardware d2c process
+ - type: INVALID_VALUE
+ - status: 100
+[06/12 14:34:56.020803][info][1099057][Pipeline.cpp:65] [CL8326300LB] Pipeline destroyed! @0x153F1360
+[06/12 14:34:56.020879][info][1099057][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/12 14:34:56.024832][info][1099057][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/12 14:34:56.024837][info][1099057][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/12 14:34:56.024861][info][1099057][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/12 14:34:56.025545][info][1099057][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/12 14:34:56.025549][info][1099057][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/12 14:37:35.916203][info][1099915][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[06/12 14:37:35.916238][info][1099915][DeviceManager.cpp:25] Current found device(s): (1)
+[06/12 14:37:35.916242][info][1099915][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/12 14:37:35.916246][info][1099915][DeviceManager.cpp:405] Enable net device enumeration: true
+[06/12 14:37:36.936690][info][1099915][DeviceManager.cpp:25] Current device(s) list: (1)
+[06/12 14:37:36.936713][info][1099915][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/12 14:37:37.288397][info][1099915][DeviceManager.cpp:199] Device created successfully! Name: Femto Bolt, PID: 0x066b, SN/ID: CL8326300LB FW: 1.1.3
+[06/12 14:37:37.288429][info][1099915][Pipeline.cpp:54] [CL8326300LB] Pipeline created with device: {name: Femto Bolt, sn: CL8326300LB}, @0x79BF7E0
+[06/12 14:37:37.289965][info][1099915][RawPhaseStreamer.cpp:482] Succeed to load depth engine plugin
+[06/12 14:37:37.312189][info][1099950][RawPhaseStreamer.cpp:512] initNvramData: metadataHeader.size: 484016, metadataHeader.width: 0, metadataHeader.height: 0
+[06/12 14:37:37.763795][info][1099915][Pipeline.cpp:65] [CL8326300LB] Pipeline destroyed! @0x79BF7E0
+[06/12 14:37:37.763858][info][1099915][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/12 14:37:37.767443][info][1099915][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/12 14:37:37.767449][info][1099915][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/12 14:37:37.767474][info][1099915][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/12 14:37:37.768308][info][1099915][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/12 14:37:37.768312][info][1099915][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/12 14:37:59.606880][info][1100114][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[06/12 14:37:59.606901][info][1100114][DeviceManager.cpp:25] Current found device(s): (1)
+[06/12 14:37:59.606903][info][1100114][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/12 14:37:59.606905][info][1100114][DeviceManager.cpp:405] Enable net device enumeration: true
+[06/12 14:38:00.613675][info][1100114][DeviceManager.cpp:25] Current device(s) list: (1)
+[06/12 14:38:00.613697][info][1100114][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/12 14:38:00.961090][info][1100114][DeviceManager.cpp:199] Device created successfully! Name: Femto Bolt, PID: 0x066b, SN/ID: CL8326300LB FW: 1.1.3
+[06/12 14:38:00.961115][info][1100114][Pipeline.cpp:54] [CL8326300LB] Pipeline created with device: {name: Femto Bolt, sn: CL8326300LB}, @0x2E89A4F0
+[06/12 14:38:00.962407][info][1100114][RawPhaseStreamer.cpp:482] Succeed to load depth engine plugin
+[06/12 14:38:00.985841][info][1100200][RawPhaseStreamer.cpp:512] initNvramData: metadataHeader.size: 484016, metadataHeader.width: 0, metadataHeader.height: 0
+[06/12 14:38:01.433237][info][1100114][Pipeline.cpp:228] [CL8326300LB] Check and set config done!
+[06/12 14:38:01.433260][warning][1100114][ObException.cpp:26] A recoverable_exception has occurred!
+ - where: FrameProcessor.cpp(230)
+ - msg: Current stream profile is not support hardware d2c process
+ - type: INVALID_VALUE
+ - status: 100
+[06/12 14:38:01.433472][info][1100114][Pipeline.cpp:65] [CL8326300LB] Pipeline destroyed! @0x2E89A4F0
+[06/12 14:38:01.433530][info][1100114][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/12 14:38:01.436911][info][1100114][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/12 14:38:01.436919][info][1100114][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/12 14:38:01.436944][info][1100114][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/12 14:38:01.437455][info][1100114][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/12 14:38:01.437457][info][1100114][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/12 14:38:14.518718][info][1100366][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[06/12 14:38:14.518741][info][1100366][DeviceManager.cpp:25] Current found device(s): (1)
+[06/12 14:38:14.518744][info][1100366][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/12 14:38:14.518746][info][1100366][DeviceManager.cpp:405] Enable net device enumeration: true
+[06/12 14:38:15.524713][info][1100366][DeviceManager.cpp:25] Current device(s) list: (1)
+[06/12 14:38:15.524733][info][1100366][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/12 14:38:15.871688][info][1100366][DeviceManager.cpp:199] Device created successfully! Name: Femto Bolt, PID: 0x066b, SN/ID: CL8326300LB FW: 1.1.3
+[06/12 14:38:15.871724][info][1100366][Pipeline.cpp:54] [CL8326300LB] Pipeline created with device: {name: Femto Bolt, sn: CL8326300LB}, @0x22AFB4F0
+[06/12 14:38:15.872940][info][1100366][RawPhaseStreamer.cpp:482] Succeed to load depth engine plugin
+[06/12 14:38:15.896093][info][1100441][RawPhaseStreamer.cpp:512] initNvramData: metadataHeader.size: 484016, metadataHeader.width: 0, metadataHeader.height: 0
+[06/12 14:38:16.338810][info][1100366][Pipeline.cpp:228] [CL8326300LB] Check and set config done!
+[06/12 14:38:16.338823][warning][1100366][ObException.cpp:26] A recoverable_exception has occurred!
+ - where: FrameProcessor.cpp(230)
+ - msg: Current stream profile is not support hardware d2c process
+ - type: INVALID_VALUE
+ - status: 100
+[06/12 14:38:16.338961][info][1100366][Pipeline.cpp:65] [CL8326300LB] Pipeline destroyed! @0x22AFB4F0
+[06/12 14:38:16.338997][info][1100366][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/12 14:38:16.341917][info][1100366][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/12 14:38:16.341920][info][1100366][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/12 14:38:16.341929][info][1100366][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/12 14:38:16.342355][info][1100366][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/12 14:38:16.342355][info][1100366][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/12 14:38:24.572276][info][1100513][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[06/12 14:38:24.572297][info][1100513][DeviceManager.cpp:25] Current found device(s): (1)
+[06/12 14:38:24.572299][info][1100513][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/12 14:38:24.572301][info][1100513][DeviceManager.cpp:405] Enable net device enumeration: true
+[06/12 14:38:25.597838][info][1100513][DeviceManager.cpp:25] Current device(s) list: (1)
+[06/12 14:38:25.597857][info][1100513][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/12 14:38:25.945229][info][1100513][DeviceManager.cpp:199] Device created successfully! Name: Femto Bolt, PID: 0x066b, SN/ID: CL8326300LB FW: 1.1.3
+[06/12 14:38:25.945257][info][1100513][Pipeline.cpp:54] [CL8326300LB] Pipeline created with device: {name: Femto Bolt, sn: CL8326300LB}, @0x26DDE100
+[06/12 14:38:25.946517][info][1100513][RawPhaseStreamer.cpp:482] Succeed to load depth engine plugin
+[06/12 14:38:25.970196][info][1100603][RawPhaseStreamer.cpp:512] initNvramData: metadataHeader.size: 484016, metadataHeader.width: 0, metadataHeader.height: 0
+[06/12 14:38:26.416763][info][1100513][Pipeline.cpp:228] [CL8326300LB] Check and set config done!
+[06/12 14:38:26.416782][info][1100513][Pipeline.cpp:266] [CL8326300LB] Try to start streams!
+[06/12 14:38:26.416788][info][1100513][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Depth, format: Y16, width: 1024, height: 1024, fps: 15}
+[06/12 14:38:26.416795][info][1100513][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Depth
+[06/12 14:38:26.416798][info][1100513][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Depth, format: Y16, width: 1024, height: 1024, fps: 15}
+[06/12 14:38:26.749770][info][1100513][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/12 14:38:26.749778][info][1100513][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Color
+[06/12 14:38:26.749783][info][1100513][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/12 14:38:26.768162][info][1100513][Pipeline.cpp:293] [CL8326300LB] Start streams done!
+[06/12 14:38:26.768168][info][1100513][Pipeline.cpp:250] [CL8326300LB] Pipeline start done!
+[06/12 14:38:26.969311][info][1100610][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Color
+[06/12 14:38:27.192212][info][1100605][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Depth
+[06/12 14:38:27.226660][info][1100513][Pipeline.cpp:367] [CL8326300LB] Try to stop pipeline!
+[06/12 14:38:27.226666][info][1100513][Pipeline.cpp:343] [CL8326300LB] Try to stop streams!
+[06/12 14:38:27.226682][info][1100513][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Color
+[06/12 14:38:27.619300][info][1100513][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Color
+[06/12 14:38:27.619377][info][1100513][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Color
+[06/12 14:38:27.619395][info][1100513][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Depth
+[06/12 14:38:28.363989][info][1100513][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Depth
+[06/12 14:38:28.364124][info][1100513][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Depth
+[06/12 14:38:28.364129][info][1100513][Pipeline.cpp:363] [CL8326300LB] Stop streams done!
+[06/12 14:38:28.364158][info][1100513][Pipeline.cpp:392] [CL8326300LB] Stop pipeline done!
+[06/12 14:38:28.364200][info][1100513][Pipeline.cpp:65] [CL8326300LB] Pipeline destroyed! @0x26DDE100
+[06/12 14:38:28.364321][info][1100513][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/12 14:38:28.366474][info][1100513][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/12 14:38:28.366478][info][1100513][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/12 14:38:28.366499][info][1100513][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/12 14:38:28.415673][info][1100513][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/12 14:38:28.415680][info][1100513][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/12 14:57:40.733596][info][1105075][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[06/12 14:57:40.733620][info][1105075][DeviceManager.cpp:25] Current found device(s): (1)
+[06/12 14:57:40.733623][info][1105075][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/12 14:57:40.733626][info][1105075][DeviceManager.cpp:405] Enable net device enumeration: true
+[06/12 14:57:41.751341][info][1105075][DeviceManager.cpp:25] Current device(s) list: (1)
+[06/12 14:57:41.751362][info][1105075][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/12 14:57:42.099505][info][1105075][DeviceManager.cpp:199] Device created successfully! Name: Femto Bolt, PID: 0x066b, SN/ID: CL8326300LB FW: 1.1.3
+[06/12 14:57:42.099544][info][1105075][Pipeline.cpp:54] [CL8326300LB] Pipeline created with device: {name: Femto Bolt, sn: CL8326300LB}, @0x1B770F0
+[06/12 14:57:42.101167][info][1105075][RawPhaseStreamer.cpp:482] Succeed to load depth engine plugin
+[06/12 14:57:42.125819][info][1105155][RawPhaseStreamer.cpp:512] initNvramData: metadataHeader.size: 484016, metadataHeader.width: 0, metadataHeader.height: 0
+[06/12 14:57:42.573695][info][1105075][Pipeline.cpp:228] [CL8326300LB] Check and set config done!
+[06/12 14:57:42.573709][info][1105075][Pipeline.cpp:266] [CL8326300LB] Try to start streams!
+[06/12 14:57:42.573715][info][1105075][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Depth, format: Y16, width: 1024, height: 1024, fps: 15}
+[06/12 14:57:42.573722][info][1105075][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Depth
+[06/12 14:57:42.573725][info][1105075][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Depth, format: Y16, width: 1024, height: 1024, fps: 15}
+[06/12 14:57:42.893552][info][1105075][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/12 14:57:42.893559][info][1105075][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Color
+[06/12 14:57:42.893562][info][1105075][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/12 14:57:42.913685][info][1105075][Pipeline.cpp:293] [CL8326300LB] Start streams done!
+[06/12 14:57:42.913690][info][1105075][Pipeline.cpp:250] [CL8326300LB] Pipeline start done!
+[06/12 14:57:42.983406][info][1105164][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Color
+[06/12 14:57:43.252890][info][1105160][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Depth
+[06/12 14:57:43.321129][info][1105075][Pipeline.cpp:367] [CL8326300LB] Try to stop pipeline!
+[06/12 14:57:43.321134][info][1105075][Pipeline.cpp:343] [CL8326300LB] Try to stop streams!
+[06/12 14:57:43.321150][info][1105075][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Color
+[06/12 14:57:43.691854][info][1105075][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Color
+[06/12 14:57:43.692013][info][1105075][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Color
+[06/12 14:57:43.692025][info][1105075][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Depth
+[06/12 14:57:44.342905][info][1105075][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Depth
+[06/12 14:57:44.343056][info][1105075][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Depth
+[06/12 14:57:44.343061][info][1105075][Pipeline.cpp:363] [CL8326300LB] Stop streams done!
+[06/12 14:57:44.343078][info][1105075][Pipeline.cpp:392] [CL8326300LB] Stop pipeline done!
+[06/12 14:57:44.343108][info][1105075][Pipeline.cpp:65] [CL8326300LB] Pipeline destroyed! @0x1B770F0
+[06/12 14:57:44.343167][info][1105075][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/12 14:57:44.345216][info][1105075][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/12 14:57:44.345220][info][1105075][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/12 14:57:44.345237][info][1105075][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/12 14:57:44.389197][info][1105075][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/12 14:57:44.389201][info][1105075][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/12 15:02:18.291601][info][1106500][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[06/12 15:02:18.291621][info][1106500][DeviceManager.cpp:25] Current found device(s): (1)
+[06/12 15:02:18.291624][info][1106500][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/12 15:02:18.291626][info][1106500][DeviceManager.cpp:405] Enable net device enumeration: true
+[06/12 15:02:19.306914][info][1106500][DeviceManager.cpp:25] Current device(s) list: (1)
+[06/12 15:02:19.306926][info][1106500][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/12 15:02:19.654422][info][1106500][DeviceManager.cpp:199] Device created successfully! Name: Femto Bolt, PID: 0x066b, SN/ID: CL8326300LB FW: 1.1.3
+[06/12 15:02:19.654453][info][1106500][Pipeline.cpp:54] [CL8326300LB] Pipeline created with device: {name: Femto Bolt, sn: CL8326300LB}, @0x2ADF0FD0
+[06/12 15:02:19.655963][info][1106500][RawPhaseStreamer.cpp:482] Succeed to load depth engine plugin
+[06/12 15:02:19.679937][info][1106568][RawPhaseStreamer.cpp:512] initNvramData: metadataHeader.size: 484016, metadataHeader.width: 0, metadataHeader.height: 0
+[06/12 15:02:20.127461][info][1106500][Pipeline.cpp:228] [CL8326300LB] Check and set config done!
+[06/12 15:02:20.127479][info][1106500][Pipeline.cpp:266] [CL8326300LB] Try to start streams!
+[06/12 15:02:20.127492][info][1106500][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Depth, format: Y16, width: 1024, height: 1024, fps: 15}
+[06/12 15:02:20.127499][info][1106500][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Depth
+[06/12 15:02:20.127502][info][1106500][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Depth, format: Y16, width: 1024, height: 1024, fps: 15}
+[06/12 15:02:20.442189][info][1106500][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/12 15:02:20.442196][info][1106500][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Color
+[06/12 15:02:20.442198][info][1106500][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/12 15:02:20.461923][info][1106500][Pipeline.cpp:293] [CL8326300LB] Start streams done!
+[06/12 15:02:20.461929][info][1106500][Pipeline.cpp:250] [CL8326300LB] Pipeline start done!
+[06/12 15:02:20.696187][info][1106584][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Color
+[06/12 15:02:20.796379][info][1106579][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Depth
+[06/12 15:02:20.972238][info][1106500][Pipeline.cpp:367] [CL8326300LB] Try to stop pipeline!
+[06/12 15:02:20.972244][info][1106500][Pipeline.cpp:343] [CL8326300LB] Try to stop streams!
+[06/12 15:02:20.972259][info][1106500][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Color
+[06/12 15:02:21.334213][info][1106500][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Color
+[06/12 15:02:21.334253][info][1106500][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Color
+[06/12 15:02:21.334260][info][1106500][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Depth
+[06/12 15:02:22.062255][info][1106500][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Depth
+[06/12 15:02:22.062477][info][1106500][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Depth
+[06/12 15:02:22.062483][info][1106500][Pipeline.cpp:363] [CL8326300LB] Stop streams done!
+[06/12 15:02:22.062514][info][1106500][Pipeline.cpp:392] [CL8326300LB] Stop pipeline done!
+[06/12 15:02:22.062562][info][1106500][Pipeline.cpp:65] [CL8326300LB] Pipeline destroyed! @0x2ADF0FD0
+[06/12 15:02:22.062675][info][1106500][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/12 15:02:22.065799][info][1106500][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/12 15:02:22.065811][info][1106500][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/12 15:02:22.065859][info][1106500][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/12 15:02:22.109674][info][1106500][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/12 15:02:22.109680][info][1106500][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/12 15:02:41.750648][info][1106894][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[06/12 15:02:41.750668][info][1106894][DeviceManager.cpp:25] Current found device(s): (1)
+[06/12 15:02:41.750671][info][1106894][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/12 15:02:41.750674][info][1106894][DeviceManager.cpp:405] Enable net device enumeration: true
+[06/12 15:02:42.756289][info][1106894][DeviceManager.cpp:25] Current device(s) list: (1)
+[06/12 15:02:42.756311][info][1106894][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/12 15:02:43.104615][info][1106894][DeviceManager.cpp:199] Device created successfully! Name: Femto Bolt, PID: 0x066b, SN/ID: CL8326300LB FW: 1.1.3
+[06/12 15:02:43.104664][info][1106894][Pipeline.cpp:54] [CL8326300LB] Pipeline created with device: {name: Femto Bolt, sn: CL8326300LB}, @0x2618DCA0
+[06/12 15:02:43.106111][info][1106894][RawPhaseStreamer.cpp:482] Succeed to load depth engine plugin
+[06/12 15:02:43.131054][info][1106996][RawPhaseStreamer.cpp:512] initNvramData: metadataHeader.size: 484016, metadataHeader.width: 0, metadataHeader.height: 0
+[06/12 15:02:43.578723][info][1106894][Pipeline.cpp:228] [CL8326300LB] Check and set config done!
+[06/12 15:02:43.578739][info][1106894][Pipeline.cpp:266] [CL8326300LB] Try to start streams!
+[06/12 15:02:43.578747][info][1106894][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Depth, format: Y16, width: 1024, height: 1024, fps: 15}
+[06/12 15:02:43.578755][info][1106894][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Depth
+[06/12 15:02:43.578759][info][1106894][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Depth, format: Y16, width: 1024, height: 1024, fps: 15}
+[06/12 15:02:43.898548][info][1106894][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/12 15:02:43.898555][info][1106894][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Color
+[06/12 15:02:43.898558][info][1106894][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/12 15:02:43.918485][info][1106894][Pipeline.cpp:293] [CL8326300LB] Start streams done!
+[06/12 15:02:43.918489][info][1106894][Pipeline.cpp:250] [CL8326300LB] Pipeline start done!
+[06/12 15:02:44.154103][info][1107005][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Color
+[06/12 15:02:44.255191][info][1107001][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Depth
+[06/12 15:02:44.442209][info][1106894][Pipeline.cpp:367] [CL8326300LB] Try to stop pipeline!
+[06/12 15:02:44.442214][info][1106894][Pipeline.cpp:343] [CL8326300LB] Try to stop streams!
+[06/12 15:02:44.442225][info][1106894][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Color
+[06/12 15:02:44.793997][info][1106894][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Color
+[06/12 15:02:44.794168][info][1106894][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Color
+[06/12 15:02:44.794183][info][1106894][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Depth
+[06/12 15:02:45.521282][info][1106894][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Depth
+[06/12 15:02:45.521507][info][1106894][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Depth
+[06/12 15:02:45.521514][info][1106894][Pipeline.cpp:363] [CL8326300LB] Stop streams done!
+[06/12 15:02:45.521550][info][1106894][Pipeline.cpp:392] [CL8326300LB] Stop pipeline done!
+[06/12 15:02:45.521605][info][1106894][Pipeline.cpp:65] [CL8326300LB] Pipeline destroyed! @0x2618DCA0
+[06/12 15:02:45.521735][info][1106894][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/12 15:02:45.523941][info][1106894][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/12 15:02:45.523946][info][1106894][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/12 15:02:45.523970][info][1106894][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/12 15:02:45.566545][info][1106894][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/12 15:02:45.566550][info][1106894][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/12 15:03:34.100632][info][1107397][LinuxUsbPal.cpp:334] Create PollingDeviceWatcher!
+[06/12 15:03:34.100653][info][1107397][DeviceManager.cpp:25] Current found device(s): (1)
+[06/12 15:03:34.100656][info][1107397][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/12 15:03:34.100658][info][1107397][DeviceManager.cpp:405] Enable net device enumeration: true
+[06/12 15:03:35.121348][info][1107397][DeviceManager.cpp:25] Current device(s) list: (1)
+[06/12 15:03:35.121372][info][1107397][DeviceManager.cpp:34] 	- Name: FemtoBolt, PID: 0x066b, SN/ID: CL8326300LB, Connection: USB3.1
+[06/12 15:03:35.468954][info][1107397][DeviceManager.cpp:199] Device created successfully! Name: Femto Bolt, PID: 0x066b, SN/ID: CL8326300LB FW: 1.1.3
+[06/12 15:03:35.468989][info][1107397][Pipeline.cpp:54] [CL8326300LB] Pipeline created with device: {name: Femto Bolt, sn: CL8326300LB}, @0x7543FE0
+[06/12 15:03:35.470729][info][1107397][RawPhaseStreamer.cpp:482] Succeed to load depth engine plugin
+[06/12 15:03:35.495067][info][1107478][RawPhaseStreamer.cpp:512] initNvramData: metadataHeader.size: 484016, metadataHeader.width: 0, metadataHeader.height: 0
+[06/12 15:03:35.941919][info][1107397][Pipeline.cpp:228] [CL8326300LB] Check and set config done!
+[06/12 15:03:35.941927][info][1107397][Pipeline.cpp:266] [CL8326300LB] Try to start streams!
+[06/12 15:03:35.941931][info][1107397][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Depth, format: Y16, width: 1024, height: 1024, fps: 15}
+[06/12 15:03:35.941934][info][1107397][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Depth
+[06/12 15:03:35.941936][info][1107397][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Depth, format: Y16, width: 1024, height: 1024, fps: 15}
+[06/12 15:03:36.257861][info][1107397][VideoSensor.cpp:58] [CL8326300LB] Try to start stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/12 15:03:36.257871][info][1107397][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPED to STARTING@Color
+[06/12 15:03:36.257874][info][1107397][VideoSensor.cpp:127] [CL8326300LB] Start backend stream: {type: Color, format: MJPG, width: 1920, height: 1080, fps: 30}
+[06/12 15:03:36.276319][info][1107397][Pipeline.cpp:293] [CL8326300LB] Start streams done!
+[06/12 15:03:36.276323][info][1107397][Pipeline.cpp:250] [CL8326300LB] Pipeline start done!
+[06/12 15:03:36.546585][info][1107487][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Color
+[06/12 15:03:36.642919][info][1107483][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STARTING to STREAMING@Depth
+[06/12 15:03:36.817992][info][1107397][Pipeline.cpp:367] [CL8326300LB] Try to stop pipeline!
+[06/12 15:03:36.817998][info][1107397][Pipeline.cpp:343] [CL8326300LB] Try to stop streams!
+[06/12 15:03:36.818009][info][1107397][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Color
+[06/12 15:03:37.187295][info][1107397][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Color
+[06/12 15:03:37.187417][info][1107397][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Color
+[06/12 15:03:37.187430][info][1107397][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STREAMING to STOPPING@Depth
+[06/12 15:03:37.915393][info][1107397][SensorBase.cpp:210] [CL8326300LB] Stream state changed from STOPPING to STOPPED@Depth
+[06/12 15:03:37.915647][info][1107397][Pipeline.cpp:357] [CL8326300LB] Sensor stream stopped, sensorType=Depth
+[06/12 15:03:37.915655][info][1107397][Pipeline.cpp:363] [CL8326300LB] Stop streams done!
+[06/12 15:03:37.915681][info][1107397][Pipeline.cpp:392] [CL8326300LB] Stop pipeline done!
+[06/12 15:03:37.915721][info][1107397][Pipeline.cpp:65] [CL8326300LB] Pipeline destroyed! @0x7543FE0
+[06/12 15:03:37.915813][info][1107397][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/12 15:03:37.918191][info][1107397][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/12 15:03:37.918199][info][1107397][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done
+[06/12 15:03:37.918232][info][1107397][SensorBase.cpp:47] [CL8326300LB] SensorBase is destroyed
+[06/12 15:03:37.961549][info][1107397][ObLibuvcDevicePort.cpp:87] uvc_close done.
+[06/12 15:03:37.961557][info][1107397][ObLibuvcDevicePort.cpp:88] ~ObLibuvcDevicePort done

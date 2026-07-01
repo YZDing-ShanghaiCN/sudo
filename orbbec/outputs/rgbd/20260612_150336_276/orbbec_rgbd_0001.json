@@ -1,0 +1,42 @@
+{
+  "align_mode": "sw",
+  "captured_at": "2026-06-12T15:03:36.817",
+  "color_image": "/home/user/Desktop/orbbec/outputs/rgbd/20260612_150336_276/rgb/orbbec_rgbd_0001_color.jpg",
+  "depth_dir": "/home/user/Desktop/orbbec/outputs/rgbd/20260612_150336_276/depth",
+  "depth_height": 1024,
+  "depth_m_npy": "/home/user/Desktop/orbbec/outputs/rgbd/20260612_150336_276/depth/orbbec_rgbd_0001_depth_m.npy",
+  "depth_m_png": "/home/user/Desktop/orbbec/outputs/rgbd/20260612_150336_276/depth/orbbec_rgbd_0001_depth_m.png",
+  "depth_png_note": "depth_m = png_value * depth_png_scale_m",
+  "depth_png_scale_m": 0.001,
+  "depth_preview_image": "/home/user/Desktop/orbbec/outputs/rgbd/20260612_150336_276/depth/orbbec_rgbd_0001_depth_preview.jpg",
+  "depth_preview_max_m": 5.0,
+  "depth_unit": "m",
+  "depth_unit_note": "depth_m = raw_depth * raw_depth_scale_mm / 1000",
+  "depth_width": 1024,
+  "device_index": null,
+  "metadata_json": "/home/user/Desktop/orbbec/outputs/rgbd/20260612_150336_276/orbbec_rgbd_0001.json",
+  "raw_depth_scale_mm": 1.0,
+  "requested_color_profile": {
+    "format": "default",
+    "fps": null,
+    "height": null,
+    "width": null
+  },
+  "requested_depth_profile": {
+    "format": "y16",
+    "fps": 15,
+    "height": 1024,
+    "width": 1024
+  },
+  "rgb_dir": "/home/user/Desktop/orbbec/outputs/rgbd/20260612_150336_276/rgb",
+  "session_dir": "/home/user/Desktop/orbbec/outputs/rgbd/20260612_150336_276",
+  "stats": {
+    "max_depth_m": 13.562000274658203,
+    "mean_depth_m": 1.092374563217163,
+    "min_depth_m": 0.3149999976158142,
+    "total_pixels": 1048576,
+    "valid_pixels": 328794,
+    "valid_ratio": 0.31356239318847656
+  },
+  "stem": "orbbec_rgbd_0001"
+}
