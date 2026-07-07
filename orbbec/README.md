@@ -203,17 +203,19 @@ conda activate camera
 python tests/loop_capture_test.py
 ```
 
-脚本会持续显示 RGB 和 Depth 预览。按 `s` 随时保存一组 RGB-D 数据；同一次运行的所有帧按顺序保存在一个 `YYMMDD_HHMMSS` 目录中，例如：
+脚本会持续显示 RGB 和 Depth 预览。按 `s` 随时保存一组 RGB-D 数据；同一次运行的所有帧按顺序保存在一个 `YYMMDD_HHMMSS` 目录中。`configuration.json` 中的分辨率和内参来自本次实际启用的彩色相机 profile。例如：
 
 ```text
 results_test/260707_120000/
-├── rgb/
-├── depth/
-├── orbbec_rgbd_0001.json
-└── manifest.jsonl
+├── configuration.json
+├── data/
+│   ├── rgb/
+│   └── depth/
+├── model/
+└── recon/
 ```
 
-按 `q`、`Esc` 或 `Ctrl+C` 退出。若同名采集目录已经存在，脚本会退出而不会覆盖已有结果。
+`model/` 和 `recon/` 会先创建为空目录，供后续功能使用。配置中的 `modelsrc`、`reconstructionsrc` 和 `datasrc` 均为这些目录的绝对路径。按 `q`、`Esc` 或 `Ctrl+C` 退出。若同名采集目录已经存在，脚本会退出而不会覆盖已有结果。
 
 RGB 和 Depth 分辨率不同是正常现象。RGB 常见为 16:9 或 4:3；本项目 Depth 默认统一为 `1024x1024`。不要简单强行 resize 到同一比例；如果需要严格 RGB-D 对齐，应使用 Orbbec SDK 的对齐能力和相机内外参。脚本支持 `--align-mode sw` 或 `--align-mode hw`。
 

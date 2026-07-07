@@ -122,6 +122,12 @@ class CaptureRgbdArgsTests(unittest.TestCase):
         self.assertTrue(args.save_depth_preview)
         self.assertTrue(capture_rgbd.validate_args(args))
 
+    def test_can_disable_metadata_output(self) -> None:
+        args = capture_rgbd.parse_args(["--no-metadata"])
+
+        self.assertTrue(args.no_metadata)
+        self.assertTrue(capture_rgbd.validate_args(args))
+
     def test_viewer_args_are_valid(self) -> None:
         args = capture_rgbd.parse_args(["--viewer"])
 

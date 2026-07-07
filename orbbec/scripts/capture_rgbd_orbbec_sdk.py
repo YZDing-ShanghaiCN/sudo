@@ -129,6 +129,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="capture depth only; do not enable or save the RGB stream",
     )
     parser.add_argument(
+        "--no-metadata",
+        action="store_true",
+        help="do not save per-frame JSON metadata or manifest.jsonl",
+    )
+    parser.add_argument(
         "--check-only",
         action="store_true",
         help="start the depth stream, read one valid frame, print stats, and save nothing",
@@ -972,6 +977,9 @@ def save_rgbd_frame(
             color_path = str(paths.color_image)
         else:
             print("警告：当前帧集中没有彩色帧，仅保存深度。", file=sys.stderr)
+
+    if args.no_metadata:
+        return paths
 
     metadata = {
         "stem": paths.stem,
