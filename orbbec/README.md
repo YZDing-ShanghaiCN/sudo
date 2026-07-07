@@ -56,6 +56,7 @@ orbbec/
 ## 环境依赖
 
 ```bash
+conda activate camera
 pip install -r requirements.txt
 sudo apt update
 sudo apt install v4l-utils ffmpeg
