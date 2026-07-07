@@ -44,19 +44,12 @@ class LoopCaptureTestRunnerTests(unittest.TestCase):
     def test_project_and_data_directory_layout(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             session_dir = Path(temp_dir) / "results_test" / "260707_123456"
-            data_dir, model_dir, recon_dir = loop_capture.create_project_dirs(
+            rgb_dir, depth_dir, model_dir, recon_dir = loop_capture.create_project_dirs(
                 session_dir
             )
-            capture_rgbd = loop_capture.load_capture_module()
-            _, rgb_dir, depth_dir = capture_rgbd.create_session_dirs(
-                session_dir,
-                include_color=True,
-                session_name="data",
-            )
 
-            self.assertEqual(data_dir, session_dir / "data")
-            self.assertEqual(rgb_dir, data_dir / "rgb")
-            self.assertEqual(depth_dir, data_dir / "depth")
+            self.assertEqual(rgb_dir, session_dir / "rgb")
+            self.assertEqual(depth_dir, session_dir / "depth")
             self.assertTrue(rgb_dir.is_dir())
             self.assertTrue(depth_dir.is_dir())
             self.assertTrue(model_dir.is_dir())
@@ -73,17 +66,42 @@ class LoopCaptureTestRunnerTests(unittest.TestCase):
 
         self.assertTrue(args.viewer)
         self.assertTrue(args.no_metadata)
-        self.assertEqual(args.session_name, "data")
+        self.assertEqual(args.session_name, "260707_123456")
+        self.assertEqual(args.color_output, "png")
+        self.assertEqual(args.depth_output, "png")
+
+    def test_capture_paths_are_six_digit_png_names_starting_at_zero(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            session_dir = Path(temp_dir) / "260707_123456"
+            rgb_dir, depth_dir, _, _ = loop_capture.create_project_dirs(session_dir)
+            capture_rgbd = loop_capture.load_capture_module()
+            loop_capture.configure_capture_layout(
+                capture_rgbd,
+                session_dir,
+                rgb_dir,
+                depth_dir,
+            )
+
+            paths = capture_rgbd.build_capture_paths(
+                session_dir,
+                "ignored",
+                1,
+                "png",
+            )
+
+            self.assertEqual(paths.stem, "000000")
+            self.assertEqual(paths.color_image, rgb_dir / "000000.png")
+            self.assertEqual(paths.depth_m_png, depth_dir / "000000.png")
 
     def test_configuration_uses_absolute_paths_and_profile_calibration(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             session_dir = Path(temp_dir) / "260707_123456"
-            data_dir, model_dir, recon_dir = loop_capture.create_project_dirs(
+            _, _, model_dir, recon_dir = loop_capture.create_project_dirs(
                 session_dir
             )
 
             configuration = loop_capture.build_configuration(
-                data_dir,
+                session_dir,
                 model_dir,
                 recon_dir,
                 DummyColorProfile(),
@@ -104,7 +122,7 @@ class LoopCaptureTestRunnerTests(unittest.TestCase):
                     [0.0, 0.0, 1.0],
                 ],
             )
-            self.assertEqual(saved["environment"]["datasrc"], str(data_dir.resolve()))
+            self.assertEqual(saved["environment"]["datasrc"], str(session_dir.resolve()))
             self.assertEqual(
                 saved["environment"]["modelsrc"], str(model_dir.resolve())
             )
