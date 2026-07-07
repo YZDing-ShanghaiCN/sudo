@@ -54,6 +54,14 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help=f"RGBD output directory, default: {DEFAULT_OUTPUT_DIR}",
     )
     parser.add_argument(
+        "--session-name",
+        default=None,
+        help=(
+            "optional session subdirectory name; default: generated timestamp. "
+            "The directory must not already exist"
+        ),
+    )
+    parser.add_argument(
         "--prefix",
         default=DEFAULT_PREFIX,
         help=f"output file prefix, default: {DEFAULT_PREFIX}",
@@ -325,6 +333,16 @@ def validate_profile_triplet(
 
 
 def validate_args(args: argparse.Namespace) -> bool:
+    if args.session_name is not None and (
+        args.session_name in (".", "..")
+        or safe_label(args.session_name) != args.session_name
+    ):
+        print(
+            "错误：--session-name 只能包含字母、数字、点、连字符和下划线，"
+            "并且不能是 . 或 ..。",
+            file=sys.stderr,
+        )
+        return False
     if args.frames < 0:
         print("错误：--frames 不能小于 0。", file=sys.stderr)
         return False
@@ -890,13 +908,19 @@ def create_session_dirs(
     output_dir: Path,
     *,
     include_color: bool,
+    session_name: str | None = None,
 ) -> tuple[Path, Path, Path]:
-    session_dir = output_dir / timestamp_label()
+    session_dir = output_dir / (session_name or timestamp_label())
+    try:
+        session_dir.mkdir(parents=True, exist_ok=False)
+    except FileExistsError as exc:
+        raise RuntimeError(f"采集目录已存在，拒绝覆盖：{session_dir}") from exc
+
     rgb_dir = session_dir / "rgb"
     depth_dir = session_dir / "depth"
-    depth_dir.mkdir(parents=True, exist_ok=True)
+    depth_dir.mkdir()
     if include_color:
-        rgb_dir.mkdir(parents=True, exist_ok=True)
+        rgb_dir.mkdir()
     print(f"RGBD output directory: {session_dir}")
     return session_dir, rgb_dir, depth_dir
 
@@ -994,6 +1018,7 @@ def capture_loop(args: argparse.Namespace, pipeline: Any, output_dir: Path) -> i
     session_dir, rgb_dir, depth_dir = create_session_dirs(
         output_dir,
         include_color=not args.no_color,
+        session_name=args.session_name,
     )
 
     for _ in range(args.warmup_frames):
@@ -1077,6 +1102,7 @@ def viewer_loop(args: argparse.Namespace, pipeline: Any, output_dir: Path) -> in
     session_dir, rgb_dir, depth_dir = create_session_dirs(
         output_dir,
         include_color=not args.no_color,
+        session_name=args.session_name,
     )
 
     for _ in range(args.warmup_frames):

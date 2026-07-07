@@ -37,12 +37,14 @@ orbbec/
 │   ├── screenshots/
 │   ├── videos/
 │   └── rgbd/
+├── results_test/                # 本地交互采集结果，Git 忽略
 └── tests/
+    ├── loop_capture_test.py
     ├── test_capture_rgbd_orbbec_sdk.py
     └── test_read_camera_params.py
 ```
 
-`outputs/` 只用于保存运行结果，不作为源码内容提交。历史截图、视频、RGB-D 数据和 SDK 日志已通过 `.gitignore` 忽略。
+`results_test/` 只用于保存交互式测试采集结果，已通过 `.gitignore` 忽略，不会进入 Git 提交。
 
 ## 设备节点说明
 
@@ -191,6 +193,27 @@ python scripts/capture_rgbd_orbbec_sdk.py --list-profiles
 python scripts/capture_rgbd_orbbec_sdk.py --check-only --no-color
 python scripts/capture_rgbd_orbbec_sdk.py --viewer
 ```
+
+## 交互式循环采集测试
+
+运行测试脚本：
+
+```bash
+conda activate camera
+python tests/loop_capture_test.py
+```
+
+脚本会持续显示 RGB 和 Depth 预览。按 `s` 随时保存一组 RGB-D 数据；同一次运行的所有帧按顺序保存在一个 `YYMMDD_HHMMSS` 目录中，例如：
+
+```text
+results_test/260707_120000/
+├── rgb/
+├── depth/
+├── orbbec_rgbd_0001.json
+└── manifest.jsonl
+```
+
+按 `q`、`Esc` 或 `Ctrl+C` 退出。若同名采集目录已经存在，脚本会退出而不会覆盖已有结果。
 
 RGB 和 Depth 分辨率不同是正常现象。RGB 常见为 16:9 或 4:3；本项目 Depth 默认统一为 `1024x1024`。不要简单强行 resize 到同一比例；如果需要严格 RGB-D 对齐，应使用 Orbbec SDK 的对齐能力和相机内外参。脚本支持 `--align-mode sw` 或 `--align-mode hw`。
 

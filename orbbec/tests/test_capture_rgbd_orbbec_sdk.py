@@ -4,6 +4,7 @@ import contextlib
 import importlib.util
 import io
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -76,6 +77,33 @@ class CaptureRgbdPathTests(unittest.TestCase):
 
         self.assertIsNone(paths.color_image)
 
+    def test_create_session_dirs_uses_explicit_session_name(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            output_dir = Path(temp_dir) / "results_test"
+
+            session_dir, rgb_dir, depth_dir = capture_rgbd.create_session_dirs(
+                output_dir,
+                include_color=True,
+                session_name="260707_120000",
+            )
+
+            self.assertEqual(session_dir, output_dir / "260707_120000")
+            self.assertTrue(rgb_dir.is_dir())
+            self.assertTrue(depth_dir.is_dir())
+
+    def test_create_session_dirs_rejects_existing_session(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            output_dir = Path(temp_dir) / "results_test"
+            existing_session = output_dir / "260707_120000"
+            existing_session.mkdir(parents=True)
+
+            with self.assertRaisesRegex(RuntimeError, "拒绝覆盖"):
+                capture_rgbd.create_session_dirs(
+                    output_dir,
+                    include_color=True,
+                    session_name="260707_120000",
+                )
+
 
 class CaptureRgbdArgsTests(unittest.TestCase):
     def test_default_args_are_valid(self) -> None:
@@ -98,6 +126,20 @@ class CaptureRgbdArgsTests(unittest.TestCase):
         args = capture_rgbd.parse_args(["--viewer"])
 
         self.assertTrue(capture_rgbd.validate_args(args))
+
+    def test_explicit_session_name_is_valid(self) -> None:
+        args = capture_rgbd.parse_args(["--session-name", "260707_120000"])
+
+        self.assertEqual(args.session_name, "260707_120000")
+        self.assertTrue(capture_rgbd.validate_args(args))
+
+    def test_rejects_session_name_with_path_separator(self) -> None:
+        args = capture_rgbd.parse_args(["--session-name", "nested/session"])
+
+        with contextlib.redirect_stderr(io.StringIO()):
+            valid = capture_rgbd.validate_args(args)
+
+        self.assertFalse(valid)
 
     def test_rejects_partial_depth_profile(self) -> None:
         args = capture_rgbd.parse_args(["--depth-width", "640"])
