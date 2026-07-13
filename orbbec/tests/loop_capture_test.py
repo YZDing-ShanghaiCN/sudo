@@ -32,7 +32,7 @@ def load_capture_module():
 
 
 def session_name(now: datetime | None = None) -> str:
-    return (now or datetime.now()).strftime("%y%m%d_%H%M%S")
+    return (now or datetime.now()).strftime("rgbd_%y%m%d_%H%M%S")
 
 
 def create_project_dirs(session_dir: Path) -> tuple[Path, Path, Path, Path]:

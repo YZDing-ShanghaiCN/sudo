@@ -36,10 +36,10 @@ class DummyColorProfile:
 
 
 class LoopCaptureTestRunnerTests(unittest.TestCase):
-    def test_session_name_uses_two_digit_year(self) -> None:
+    def test_session_name_uses_rgbd_prefix_and_two_digit_year(self) -> None:
         name = loop_capture.session_name(datetime(2026, 7, 7, 12, 34, 56))
 
-        self.assertEqual(name, "260707_123456")
+        self.assertEqual(name, "rgbd_260707_123456")
 
     def test_project_and_data_directory_layout(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
