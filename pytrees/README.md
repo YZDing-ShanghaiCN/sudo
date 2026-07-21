@@ -5,7 +5,7 @@
 ## 安装与运行
 
 ```bash
-cd pytrees_demo
+cd pytrees
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
@@ -32,7 +32,7 @@ python main.py --scenario recovery --tick-period 0
 ## 项目结构
 
 ```text
-pytrees_demo/
+pytrees/
 ├── README.md
 ├── requirements.txt
 ├── main.py
