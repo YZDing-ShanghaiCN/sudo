@@ -6,11 +6,17 @@
 
 ```bash
 cd pytrees
-python -m venv .venv
-source .venv/bin/activate
+conda activate pytrees_env
 pip install -r requirements.txt
 python main.py --scenario recovery
 pytest -q
+```
+
+如果尚未创建该 Conda 环境，先执行：
+
+```bash
+conda create -n pytrees_env python=3.10 -y
+conda activate pytrees_env
 ```
 
 可用场景：
